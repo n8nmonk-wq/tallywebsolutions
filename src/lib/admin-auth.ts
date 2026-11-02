@@ -28,12 +28,15 @@ export const isAdmin = cache(async (_legacyToken?: string): Promise<boolean> => 
   return sessions.length > 0;
 });
 
-export async function signIn(token: string): Promise<boolean> {
-  const expected = env('ADMIN_TOKEN');
-  if (!expected || token.length > 256) return false;
+// ADMIN_PASSWORD is the sign-in secret; ADMIN_TOKEN is still accepted for existing deployments.
+export const adminPasswordConfigured = () => !!(env('ADMIN_PASSWORD') || env('ADMIN_TOKEN'));
+
+export async function signIn(password: string): Promise<boolean> {
+  const expected = env('ADMIN_PASSWORD') || env('ADMIN_TOKEN');
+  if (!expected || password.length > 256) return false;
   const requestHeaders = await headers();
   const allowed = await consumeLimit(clientKey(new Request('http://admin', { headers: requestHeaders }), 'admin'), 5, 3600);
-  if (!allowed || !crypto.timingSafeEqual(Buffer.from(hash(token)), Buffer.from(hash(expected)))) return false;
+  if (!allowed || !crypto.timingSafeEqual(Buffer.from(hash(password)), Buffer.from(hash(expected)))) return false;
   const session = crypto.randomBytes(32).toString('hex');
   await sql`insert into admin_sessions (token_hash, expires_at) values (${hash(session)}, now() + interval '7 days')`;
   (await cookies()).set(COOKIE, session, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', path: '/', maxAge: 604800 });

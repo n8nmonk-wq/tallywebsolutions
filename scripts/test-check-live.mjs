@@ -11,7 +11,7 @@ function site({ checkout = 400, token = true, buy = true } = {}) {
     const html = (body) => new Response(body, { status: 200, headers: { 'content-type': 'text/html' } });
     if (url.pathname === '/api/checkout') return Response.json({ error: 'x' }, { status: checkout });
     if (url.pathname === '/api/search/suggest') return Response.json({ books: [{ slug: 'real-book' }], authors: [], categories: [] });
-    if (url.pathname === '/admin/login') return html(token ? '<label>Admin token</label>' : '<a>Sign in with email</a>');
+    if (url.pathname === '/admin/login') return html(token ? '<label>Admin password</label>' : '<a>Sign in with email</a>');
     if (url.pathname === '/') return html('<a href="/books/real-book">Real</a>');
     if (url.pathname === '/books/real-book') return html(buy ? '<p>₹1</p><button>Buy now</button>' : '<button>Unavailable</button>');
     return html('<main>ok</main>');
@@ -29,6 +29,6 @@ assert.ok(!Object.keys(checkoutCall.headers).some(h => h.toLowerCase() === 'idem
 
 const broken = await runLiveChecks(BASE, site({ checkout: 503, token: false, buy: false }).fetchImpl);
 assert.ok(broken.failures.some(f => /Checkout is switched off/.test(f)));
-assert.ok(broken.failures.some(f => /ADMIN_TOKEN/.test(f)));
+assert.ok(broken.failures.some(f => /ADMIN_PASSWORD/.test(f)));
 assert.ok(broken.failures.some(f => /no price or Buy now/.test(f)));
 console.log('Live check: healthy site passes; checkout off, missing admin token and unsellable books are reported; no order is ever created.');

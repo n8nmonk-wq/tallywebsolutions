@@ -26,7 +26,7 @@ export async function runLiveChecks(base, fetchImpl = fetch) {
     note(sellable, `/books/${slug} shows a price and Buy now`, `/books/${slug} has no price or Buy now (book not released or checkout off)`);
   }
   const admin = await (await get('/admin/login')).text();
-  note(/Admin token/.test(admin), 'admin token sign-in is available', 'admin login has no token form: set ADMIN_TOKEN in Vercel');
+  note(/Admin password/.test(admin), "admin password sign-in is available", "admin login has no password form: set ADMIN_PASSWORD in Vercel.");
   const probe = await fetchImpl(new URL('/api/checkout', origin), { method: 'POST', headers: { origin, 'content-type': 'application/json' }, body: '{}' });
   if (probe.status === 400) passed.push('checkout configuration is complete');
   else if (probe.status === 503) failures.push('Checkout is switched off or its configuration is incomplete (see docs/LAUNCH_CHECKLIST.md)');

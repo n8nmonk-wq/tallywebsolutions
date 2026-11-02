@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { signIn } from "@/lib/admin-auth";
+import { adminPasswordConfigured, signIn } from "@/lib/admin-auth";
 import { env } from "@/lib/env";
 import { STORE } from "@/lib/store";
 import Link from "next/link";
@@ -13,11 +13,11 @@ export default async function AdminLogin({
   searchParams: Promise<{ error?: string }>;
 }) {
   const { error } = await searchParams;
-  const configured = !!env("ADMIN_TOKEN");
+  const configured = adminPasswordConfigured();
 
   async function attempt(formData: FormData) {
     "use server";
-    const ok = await signIn(String(formData.get("token") || ""));
+    const ok = await signIn(String(formData.get("password") || ""));
     redirect(ok ? "/admin" : "/admin/login?error=1");
   }
 
@@ -34,12 +34,12 @@ export default async function AdminLogin({
         </p>
       ) : (
         <form action={attempt}>
-          <label className="field-label" htmlFor="token">
-            Admin token
+          <label className="field-label" htmlFor="password">
+            Admin password
           </label>
           <input
-            id="token"
-            name="token"
+            id="password"
+            name="password"
             type="password"
             required
             autoFocus
@@ -49,7 +49,7 @@ export default async function AdminLogin({
           />
           {error && (
             <p id="login-error" role="alert" className="mt-3 text-sm text-danger">
-              That token is not correct.
+              That password is not correct.
             </p>
           )}
           <button className="btn btn-primary mt-6 w-full justify-center" type="submit">
