@@ -1,0 +1,12 @@
+# PDFs store byte offsets in their xref table any line-ending conversion
+# corrupts them. Never let git touch these.
+*.pdf binary
+
+# Keep source LF on every platform.
+*.ts   text eol=lf
+*.tsx  text eol=lf
+*.mjs  text eol=lf
+*.css  text eol=lf
+*.json text eol=lf
+*.sql  text eol=lf
+*.md   text eol=lf

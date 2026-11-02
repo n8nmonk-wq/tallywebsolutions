@@ -1,0 +1,44 @@
+{
+  "name": "tallywebsolutions-store",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "seed": "node --env-file=.env.local scripts/seed.mjs",
+    "test": "node scripts/test-all.mjs",
+    "test:browser": "node --import tsx scripts/check-browser.mjs",
+    "test:admin": "node scripts/check-admin.mjs",
+    "preview:isolated": "node scripts/dev-preview.mjs",
+    "sample-pdf": "node scripts/make-sample-pdf.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "@neondatabase/serverless": "^0.10.4",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@vercel/blob": "^2.8.1",
+    "better-auth": "^1.7.7",
+    "kysely": "^0.29.6",
+    "lucide-react": "^1.55.0",
+    "motion": "^14.1.0",
+    "next": "^16.3.2",
+    "pdf-lib": "^1.17.1",
+    "pg": "^8.23.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@electric-sql/pglite": "^0.5.8",
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^26.2.0",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "tsx": "^4.23.15",
+    "typescript": "^5.7.3"
+  }
+}

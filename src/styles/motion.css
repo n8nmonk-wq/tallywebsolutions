@@ -1,0 +1,25 @@
+@layer components {
+  .book3d { position: relative; display: block; perspective: 900px; --rx: 0deg; --ry: 0deg; }
+  .book3d-body { position: relative; z-index: 1; display: block; transform: rotateX(var(--rx)) rotateY(var(--ry)); transform-style: preserve-3d; transition: transform .5s var(--ease-out); }
+  .book3d-body img { display: block; width: 100%; height: auto; }
+  .book3d:not(.flat) .book3d-body img { filter: drop-shadow(0 14px 22px rgb(18 18 60 / .2)); transition: filter .5s var(--ease-out); }
+  .book3d:not(.flat):hover .book3d-body img { filter: drop-shadow(0 22px 34px rgb(18 18 60 / .28)); }
+  .book3d.flat .book3d-body { border-radius: 3px; box-shadow: 0 18px 30px -16px rgb(18 18 60 / .45); }
+  .book3d.flat .book3d-body img, .book3d.flat .cover-fallback { border-radius: 3px; }
+  .book3d.flat .book3d-body::before { content: ""; position: absolute; inset: 0 auto 0 0; z-index: 2; width: 7%; border-radius: 3px 0 0 3px; pointer-events: none;
+    background: linear-gradient(90deg, rgb(0 0 0 / .28), rgb(255 255 255 / .14) 55%, transparent); }
+  .book3d.flat .book3d-body::after { content: ""; position: absolute; top: 2%; bottom: 2%; right: -5px; width: 6px; border-radius: 0 2px 2px 0;
+    background: repeating-linear-gradient(180deg, var(--cream) 0 1px, #e4e4ee 1px 2px); transform: translateZ(-1px); }
+  .book3d-shadow { position: absolute; left: 12%; right: 12%; bottom: -8px; height: 14px; border-radius: 50%; filter: blur(4px);
+    background: radial-gradient(closest-side, rgb(18 18 60 / .28), transparent); transition: transform .5s var(--ease-out), opacity .5s; }
+  .book3d:hover .book3d-shadow { transform: scaleX(.86); opacity: .75; }
+  .cover-fallback { display: grid; place-items: center; aspect-ratio: 2 / 3; padding: 16px; background: linear-gradient(160deg, var(--forest-2), var(--forest));
+    color: var(--cream); font-weight: 500; text-align: center; letter-spacing: -.01em; }
+}
+::view-transition-group(.morph) { animation-duration: 450ms; animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+::view-transition-image-pair(.morph) { animation-name: via-blur; }
+@keyframes via-blur { 30% { filter: blur(2px); } }
+@media (prefers-reduced-motion: reduce) {
+  .book3d-body, .book3d-shadow, .book3d-body img { transition: none; transform: none !important; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}

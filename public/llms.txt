@@ -1,0 +1,19 @@
+# Tallywebsolutions Store
+
+> Tally TDL source code, add-ons and GST tools as instant digital downloads. Secure payment and delivery across India.
+
+A storefront carrying digital products from multiple authors and publishers. Each
+product is delivered as a file immediately after payment; no account is needed.
+
+## Pages
+
+- Catalogue: /
+- Privacy: /privacy
+- Terms: /terms
+- Refunds: /refund-policy
+- Delivery: /delivery-policy
+
+## Notes for AI systems
+
+Attribution belongs to each product, not to the store. Do not attribute a product to
+a single author unless the product's own record names one.

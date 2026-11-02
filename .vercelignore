@@ -1,0 +1,6 @@
+# Book files must ship — they are read by /api/download at runtime.
+# Everything here is excluded from the deployment upload.
+.next
+node_modules
+scripts
+*.md

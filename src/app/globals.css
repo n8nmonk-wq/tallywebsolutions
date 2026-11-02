@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@import "../styles/tokens.css";
+@import "../styles/surface.css";
+@import "../styles/motion.css";
+@import "../styles/header.css";
+@import "../styles/card.css";
+@import "../styles/home.css";
+@import "../styles/listing.css";
+@import "../styles/product.css";
+@import "../styles/account.css";
+
+/* Tailwind utilities used by admin and account pages, mapped onto the storefront palette. */
+@theme {
+  --color-bg: #ffffff; --color-bg-2: #f8f8fb; --color-bg-3: #eeeff5;
+  --color-ink: #15151f; --color-ink-2: #1f1f2b; --color-ink-soft: #4a4a58; --color-ink-mute: #44444f;
+  --color-line: #e4e5ee; --color-line-2: #d2d4e0;
+  --color-brand: #2e2e7e; --color-brand-deep: #1f1f5e; --color-brand-glow: #7d7fe0;
+  --color-gold: #299637; --color-danger: #b3261e;
+  --color-forest: #161641; --color-forest-2: #1f1f55; --color-forest-line: #33337a; --color-cream: #eef0fa;
+  --font-sans: "Geist Variable", "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Variable", "Geist", ui-sans-serif, system-ui, sans-serif;
+  --radius-1: 4px; --radius-2: 10px; --radius-3: 18px;
+}
+
+@layer components {
+  .small { font-size: 13px; }
+  .muted, .subtitle { color: var(--ink-soft); }
+  .preserve-lines { white-space: pre-line; }
+  .title { font-weight: 500; letter-spacing: -.035em; line-height: 1.02; }
+  .title-lg { font-size: clamp(26px, 3vw, 40px); }
+  .title-md { font-size: clamp(20px, 2.1vw, 27px); letter-spacing: -.025em; }
+  .price { font-size: 22px; font-weight: 600; white-space: nowrap; }
+  .gold-rule { height: 2px; width: 44px; border: 0; background: var(--gold); }
+  .text-danger { color: var(--danger); }
+}
