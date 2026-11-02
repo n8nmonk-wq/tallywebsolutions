@@ -105,7 +105,7 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
             <caption className="sr-only">Recent orders</caption>
             <thead>
               <tr className="bg-bg-2">
-                {["Order", "Customer", "Contact", "Book", "Total", "Status", "When"].map(
+                {["Order", "Customer", "Contact", "Add-on", "Total", "Status", "When"].map(
                   (h) => (
                     <th
                       key={h}

@@ -42,7 +42,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
     <section className="mb-8 rounded-xl border border-line bg-white p-5"><h2 className="mb-3 font-semibold">Revenue per day</h2><RevenueChart daily={a.daily} /></section>
     <div className="grid gap-6 lg:grid-cols-2">
       <section className="rounded-xl border border-line bg-white p-5"><h2 className="mb-3 font-semibold">Top books</h2>
-        {a.topBooks.length ? <table className="w-full text-left text-sm"><thead><tr className="text-ink-soft"><th className="py-1 font-normal">Book</th><th className="font-normal">Sold</th><th className="text-right font-normal">Revenue</th></tr></thead>
+        {a.topBooks.length ? <table className="w-full text-left text-sm"><thead><tr className="text-ink-soft"><th className="py-1 font-normal">Add-on</th><th className="font-normal">Sold</th><th className="text-right font-normal">Revenue</th></tr></thead>
           <tbody>{a.topBooks.map((b) => <tr key={b.slug} className="border-t border-line"><td className="py-2 pr-2">{b.title}</td><td>{b.units}</td><td className="text-right font-medium">{rupees(b.revenue)}</td></tr>)}</tbody></table>
           : <p className="text-sm text-ink-soft">No sales in this period.</p>}</section>
       <section className="rounded-xl border border-line bg-white p-5"><h2 className="mb-3 font-semibold">Offers</h2>

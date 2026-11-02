@@ -32,7 +32,7 @@ export default function OfferForm({ offer, books, collections, categories }: {
     <div className="grid gap-4 sm:grid-cols-3">
       {kind === "percent" && <><label className="text-sm">Percent off<input name="value" inputMode="numeric" required value={draft.value} onChange={set("value")} className={input} /></label>
         <label className="text-sm">Max discount ₹ (optional)<input name="cap" inputMode="decimal" defaultValue={rupees(offer?.cap)} className={input} /></label></>}
-      {kind === "flat" && <label className="text-sm">Amount off ₹ {scope === "order" ? "(whole order)" : "(each book)"}<input name="value" inputMode="decimal" required value={draft.value} onChange={set("value")} className={input} /></label>}
+      {kind === "flat" && <label className="text-sm">Amount off ₹ {scope === "order" ? "(whole order)" : "(each add-on)"}<input name="value" inputMode="decimal" required value={draft.value} onChange={set("value")} className={input} /></label>}
       {kind === "bxgy" && <><label className="text-sm">Buy<input name="buy_qty" inputMode="numeric" required value={draft.buy} onChange={set("buy")} className={input} /></label>
         <label className="text-sm">Get<input name="get_qty" inputMode="numeric" required value={draft.get} onChange={set("get")} className={input} /></label>
         <label className="text-sm">at % off (100 = free)<input name="get_percent" inputMode="numeric" value={draft.getPct} onChange={set("getPct")} className={input} /></label></>}

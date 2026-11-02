@@ -16,7 +16,7 @@ export default async function DeliveryPage() {
       <h2 className="break-all text-lg font-medium">{row.id}</h2><p className="mb-4 text-sm">{row.status} · Email: {row.email_state || 'Not queued'} · Attempts: {row.attempts || 0}</p>
       <ActionForm action="/api/admin/platform/delivery"><input type="hidden" name="id" value={row.id} />
         <label>Recovery action<select name="action" className="field-input mt-1"><option value="reconcile">Reconcile payment and provisioning</option><option value="snapshot">Restore missing purchased-file snapshot</option><option value="email">Release email retry after provider review</option></select></label>
-        <label>Book slug (snapshot recovery only)<input name="slug" className="field-input mt-1" maxLength={100} /></label>
+        <label>Add-on slug (snapshot recovery only)<input name="slug" className="field-input mt-1" maxLength={100} /></label>
         <label>Recovery reason<textarea name="reason" className="field-input mt-1" required minLength={10} maxLength={2000} rows={3} /></label>
         <label className="flex items-start gap-3"><input type="checkbox" name="confirmed" required className="mt-1" /><span>I verified provider logs and the original purchased edition. For email retries I confirmed no prior delivery.</span></label>
         <button className="btn btn-primary justify-self-start"><RefreshCw size={18} aria-hidden />Recover delivery</button>

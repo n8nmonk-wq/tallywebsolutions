@@ -9,7 +9,7 @@ import BookForm from "./BookForm";
 import BookUpload from "./BookUpload";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Books", robots: { index: false, follow: false } };
+export const metadata = { title: "Add-ons", robots: { index: false, follow: false } };
 
 type AdminBook = Book & { submission_id: string | null };
 
@@ -37,18 +37,18 @@ export default async function AdminBooks({
   const files = new Map(await Promise.all(books.filter((b) => !b.third_party).map(async (b) => [b.slug, await fileCheck(process.cwd(), b.file_url, b.file_sha256 ?? null)] as const)));
 
   return (
-    <AdminShell active="books" title="Books" subtitle="Price, offers and what is on sale.">
+    <AdminShell active="books" title="Add-ons" subtitle="Price, offers and what is on sale.">
       {saved && <p className="mb-4 rounded-2 border border-brand/30 bg-brand/5 px-4 py-3 text-[15px] text-brand" role="status">Saved. The storefront is updated.</p>}
       {error && <p className="mb-4 rounded-2 border border-danger/30 bg-danger/10 px-4 py-3 text-[15px] text-danger" role="alert">{error}</p>}
 
       <div className="mb-6 flex flex-wrap items-end gap-3">
         <form method="get" className="flex gap-2" role="search">
-          <label className="sr-only" htmlFor="admin-book-search">Search books</label>
-          <input id="admin-book-search" name="q" defaultValue={q} placeholder="Search title, slug or author" className="field-input w-64" />
+          <label className="sr-only" htmlFor="admin-book-search">Search add-ons</label>
+          <input id="admin-book-search" name="q" defaultValue={q} placeholder="Search name, slug or developer" className="field-input w-64" />
           <button className="btn btn-ghost" type="submit">Search</button>
         </form>
         <details className="ml-auto">
-          <summary className="btn btn-ghost cursor-pointer list-none">New book</summary>
+          <summary className="btn btn-ghost cursor-pointer list-none">New add-on</summary>
           <form action="/api/admin/book" method="post" className="mt-3 flex flex-wrap items-end gap-3 rounded-lg border border-line bg-white p-4">
             <input type="hidden" name="action" value="create" />
             <label className="text-sm">Title<input name="title" required maxLength={200} className="field-input mt-1" /></label>
@@ -129,7 +129,7 @@ export default async function AdminBooks({
                       <input type="checkbox" name="confirmed" required className="mt-1 h-4 w-4 shrink-0 accent-[color:var(--color-brand)]" />
                       I confirm release using the reviewed submission.
                     </label>
-                    <button className="btn btn-ghost justify-self-start" type="submit"><BookCheck size={16} aria-hidden="true" /> Release book</button>
+                    <button className="btn btn-ghost justify-self-start" type="submit"><BookCheck size={16} aria-hidden="true" /> Release add-on</button>
                   </form>
                 </details>
               </details>
