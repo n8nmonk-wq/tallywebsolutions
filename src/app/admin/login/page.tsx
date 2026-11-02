@@ -26,7 +26,7 @@ export default async function AdminLogin({
       <p className="eyebrow mb-4">{STORE.name}</p>
       <h1 className="title title-lg mb-2">Admin sign in</h1>
       <hr className="gold-rule mb-8" />
-      {!!env("ADMIN_EMAIL") && <Link href="/login?next=/admin" className="btn btn-primary mb-6">Sign in with email</Link>}
+      {!!env("ADMIN_EMAIL") && !configured && <Link href="/login?next=/admin" className="btn btn-primary mb-6">Sign in with email</Link>}
 
       {!configured ? (
         <p className="text-[15px] leading-relaxed text-ink-soft">
