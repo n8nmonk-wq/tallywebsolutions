@@ -52,7 +52,7 @@ export default function SearchBox() {
     if (expanded && active >= 0) { e.preventDefault(); setOpen(false); router.push(options[active].href); }
   }}>
     <label htmlFor={`${id}-input`} className="sr-only">Search books, authors and categories</label>
-    <input ref={input} id={`${id}-input`} name="q" type="search" placeholder="Search titles, authors or ISBN" autoComplete="off" value={value}
+    <input ref={input} id={`${id}-input`} name="q" type="search" placeholder="Search add-ons, GST, bank, invoices" autoComplete="off" value={value}
       role="combobox" aria-expanded={expanded} aria-controls={`${id}-list`} aria-autocomplete="list"
       aria-activedescendant={expanded && active >= 0 ? `${id}-opt-${active}` : undefined}
       onChange={(e) => { setValue(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)} onBlur={() => setTimeout(() => setOpen(false), 120)}

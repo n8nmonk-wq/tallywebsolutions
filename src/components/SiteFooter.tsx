@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Headphones, Infinity as Lifetime, ShieldCheck, Zap } from "lucide-react";
 
-const TRUST: [typeof Zap, string, string][] = [[Zap, "Instant download", "Right after payment"], [ShieldCheck, "Secure checkout", "Razorpay protected"], [Lifetime, "Lifetime library", "Re-download any time"], [Headphones, "Real support", "We reply within a day"]];
+const TRUST: [typeof Zap, string, string][] = [[Zap, "Instant download", "Right after payment"], [ShieldCheck, "Secure checkout", "Razorpay protected"], [Lifetime, "Lifetime validity", "Re-download any time"], [Headphones, "Real support", "We reply within a day"]];
 const PAY = ["UPI", "Visa", "Mastercard", "RuPay", "Netbanking", "Wallets"];
 
 export default function SiteFooter({ name, categories }: { name: string; categories: { slug: string; name: string }[] }) {
@@ -10,7 +10,7 @@ export default function SiteFooter({ name, categories }: { name: string; categor
     ["Shop", [["All add-ons", "/search"], ["New", "/search?sort=new"], ["Offers", "/search?offer=1"], ["Wishlist", "/wishlist"]]],
     ["Account", [["Library", "/library"], ["Bag", "/cart"], ["Sign in", "/login"]]],
     ["Help", [["Delivery", "/delivery-policy"], ["Refunds", "/refund-policy"], ["Privacy", "/privacy"], ["Terms", "/terms"]]],
-    ["Authors", [["Publish with us", "/publish"], ["Workspace", "/author"]]],
+    ["Developers", [["Sell with us", "/publish"], ["Workspace", "/author"]]],
   ];
   return <footer className="site-footer"><div className="wrap">
     <ul className="trust-row">{TRUST.map(([Icon, title, note]) => <li key={title}><Icon size={26} strokeWidth={1.6} aria-hidden="true" /><p><strong>{title}</strong><span>{note}</span></p></li>)}</ul>

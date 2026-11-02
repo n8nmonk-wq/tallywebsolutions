@@ -64,7 +64,7 @@ function BannerForm({ banner }: { banner?: Banner }) {
     <input type="hidden" name="sort" value={String(banner?.sort ?? 1000)} /><input type="hidden" name="return_to" value="/admin/banners" />
     <label className="text-sm">Headline<input name="title" required maxLength={200} className={input} defaultValue={banner?.title ?? ""} placeholder="Festive reading week" /></label>
     <label className="text-sm">Small label above<input name="subtitle" maxLength={200} className={input} defaultValue={typeof banner?.payload?.subtitle === "string" ? banner.payload.subtitle : ""} placeholder="Limited time" /></label>
-    <label className="text-sm sm:col-span-2">One line of text<input name="body" maxLength={160} className={input} defaultValue={banner?.body ?? ""} placeholder="Up to 20% off selected titles" /></label>
+    <label className="text-sm sm:col-span-2">One line of text<input name="body" maxLength={160} className={input} defaultValue={banner?.body ?? ""} placeholder="Up to 20% off selected add-ons" /></label>
     <label className="text-sm">Image URL (wide)<input name="image_url" maxLength={2000} className={input} defaultValue={banner?.image_url ?? ""} placeholder="/assets/... or https://..." /></label>
     <label className="text-sm">Phone image URL (optional)<input name="mobile_image_url" maxLength={2000} className={input} defaultValue={banner?.mobile_image_url ?? ""} /></label>
     <label className="text-sm">Button link<input name="link_url" maxLength={2000} className={input} defaultValue={banner?.link_url ?? ""} placeholder="/search?offer=1" /></label>

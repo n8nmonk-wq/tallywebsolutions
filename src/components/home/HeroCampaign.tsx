@@ -10,7 +10,7 @@ import Book3D from "../motion/Book3D";
 type HeroCover = { slug: string; title: string; cover: string | null };
 
 export const DEFAULT_SLIDE: Banner = { id: "default", title: "Tally add-ons, delivered instantly", subtitle: "Digital downloads",
-  body: "Independent authors and publishers. Pay once, read anywhere.", image: null, mobileImage: null, href: "/search", label: "Browse books", theme: "forest" };
+  body: "TDL source code and GST add-ons for TallyPrime. Pay once, use with lifetime validity.", image: null, mobileImage: null, href: "/search", label: "Browse add-ons", theme: "forest" };
 
 // The last two words of a headline carry the brand gradient, so admin banners get it without markup.
 export function splitAccent(title: string): [string, string] {
@@ -53,15 +53,15 @@ export default function HeroCampaign({ banners, covers }: { banners: Banner[]; c
       const [lead, accent] = splitAccent(s.title);
       return <div key={s.id} className="hero-slide" hidden={i !== index} role={many ? "group" : undefined}
         aria-roledescription={many ? "slide" : undefined} aria-label={many ? `${i + 1} of ${slides.length}` : undefined}>
-        <picture className="hero-art" aria-hidden="true">{s.mobileImage && <source media="(max-width: 640px)" srcSet={s.mobileImage} />}
-          <img src={s.image ?? "/assets/reading-room-botanical-v2.webp"} alt="" fetchPriority={i === 0 ? "high" : undefined} /></picture>
+        {s.image && <picture className="hero-art" aria-hidden="true">{s.mobileImage && <source media="(max-width: 640px)" srcSet={s.mobileImage} />}
+          <img src={s.image} alt="" fetchPriority={i === 0 ? "high" : undefined} /></picture>}
         <div className="hero-grid">
           <div className="hero-copy enter">
             {s.subtitle && <span className="pill"><span className="dot" />{s.subtitle}</span>}
             <h1>{lead}<span className="grad">{accent}</span></h1>
             {s.body && <p>{s.body}</p>}
-            <div className="hero-actions">{s.href && <Link className="btn btn-primary" href={s.href}>{s.label || "Browse books"} <span aria-hidden="true">→</span></Link>}
-              <Link className="btn btn-ghost" href="/publish">Publish with us</Link></div>
+            <div className="hero-actions">{s.href && <Link className="btn btn-primary" href={s.href}>{s.label || "Browse add-ons"} <span aria-hidden="true">→</span></Link>}
+              <Link className="btn btn-ghost" href="/publish">Sell with us</Link></div>
             <ul className="ticks">{TICKS.map(([strong, rest]) => <li key={strong}><CircleCheck size={16} aria-hidden="true" /><span><strong>{strong}</strong> {rest}</span></li>)}</ul>
           </div>
           {i === index && shown.length > 0 && <div className="hero-stage" aria-hidden="true">{shown.map((c, k) =>

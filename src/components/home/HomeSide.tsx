@@ -32,7 +32,7 @@ export default function HomeSide({ books }: { books: PublicBook[] }) {
     <Card book={deal} kicker="Deal of the day" tone="gold" />
     {fresh ? <Card book={fresh} kicker="New arrival" tone="green" />
       : <Link href="/library" className="side-card side-green"><span className="side-text"><span className="eyebrow">Your library</span>
-        <span className="side-title">Every book you buy, ready to re-download</span><span className="link-line">Open library <span aria-hidden="true">→</span></span></span>
+        <span className="side-title">Every add-on you buy, ready to re-download</span><span className="link-line">Open library <span aria-hidden="true">→</span></span></span>
         <span className="side-icon" aria-hidden="true"><Library size={44} strokeWidth={1.4} /></span></Link>}
   </aside>;
 }

@@ -6,12 +6,12 @@ import type { Home } from "@/lib/home";
 
 // A small shelf is one product grid; a larger shelf becomes rails.
 export default function Featured({ books, rails, enabled }: { books: PublicBook[]; rails: Home["rails"]; enabled: boolean }) {
-  if (!books.length) return <section className="wrap section"><p className="eyebrow">New titles on the way</p></section>;
+  if (!books.length) return <section className="wrap section"><p className="eyebrow">New add-ons on the way</p></section>;
   if (books.length < 5) return <section id="catalogue" className="wrap section">
-    <div className="section-head reveal"><div><h2>Shop the collection</h2><p>{books.length} {books.length === 1 ? "title" : "titles"} · instant download</p></div>
+    <div className="section-head reveal"><div><h2>Shop the collection</h2><p>{books.length} {books.length === 1 ? "add-on" : "add-ons"} · instant download</p></div>
       <Link className="link-line" href="/search">View all <span aria-hidden="true">→</span></Link></div>
     <ul className="book-grid home-grid">{books.map((b) => <li key={b.slug} className="reveal"><BookCard book={b} enabled={enabled} /></li>)}
-      <li className="grid-cta reveal"><p className="eyebrow">New titles every month</p><p className="grid-cta-title">Find your next read</p>
+      <li className="grid-cta reveal"><p className="eyebrow">New add-ons every month</p><p className="grid-cta-title">Find your next add-on</p>
         <div className="grid-cta-links"><Link className="btn btn-primary" href="/search">Browse all books <span aria-hidden="true">→</span></Link>
           <Link className="btn btn-ghost" href="/wishlist">Your wishlist</Link></div></li></ul>
   </section>;

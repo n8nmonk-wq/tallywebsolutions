@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getReader } from "@/lib/reader-auth";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Publish with us", robots: { index: true, follow: true } };
+export const metadata = { title: "Sell with us", robots: { index: true, follow: true } };
 export default async function PublishPage() {
   const reader = await getReader();
   const start = reader ? "/author" : "/login?next=/author";
