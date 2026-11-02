@@ -34,8 +34,8 @@ export async function loadDemo(now = new Date()) {
     select id,type,title,body,link_url,link_label,coalesce(payload,'{}'::jsonb),sort,'published'
     from jsonb_to_recordset(${json(data.modules)}::jsonb) as x(id text,type text,title text,body text,link_url text,link_label text,payload jsonb,sort int)
     on conflict (id) do nothing`;
-  // Real titles without a subject join Ayurveda, so they show in the menu and subject tiles; change it per book in admin.
-  await sql`update books set category_slug='ayurveda', subject=coalesce(subject,'Ayurveda'), language=coalesce(language,'English')
+  // Real rows without a category join Vouchers and bulk entry, so they show in the menu and category tiles; change it per row in admin.
+  await sql`update books set category_slug='vouchers-entry', subject=coalesce(subject,'Vouchers and bulk entry'), language=coalesce(language,'English')
     where category_slug is null and not coalesce(third_party,false) and coalesce(facts->>'_demo','') <> 'true'`;
   await logEvent(null, "admin.demo.loaded", { books: data.books.length });
 }

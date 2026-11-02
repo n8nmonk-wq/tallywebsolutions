@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const author = await load(id);
   if (!author) return { title: "Author not found", robots: { index: false } };
-  return { title: author.name, description: author.profile?.bio?.slice(0, 160) || `Digital editions by ${author.name}.`,
+  return { title: author.name, description: author.profile?.bio?.slice(0, 160) || `Add-ons by ${author.name}.`,
     alternates: { canonical: `${siteUrl()}/authors/${encodeURIComponent(id)}` } };
 }
 
@@ -39,15 +39,15 @@ export default async function AuthorPage({ params }: { params: Promise<{ id: str
     ...(author.profile?.bio && { description: author.profile.bio }), ...(photo && { image: photo.startsWith("/") ? `${siteUrl()}${photo}` : photo }) };
   return <div className="wrap section">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />
-    <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">/</span><Link href="/search">All books</Link><span aria-hidden="true">/</span><span aria-current="page">{author.name}</span></nav>
+    <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">/</span><Link href="/search">All add-ons</Link><span aria-hidden="true">/</span><span aria-current="page">{author.name}</span></nav>
     <header className="author-hero">
       {photo && <img src={photo} alt={`Portrait of ${author.name}`} className="author-photo" />}
-      <div><p className="eyebrow">Author</p><h1>{author.name}</h1>
+      <div><p className="eyebrow">Developer</p><h1>{author.name}</h1>
         {author.profile?.bio && <p className="preserve-lines">{author.profile.bio}</p>}
-        <p className="small muted">{author.books.length} {author.books.length === 1 ? "digital edition" : "digital editions"} in the store</p>
+        <p className="small muted">{author.books.length} {author.books.length === 1 ? "add-on" : "add-ons"} in the store</p>
       </div>
     </header>
-    {author.books.length > 0 && <section className="section" aria-labelledby="author-books"><h2 id="author-books" className="section-title">Books by {author.name}</h2>
+    {author.books.length > 0 && <section className="section" aria-labelledby="author-books"><h2 id="author-books" className="section-title">Add-ons by {author.name}</h2>
       <div className="book-grid">{author.books.map((book, index) => <BookCard key={book.slug} book={book} index={index} enabled={enabled} />)}</div></section>}
   </div>;
 }

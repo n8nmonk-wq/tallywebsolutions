@@ -60,7 +60,7 @@ for (const [name, engine] of Object.entries({ chromium, firefox, webkit })) {
       for (const violation of result.violations) failures.push(`${name}: accessibility ${route}: ${violation.id}: ${violation.nodes.map(node => node.target).join(',')}`);
     }
     await page.goto(base + '/search?q=nonexistent-title');
-    await expect(page.getByRole('heading', { name: 'No books match these filters' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'No add-ons match these filters' })).toBeVisible();
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(base + '/books/researching-research-for-ayurveda');
     await expect(page.getByText('Ordering opens soon.', { exact: false })).toBeVisible();

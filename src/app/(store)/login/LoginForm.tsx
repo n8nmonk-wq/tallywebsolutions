@@ -20,6 +20,6 @@ export default function LoginForm({ next }: { next: string }) {
       <input className="field-input" id="email" name="email" type="email" required autoComplete="email" maxLength={254} disabled={state === 'sending'} onChange={() => setState('idle')} /></div>
     <button className="btn btn-primary" disabled={state === 'sending' || state === 'sent'}>
       {state === 'sending' ? 'Sending...' : state === 'sent' ? 'Check your email' : 'Send sign-in link'}</button>
-    <p role="status" className="text-sm text-ink-soft">{state === 'sent' ? 'Check your inbox and spam folder for a sign-in link. It expires in 15 minutes.' : state === 'error' ? 'We could not send a sign-in link. Please try again later.' : 'For purchased books, use your checkout email. For a publishing submission, use the email where you would like to hear from us.'}</p>
+    <p role="status" className="text-sm text-ink-soft">{state === 'sent' ? 'Check your inbox and spam folder for a sign-in link. It expires in 15 minutes.' : state === 'error' ? 'We could not send a sign-in link. Please try again later.' : 'For purchased add-ons, use your checkout email. For a developer submission, use the email where you would like to hear from us.'}</p>
   </form>;
 }

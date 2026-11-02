@@ -19,7 +19,7 @@ const customerErrors: Record<string, { message: string; field?: Field }> = {
   "That name is too long.": { message: "Use no more than 100 characters for your name.", field: "name" },
   "Email is required.": { message: "Enter your email address.", field: "email" },
   "Enter a valid email address.": { message: "Enter a valid email address.", field: "email" },
-  "Please use a permanent email address your book is delivered there.": { message: "Use a permanent email address so you can receive your book.", field: "email" },
+  "Please use a permanent email address your book is delivered there.": { message: "Use a permanent email address so you can receive your add-on.", field: "email" },
   "Phone number is required.": { message: "Enter your mobile number.", field: "phone" },
   "Enter a 10-digit Indian mobile number.": { message: "Enter a 10-digit Indian mobile number.", field: "phone" },
   "That is not a valid mobile number.": { message: "Enter a valid Indian mobile number.", field: "phone" },
@@ -30,7 +30,7 @@ const customerErrors: Record<string, { message: string; field?: Field }> = {
 export function checkoutError(status: number, error: unknown): { message: string; field?: Field } {
   if (typeof error === "string" && Object.hasOwn(customerErrors, error)) return customerErrors[error];
   if (status === 429) return { message: "You've tried several times. Please wait a while before trying again." };
-  if (status === 400) return { message: "Please check your details and selected books, then try again." };
+  if (status === 400) return { message: "Please check your details and selected add-ons, then try again." };
   if (status === 403 || status === 409) return { message: "We could not continue this checkout. Please refresh the page and review your selection." };
   return { message: "Online ordering is currently unavailable. Please try again later." };
 }
@@ -96,12 +96,12 @@ export default function CheckoutForm({ books, initialSlug, enabled }: { books: P
   }
 
   if (!initialSlug && !cart.ready) return <p role="status">Loading your selection...</p>;
-  if (!slugs.length) return <div className="empty-state"><h2>Your bag is empty.</h2><p>Choose a digital edition before checking out.</p><Link className="btn btn-primary" href="/search">Explore the books <ArrowRight size={17} aria-hidden="true" /></Link></div>;
+  if (!slugs.length) return <div className="empty-state"><h2>Your bag is empty.</h2><p>Choose an add-on before checking out.</p><Link className="btn btn-primary" href="/search">Explore add-ons <ArrowRight size={17} aria-hidden="true" /></Link></div>;
   return <>
     <div className="checkout-layout">
       <form onSubmit={pay} className="checkout-form" aria-label="Customer details">
         {!enabled && <p className="purchase-paused">Online ordering is currently unavailable. <Link className="underline" href="/search">Continue browsing</Link> or return later.</p>}
-        {enabled && unavailable && <p className="purchase-paused">{slugs.length > 20 ? "Choose up to twenty titles per checkout." : "A selected edition is not currently available to buy."} <Link className="underline" href={initialSlug ? `/books/${encodeURIComponent(initialSlug)}` : "/cart"}>{initialSlug ? "View book details" : "Review your bag"}</Link>.</p>}
+        {enabled && unavailable && <p className="purchase-paused">{slugs.length > 20 ? "Choose up to twenty add-ons per checkout." : "A selected edition is not currently available to buy."} <Link className="underline" href={initialSlug ? `/books/${encodeURIComponent(initialSlug)}` : "/cart"}>{initialSlug ? "View add-on details" : "Review your bag"}</Link>.</p>}
         {([{ key: "name", label: "Full name", type: "text", autoComplete: "name", maxLength: 100 },
           { key: "email", label: "Email address", type: "email", autoComplete: "email", maxLength: 254 },
           { key: "phone", label: "Indian mobile number", type: "tel", autoComplete: "tel", maxLength: 32 }] as const).map((field) => <div key={field.key}>
@@ -120,9 +120,9 @@ export default function CheckoutForm({ books, initialSlug, enabled }: { books: P
         {pricingFailed && enabled && !unavailable && <p className="small text-danger mt-4" role="alert">Prices could not be loaded. <a className="underline" href="">Refresh the page</a> to try again.</p>}
         {err && <p className="small text-danger mt-4" id="checkout-error" role="alert">{err.message}</p>}
         <noscript><p className="small">JavaScript is required to complete checkout.</p></noscript>
-        <p className="checkout-policy">By continuing, you agree to our <Link href="/terms">terms</Link> and <Link href="/refund-policy">refund policy</Link>. Digital editions are licensed for personal use.</p>
+        <p className="checkout-policy">By continuing, you agree to our <Link href="/terms">terms</Link> and <Link href="/refund-policy">refund policy</Link>. Digital add-ons are licensed for your own TallyPrime use.</p>
       </form>
-      <aside className="order-summary"><h2>Your editions</h2>{selected.map((book) => <div className="summary-line with-cover" key={book.slug}><span className="summary-cover"><Cover src={book.cover} title={book.title} sizes="40px" /></span><span>{book.title}</span><span>{book.saleable && book.price > 0 ? rupees(book.price) : "Not yet on sale"}</span></div>)}
+      <aside className="order-summary"><h2>Your add-ons</h2>{selected.map((book) => <div className="summary-line with-cover" key={book.slug}><span className="summary-cover"><Cover src={book.cover} title={book.title} sizes="40px" /></span><span>{book.title}</span><span>{book.saleable && book.price > 0 ? rupees(book.price) : "Not yet on sale"}</span></div>)}
         {totals && totals.tax > 0 && <div className="summary-line"><span>Tax</span><span>{rupees(totals.tax)}</span></div>}
         <PricingSummary pricing={pricing} coupon={coupon} setCoupon={setCoupon} fallback={totalLabel} />
         <p className="small muted mt-4">Prices and availability are checked again before payment. <Link href="/delivery-policy" className="underline">Delivery details</Link></p>

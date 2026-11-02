@@ -101,7 +101,7 @@ export function confirmationPayload(order: Order, siteUrl: string): EmailPayload
       (i) => `<tr>
         <td style="padding:12px 0;border-bottom:1px solid ${BRAND.line};font-size:15px;color:${BRAND.ink};">
           ${escapeHtml(i.title)}<br>
-          <span style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:${BRAND.mute};">Digital edition &middot; PDF</span>
+          <span style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:${BRAND.mute};">Digital download &middot; PDF</span>
         </td>
         <td align="right" style="padding:12px 0;border-bottom:1px solid ${BRAND.line};font-family:'Courier New',monospace;font-size:15px;color:${BRAND.ink};white-space:nowrap;">${typeof i.list_price === "number" && i.list_price > i.price ? `<s style="color:${BRAND.mute};">${rupees(i.list_price)}</s> ` : ""}${rupees(i.price)}</td>
       </tr>`

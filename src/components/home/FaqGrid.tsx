@@ -1,10 +1,10 @@
 const FAQ: [string, string][] = [
-  ["How do I get my book?", "Download it right after payment, from your order page or library."],
+  ["How do I get my add-on?", "Download it right after payment, from your order page or library."],
   ["Do I need an account?", "No. Check out with your email; sign in later to see your library."],
-  ["What format are the books?", "Digital editions, usually PDF, licensed for your personal use."],
-  ["Can I buy several titles?", "Yes. Add them to your bag and pay once."],
-  ["Can I get a refund?", "If a file won't open or isn't as described, we replace or refund it."],
-  ["Can I publish here?", "Yes. Submit your book for editorial review from Publish with us."],
+  ["What do I receive?", "TallyPrime TDL source code or TCP files, licensed for your own use. Each page states the version it supports."],
+  ["Can I buy several add-ons?", "Yes. Add them to your bag and pay once."],
+  ["Can I get a refund?", "If a file won't open or doesn't work with the stated TallyPrime version, we replace or refund it."],
+  ["Can I sell my add-on here?", "Yes. Submit your add-on for review from the developer page."],
 ];
 
 export default function FaqGrid() {

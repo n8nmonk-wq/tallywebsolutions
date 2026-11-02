@@ -7,7 +7,7 @@ const PAY = ["UPI", "Visa", "Mastercard", "RuPay", "Netbanking", "Wallets"];
 export default function SiteFooter({ name, categories }: { name: string; categories: { slug: string; name: string }[] }) {
   const [brand, by] = name.includes(" by ") ? [name.split(" by ")[0], name.split(" by ").slice(1).join(" by ")] : [name, ""];
   const cols: [string, [string, string][]][] = [
-    ["Shop", [["All books", "/search"], ["New", "/search?sort=new"], ["Offers", "/search?offer=1"], ["Wishlist", "/wishlist"]]],
+    ["Shop", [["All add-ons", "/search"], ["New", "/search?sort=new"], ["Offers", "/search?offer=1"], ["Wishlist", "/wishlist"]]],
     ["Account", [["Library", "/library"], ["Bag", "/cart"], ["Sign in", "/login"]]],
     ["Help", [["Delivery", "/delivery-policy"], ["Refunds", "/refund-policy"], ["Privacy", "/privacy"], ["Terms", "/terms"]]],
     ["Authors", [["Publish with us", "/publish"], ["Workspace", "/author"]]],
@@ -22,6 +22,6 @@ export default function SiteFooter({ name, categories }: { name: string; categor
     </div>
     {categories.length > 0 && <div className="popular"><h2>Popular</h2><ul>{categories.slice(0, 16).map((c) =>
       <li key={c.slug}><Link className="chip" href={`/category/${c.slug}`}>{c.name}</Link></li>)}</ul></div>}
-    <p className="footer-legal"><span>© {new Date().getFullYear()} {name}</span><span>Digital editions only · Prices in INR</span></p>
+    <p className="footer-legal"><span>© {new Date().getFullYear()} {name}</span><span>Digital downloads only · Prices in INR</span></p>
   </div></footer>;
 }

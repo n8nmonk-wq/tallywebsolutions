@@ -27,7 +27,7 @@ import { TicketPercent } from "lucide-react";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const book = await getBook((await params).slug);
-  if (!book || !visibleBook(book)) return { title: "Book not found", robots: { index: false } };
+  if (!book || !visibleBook(book)) return { title: "Add-on not found", robots: { index: false } };
   return { title: book.title, description: book.description || undefined,
     alternates: { canonical: `${siteUrl()}/books/${encodeURIComponent(book.slug)}` },
     openGraph: { title: book.title, description: book.description || undefined, images: book.cover && !book.cover.startsWith("data:") ? [book.cover] : [] } };
@@ -55,10 +55,10 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
   const facts = Object.entries(book.facts || {}).filter(([k]) => !k.startsWith("_"));
   const paragraphs = (book.long_description || "").split(/\n\s*\n/).filter(Boolean);
   const tabs = [
-    (paragraphs.length || book.description) && { id: "about", label: "About the book", content: <div className="prose">{(paragraphs.length ? paragraphs : [book.description!]).map((p, i) => <p key={i}>{p}</p>)}</div> },
+    (paragraphs.length || book.description) && { id: "about", label: "About this add-on", content: <div className="prose">{(paragraphs.length ? paragraphs : [book.description!]).map((p, i) => <p key={i}>{p}</p>)}</div> },
     view.highlights.length && { id: "contents", label: "Contents", content: <ul className="contents-list">{view.highlights.map((h, i) => <li key={i}>{h}</li>)}</ul> },
     facts.length && { id: "details", label: "More details", content: <table className="catalogue"><tbody>{facts.map(([k, v]) => <tr key={k}><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table> },
-    author && { id: "author", label: "About the author", content: <div className="prose"><p><strong>{author.name}</strong></p>{author.bio && <p>{author.bio}</p>}<p><Link className="text-link" href={`/authors/${encodeURIComponent(author.id)}`}>All books by {author.name}</Link></p></div> },
+    author && { id: "author", label: "About the developer", content: <div className="prose"><p><strong>{author.name}</strong></p>{author.bio && <p>{author.bio}</p>}<p><Link className="text-link" href={`/authors/${encodeURIComponent(author.id)}`}>All add-ons by {author.name}</Link></p></div> },
   ].filter(Boolean) as { id: string; label: string; content: React.ReactNode }[];
   return <div className="product-page" data-book-page>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(bookJsonLd(book, url, view.saleable, now)) }} />
@@ -83,7 +83,7 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
             <div className="buy-row"><BuyNow slug={book.slug} title={book.title} enabled={enabled} saleable={view.saleable} />
               <AddToCart slug={book.slug} title={book.title} enabled={enabled} saleable={view.saleable} saveable={view.saveable} variant="page" /></div>
             {!enabled && <p className="notice">Ordering opens soon. Save it to your bag.</p>}
-            <ul className="ticks">{[[Download, "Instant download"], [Lock, "Secure payment"], [BadgeCheck, "Licensed to you"], [Lifetime, "Lifetime library"]].map(([Icon, label]) =>
+            <ul className="ticks">{[[Download, "Instant download"], [Lock, "Secure payment"], [BadgeCheck, "Licensed to you"], [Lifetime, "Lifetime validity"]].map(([Icon, label]) =>
               <li key={label as string}><Icon size={16} aria-hidden="true" /><span>{label as string}</span></li>)}</ul>
           </div>
           <dl className="detail-strip">{details.filter(([, , v]) => v).map(([Icon, label, value]) => <div key={label}><dt><Icon size={14} aria-hidden="true" />{label}</dt><dd>{value}</dd></div>)}</dl>
@@ -91,7 +91,7 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
       </article>
       <BookTabs tabs={tabs} />
       {byAuthor.length > 0 && <div className="section"><Carousel title={`More by ${book.authorship}`}>{byAuthor.map((b) => <BookCard key={b.slug} book={b} enabled={enabled} />)}</Carousel></div>}
-      {similar.length > 0 && <div className="section"><Carousel title="Similar books" href={category ? `/category/${category.slug}` : "/search"}>{similar.map((b) => <BookCard key={b.slug} book={b} enabled={enabled} />)}</Carousel></div>}
+      {similar.length > 0 && <div className="section"><Carousel title="Similar add-ons" href={category ? `/category/${category.slug}` : "/search"}>{similar.map((b) => <BookCard key={b.slug} book={b} enabled={enabled} />)}</Carousel></div>}
       <RecentlyViewed current={book.slug} />
     </div>
   </div>;

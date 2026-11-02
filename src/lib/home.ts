@@ -27,11 +27,11 @@ export function buildHome({ books, categories, modules, bestsellers, authors, no
   const rails: { key: RailKey; title: string; tagline: string; href: string; books: PublicBook[] }[] = [
     { key: "bestsellers" as const, title: "Bestsellers", tagline: "Most bought this season", href: "/search?sort=popular",
       books: bestsellers.flatMap((slug) => bySlug.get(slug) ?? []).slice(0, 12) },
-    { key: "new" as const, title: "New arrivals", tagline: "Fresh on the shelf", href: "/search?sort=new",
+    { key: "new" as const, title: "New arrivals", tagline: "Fresh additions", href: "/search?sort=new",
       books: [...released].sort((a, b) => String(b.release_date ?? "").localeCompare(String(a.release_date ?? "")) || (b.year ?? 0) - (a.year ?? 0)).slice(0, 12) },
     { key: "offers" as const, title: "On offer", tagline: "Lower prices, for a while", href: "/search?offer=1",
       books: books.filter((b) => b.onSale && b.saleable).sort((a, b) => b.saving - a.saving).slice(0, 12) },
-    { key: "soon" as const, title: "Coming soon", tagline: "Wishlist now, read first", href: "/search?sort=soon",
+    { key: "soon" as const, title: "Coming soon", tagline: "Wishlist now, get it first", href: "/search?sort=soon",
       books: books.filter((b) => b.comingSoon).sort((a, b) => String(a.release_date).localeCompare(String(b.release_date))).slice(0, 12) },
   ].filter((rail) => rail.books.length > 0);
   const inCategory = (slug: string) => books.filter((b) => b.category_slug === slug);

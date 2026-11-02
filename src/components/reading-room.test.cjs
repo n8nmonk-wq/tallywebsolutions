@@ -201,7 +201,7 @@ assert.match(render({ enabled: true, books: [{ ...book, saleable: false }] }), /
 cart = { ...cart, slugs: [] };
 assert.match(render({ enabled: true, initialSlug: book.slug }), /Checking prices/);
 assert.match(render({ enabled: true, initialSlug: "missing-title" }), /Payment unavailable/);
-assert.match(render({ enabled: true, initialSlug: book.slug, books: [pendingBook] }), /href="\/books\/real-book">View book details/);
+assert.match(render({ enabled: true, initialSlug: book.slug, books: [pendingBook] }), /href="\/books\/real-book">View add-on details/);
 
 let loginState = "sent";
 const Login = load("app/(store)/login/LoginForm.tsx", { react: { ...React, useState: () => [loginState, value => { loginState = value; }] } }).default;
@@ -338,7 +338,7 @@ async function checkCatalogue() {
   assert.match(isbn, /data-book="real-book"/);
   assert.doesNotMatch(isbn, /data-book="second-book"/);
   assert.match(await render({ format: "EPUB" }), /Remove filter EPUB/);
-  assert.match(await render({ q: record.isbn, format: "EPUB" }), /No books match these filters/);
+  assert.match(await render({ q: record.isbn, format: "EPUB" }), /No add-ons match these filters/);
 }
 
 async function checkHomepage() {
@@ -353,7 +353,7 @@ async function checkHomepage() {
   assert.equal(copyViolations(`<p>${"x".repeat(121)}</p>`).length, 1);
   const motionStub = { "motion/react": { ...require("motion/react"), useReducedMotion: () => true } };
   const Hero = load("components/home/HeroCampaign.tsx", motionStub);
-  assert.deepEqual(Hero.splitAccent("Books worth keeping, delivered instantly"), ["Books worth keeping, ", "delivered instantly"]);
+  assert.deepEqual(Hero.splitAccent("Tally add-ons, delivered instantly"), ["Tally add-ons, ", "delivered instantly"]);
   const heroCovers = [{ slug: "real-book", title: "Actual title", cover: "/assets/book1.png" }];
   const none = renderToStaticMarkup(React.createElement(Hero.default, { banners: [], covers: heroCovers }));
   assert.match(none, /delivered instantly/, "no banners shows the default slide");

@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 
 const data = demoCatalogue(new Date('2026-10-15T00:00:00Z'));
-assert.ok(data.categories.length >= 12);
+assert.ok(data.categories.length >= 7);
 assert.ok(data.books.length >= 60);
 assert.equal(new Set(data.books.map(b => b.slug)).size, data.books.length);
 for (const book of data.books) {
@@ -43,12 +43,12 @@ try {
     assert.equal(await store.demoCount(), data.books.length, 'loading twice adds nothing');
     assert.equal((await q(`select count(*)::int n from content_modules where id like 'demo-%'`))[0].n, 9);
     assert.equal((await q(`select count(*)::int n from orders`))[0].n, 0, 'no fake orders: admin revenue stays real');
-    assert.deepEqual((await q(`select distinct category_slug from books where slug like 'real-%'`)).map(r => r.category_slug), ['ayurveda']);
+    assert.deepEqual((await q(`select distinct category_slug from books where slug like 'real-%'`)).map(r => r.category_slug), ['vouchers-entry']);
     await store.removeDemo();
     assert.equal(await store.demoCount(), 0);
     assert.equal((await q(`select count(*)::int n from books`))[0].n, 2, 'real titles survive removal');
     assert.equal((await q(`select count(*)::int n from content_modules where id like 'demo-%'`))[0].n, 0);
-    assert.deepEqual((await q(`select slug from categories order by slug`)).map(r => r.slug), ['ayurveda', 'own-subject'], 'only empty demo subjects go');
+    assert.deepEqual((await q(`select slug from categories order by slug`)).map(r => r.slug), ['own-subject', 'vouchers-entry'], 'only empty demo subjects go');
   } finally { await db.close(); }
 }
 console.log('Demo catalogue checks passed: 60+ unique demo titles, offers, coming soon, languages, banners, real titles kept.');

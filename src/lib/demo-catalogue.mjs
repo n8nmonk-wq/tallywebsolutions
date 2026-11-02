@@ -3,28 +3,23 @@
 import crypto from 'node:crypto';
 
 const CATEGORIES = [
-  ['fiction', 'Fiction', '#F04E37'], ['mystery-thriller', 'Mystery and thriller', '#1F2937'],
-  ['romance', 'Romance', '#DB2777'], ['science', 'Science', '#2563EB'], ['health-wellness', 'Health and wellness', '#16A34A'],
-  ['ayurveda', 'Ayurveda', '#15803D'], ['business', 'Business', '#B45309'], ['self-help', 'Self-help', '#7C3AED'],
-  ['history', 'History', '#92400E'], ['children', 'Children', '#F59E0B'], ['biography', 'Biography', '#0F766E'],
-  ['technology', 'Technology', '#0EA5E9'],
+  ['gst-compliance', 'GST and compliance', '#2e2e7e'], ['payments-reminders', 'Payment reminders', '#1f1f5e'],
+  ['vouchers-entry', 'Vouchers and bulk entry', '#33337a'], ['banking', 'Banking', '#3a3a88'],
+  ['invoice-printing', 'Invoice and print', '#4a4aa0'], ['reports-dashboards', 'Reports and dashboards', '#299637'],
+  ['inventory-manufacturing', 'Inventory and manufacturing', '#1d6b33'],
 ];
+// Preview listings modelled on Tallywebsolutions' catalogue categories. Not real products.
 const TITLES = {
-  fiction: ['The Monsoon Ledger', 'A House on Juhu Lane', 'Paper Boats', 'The Ninth Platform', 'Salt and Saffron'],
-  'mystery-thriller': ['Midnight at Colaba', 'The Silent Courier', 'Cipher of the Ghats', 'Dead Reckoning', 'The Ledger Room'],
-  romance: ['Letters from Shimla', 'Second Monsoon', 'The Tea Garden', 'Under the Same Stars', 'A Winter in Mussoorie'],
-  science: ['The Restless Atom', 'Small Wonders', 'Maps of the Mind', 'The Carbon Story', 'Light Years Away'],
-  'health-wellness': ['Everyday Strength', 'The Sleep Reset', 'Mindful Kitchen', 'Breathe Better', 'Walk Your Way'],
-  ayurveda: ['Foundations of Rasayana', 'Seasons and the Body', 'Herbs of the Western Ghats', 'Dinacharya Daily', 'The Six Tastes'],
-  business: ['Built in Bengaluru', 'The Frugal Founder', 'Pricing with Purpose', 'Teams That Ship', 'The Long Game'],
-  'self-help': ['Small Steps', 'The Focus Habit', 'Quiet Confidence', 'Unhurried', 'Begin Again'],
-  history: ['Empires of the Deccan', 'The Silk Road Diaries', 'Ports of the Malabar', 'Letters from 1857', 'Stone and Script'],
-  children: ['Moti the Brave Elephant', 'The Kite That Flew Home', 'Counting Mangoes', 'Riya and the Rain', 'Stars Over Ladakh'],
-  biography: ['A Life in Ink', 'The Engineer of Dams', 'Notes of a Physician', 'Voices of the Valley', 'The Quiet Reformer'],
-  technology: ['Code for Everyone', 'Data, Plainly', 'The Secure Web', 'Machines That Learn', 'Designing for People'],
+  'gst-compliance': ['GSTR 2B Reconciliation Module', 'GST Return Checker', 'HSN-wise Sales Summary', 'GST Rate Mapping Helper', 'Input Tax Credit Tracker', 'E-Way Bill Register', 'GSTIN Check on Vouchers', 'Monthly GST Reminder Alerts', 'Reverse Charge Voucher Helper'],
+  'payments-reminders': ['Payment Outstanding Follow-ups', 'Payment Due Dashboard', 'Customer Ageing Analysis', 'Auto Reminder Messages', 'Payment Receipt Reminders', 'Overdue Invoice Alerts', 'Bill-wise Outstanding Report', 'Cheque Deposit Reminders', 'Credit Limit Alerts'],
+  'vouchers-entry': ['Advanced Bulk Voucher Entries', 'Random Bulk Voucher Generator', 'Quantity and Rate Entry Column', 'Auto Narration in Vouchers', 'Stop Cash Payment Above Limit', 'Salesman Commission Module', 'Voucher Details Without Opening', 'Daybook Voucher Quick View', 'Cash and Bank Receipt Auto Entry'],
+  banking: ['Bank Statement Import', 'Auto Suggest Ledger Names', 'Bank Reconciliation Helper', 'Bank Charges Auto Posting', 'Cheque Register Print', 'UPI Payment Entry Helper', 'Bank Balance Dashboard', 'Ledger Name Mapping Rules', 'Bank Transfer Voucher Shortcut'],
+  'invoice-printing': ['Advance Seal and Signature on Invoice', 'Attach Image in Invoice Print', 'UPI QR Code on Invoice', 'Dispatch Details on Sales Invoice', 'Total Quantity with Units on Invoice', 'Custom Invoice Header Layout', 'Delivery Challan Print Format', 'Narration Print on Ledger Statement', 'PDF Invoice Export Layout'],
+  'reports-dashboards': ['Stock Dashboard with Item Images', 'Item-wise Sales Register', 'Item-wise Purchase Register', 'Group Voucher Columnar Report', 'Company Summary Dashboard', 'Party-wise Profit Report', 'Daily Sales Snapshot', 'Ledger Statement with Balances', 'Multi-company MIS Report'],
+  'inventory-manufacturing': ['Barcode Scan Item Merge in POS', 'Godown Name in Stock Summary', 'Stock Group on Vouchers', 'Batch-wise Stock Report', 'Reorder Level Alerts', 'Manufacturing Journal Helper', 'Stock Valuation Snapshot', 'Physical Stock Count Sheet', 'Bill of Materials Lookup'],
 };
-const AUTHORS = ['Ananya Rao', 'Vikram Mehta', 'Meera Iyer', 'Arjun Kapoor', 'Kavya Nair', 'Rohan Desai', 'Ishita Sen', 'Farhan Qureshi', 'Leela Menon', 'Dev Malhotra'];
-const LANGUAGES = ['English', 'English', 'English', 'Hindi', 'Marathi', 'Tamil', 'Gujarati', 'Telugu'];
+const AUTHORS = ['Tallywebsolutions'];
+const LANGUAGES = ['English', 'English', 'Hindi', 'Gujarati', 'Marathi', 'English'];
 const slugify = value => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const escapeXml = value => value.replace(/[<>&'"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' })[c]);
 
@@ -54,7 +49,7 @@ export function demoCover(title, author, seed = 0) {
 export function demoCatalogue(now = new Date()) {
   const day = offset => new Date(now.getTime() + offset * 86400000).toISOString().slice(0, 10);
   const categories = CATEGORIES.map(([slug, name, colour], sort) => ({ slug, name, colour, sort }));
-  const authors = AUTHORS.map(name => ({ id: `demo-${slugify(name)}`, name, bio: `${name} writes for readers who like their ideas clear and their stories honest. (Demo author.)` }));
+  const authors = AUTHORS.map(name => ({ id: `demo-${slugify(name)}`, name, bio: 'Tally TDL add-ons, GST tools and reports for TallyPrime users. (Demo profile.)' }));
   const books = [];
   let n = 0;
   for (const [slug, , colour] of CATEGORIES) {
@@ -63,12 +58,12 @@ export function demoCatalogue(now = new Date()) {
       const price = [19900, 24900, 29900, 34900, 44900, 59900][n % 6];
       books.push({
         slug: `demo-${slugify(title)}`, title, category_slug: slug, authorship: author.name, author_slug: author.id,
-        description: `${title} is a demo listing used to preview the store at full scale. It is not a real book.`,
+        description: `${title} is a preview listing used to show the store at full scale. It is not a real add-on.`,
         cover: demoCover(title, author.name, n), price_inr: price,
         sale_price_inr: n % 3 === 0 ? Math.round(price * 0.8 / 100) * 100 : null,
         release_date: n % 11 === 0 ? day(10 + n) : day(-30 - n), language: LANGUAGES[n % LANGUAGES.length],
-        file_format: n % 4 === 0 ? 'EPUB' : 'PDF', pages: 120 + (n * 37) % 400, year: 2020 + (n % 6),
-        publisher: 'Demo Press', facts: { _demo: 'true' }, sort: 100 + n,
+        file_format: 'PDF', pages: null, year: 2020 + (n % 6),
+        publisher: 'Tallywebsolutions', facts: { _demo: 'true' }, sort: 100 + n,
       });
       n++;
     }
@@ -78,15 +73,15 @@ export function demoCatalogue(now = new Date()) {
     total: book.price_inr, count: 15 - i,
   }));
   const modules = [
-    { id: 'demo-announcement', type: 'announcement', title: 'Festive reads: up to 20% off selected titles', link_url: '/search?offer=1', sort: 0 },
-    { id: 'demo-banner-1', type: 'banner', title: 'Festive reading week', body: 'Up to 20% off across fiction, science and more', link_url: '/search?offer=1', link_label: 'Shop offers', payload: { subtitle: 'Limited time', theme: 'coral' }, sort: 1 },
-    { id: 'demo-banner-2', type: 'banner', title: 'New this month', body: 'Fresh titles from independent authors', link_url: '/search?sort=new', link_label: 'See new arrivals', payload: { subtitle: 'Just in', theme: 'sky' }, sort: 2 },
-    { id: 'demo-banner-3', type: 'banner', title: 'Publish with us', body: 'Reach readers across India in digital editions', link_url: '/publish', link_label: 'Start publishing', payload: { subtitle: 'For authors', theme: 'yellow' }, sort: 3 },
-    { id: 'demo-promo-1', type: 'promo', title: 'Ayurveda essentials', link_url: '/category/ayurveda', payload: { size: 'large', category_slug: 'ayurveda', theme: 'green' }, sort: 4 },
-    { id: 'demo-promo-2', type: 'promo', title: 'Thrillers to stay up for', link_url: '/category/mystery-thriller', payload: { size: 'small', theme: 'ink' }, sort: 5 },
-    { id: 'demo-promo-3', type: 'promo', title: 'Big ideas in science', link_url: '/category/science', payload: { size: 'small', theme: 'sky' }, sort: 6 },
-    { id: 'demo-promo-4', type: 'promo', title: 'Stories for little readers', link_url: '/category/children', payload: { size: 'small', theme: 'yellow' }, sort: 7 },
-    { id: 'demo-genres', type: 'genre-switcher', title: 'Find your genre', payload: { category_slugs: ['fiction', 'mystery-thriller', 'romance', 'science', 'business'] }, sort: 8 },
+    { id: 'demo-announcement', type: 'announcement', title: 'Lifetime validity and free updates on every TDL add-on', link_url: '/search', sort: 0 },
+    { id: 'demo-banner-1', type: 'banner', title: 'TallyPrime add-ons', body: 'GST, banking, invoicing and reports, ready to install', link_url: '/search', link_label: 'Shop add-ons', payload: { subtitle: 'Instant download', theme: 'sky' }, sort: 1 },
+    { id: 'demo-banner-2', type: 'banner', title: 'New add-ons', body: 'Fresh TDL source code added regularly', link_url: '/search?sort=new', link_label: 'See new add-ons', payload: { subtitle: 'Just in', theme: 'yellow' }, sort: 2 },
+    { id: 'demo-banner-3', type: 'banner', title: 'Tally GST reconciliation', body: 'Match GSTR 2B with your purchase register', link_url: '/category/gst-compliance', link_label: 'View GST add-ons', payload: { subtitle: 'Popular', theme: 'green' }, sort: 3 },
+    { id: 'demo-promo-1', type: 'promo', title: 'GST and compliance tools', link_url: '/category/gst-compliance', payload: { size: 'large', category_slug: 'gst-compliance', theme: 'green' }, sort: 4 },
+    { id: 'demo-promo-2', type: 'promo', title: 'Payment reminders', link_url: '/category/payments-reminders', payload: { size: 'small', theme: 'ink' }, sort: 5 },
+    { id: 'demo-promo-3', type: 'promo', title: 'Dashboards and reports', link_url: '/category/reports-dashboards', payload: { size: 'small', theme: 'sky' }, sort: 6 },
+    { id: 'demo-promo-4', type: 'promo', title: 'Invoice and print formats', link_url: '/category/invoice-printing', payload: { size: 'small', theme: 'yellow' }, sort: 7 },
+    { id: 'demo-genres', type: 'genre-switcher', title: 'Find your add-on', payload: { category_slugs: ['gst-compliance', 'payments-reminders', 'vouchers-entry', 'banking', 'invoice-printing'] }, sort: 8 },
   ];
   return { categories, authors, books, orders, modules };
 }

@@ -12,7 +12,7 @@ type Props = { params: Promise<{ slug: string }>; searchParams: Promise<Record<s
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const category = (await getCategories()).find((c) => c.slug === slug);
-  return category ? { title: `${category.name} books`, alternates: { canonical: `${siteUrl()}/category/${slug}` } } : { title: "Category not found", robots: { index: false } };
+  return category ? { title: `${category.name} add-ons`, alternates: { canonical: `${siteUrl()}/category/${slug}` } } : { title: "Category not found", robots: { index: false } };
 }
 
 export default async function CategoryPage({ params, searchParams }: Props) {
@@ -21,7 +21,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   if (!category) notFound();
   const children = categories.filter((c) => c.parent_slug === slug);
   const listing = { ...parseListing(query), category: "" };
-  return <Listing base={`/category/${slug}`} title={category.name} intro={`Digital editions in ${category.name.toLowerCase()}.`} books={books} params={listing}
+  return <Listing base={`/category/${slug}`} title={category.name} intro={`TallyPrime add-ons for ${category.name.toLowerCase()}.`} books={books} params={listing}
     banner={{ colour: category.colour, image: contentUrl(category.image_url) }} categories={categories} family={[slug, ...children.map((c) => c.slug)]}
     popularity={popularity} enabled={flag("COMMERCE_ENABLED")}>
     {children.length > 0 && <ul className="subcategory-chips">{children.map((c) => <li key={c.slug}><Link className="chip" href={`/category/${c.slug}`}>{c.name}</Link></li>)}</ul>}

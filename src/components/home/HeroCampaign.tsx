@@ -9,7 +9,7 @@ import Book3D from "../motion/Book3D";
 
 type HeroCover = { slug: string; title: string; cover: string | null };
 
-export const DEFAULT_SLIDE: Banner = { id: "default", title: "Books worth keeping, delivered instantly", subtitle: "Digital editions",
+export const DEFAULT_SLIDE: Banner = { id: "default", title: "Tally add-ons, delivered instantly", subtitle: "Digital downloads",
   body: "Independent authors and publishers. Pay once, read anywhere.", image: null, mobileImage: null, href: "/search", label: "Browse books", theme: "forest" };
 
 // The last two words of a headline carry the brand gradient, so admin banners get it without markup.

@@ -20,7 +20,7 @@ export default function BookCard({ book, enabled, morph = true }: { book: Public
       <QuickView book={book} enabled={enabled} />
     </div>
     <div className="card-body">
-      <p className="eyebrow card-meta">{[book.file_format, book.language].filter(Boolean).join(" · ") || "Digital edition"}</p>
+      <p className="eyebrow card-meta">{[book.file_format, book.language].filter(Boolean).join(" · ") || "Digital download"}</p>
       <h3 className="card-title"><Link href={href(book)}>{book.title}</Link></h3>
       {book.authorship && <p className="card-author">{book.authorship}</p>}
       <div className="card-foot"><Price book={book} /><AddToCart slug={book.slug} title={book.title} enabled={enabled} saleable={book.saleable} saveable={book.saveable} /></div>

@@ -18,7 +18,7 @@ export default function CatalogueEntry({ book, index, enabled, morph = true }: {
       <h3><Link href={href}>{book.title}</Link></h3>
       {book.authorship && <p className="card-author">{book.authorship}</p>}
       {chips.length > 0 && <ul className="entry-chips">{chips.map((c) => <li key={c} className="chip">{c}</li>)}</ul>}
-      <Link className="link-line" href={href}>Inside the book <span aria-hidden="true">→</span></Link>
+      <Link className="link-line" href={href}>View details <span aria-hidden="true">→</span></Link>
       <div className="entry-buy"><Price book={book} size="page" />
         <AddToCart slug={book.slug} title={book.title} enabled={enabled} saleable={book.saleable} saveable={book.saveable} variant="page" />
         <BuyNow slug={book.slug} title={book.title} enabled={enabled} saleable={book.saleable} /></div>

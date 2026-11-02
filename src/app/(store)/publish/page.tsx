@@ -7,8 +7,8 @@ export default async function PublishPage() {
   const reader = await getReader();
   const start = reader ? "/author" : "/login?next=/author";
   return <div className="wrap page-shell">
-    <section className="publish-band reveal"><div><p className="eyebrow">For authors</p><h1>Publish your digital edition</h1>
-      <p>Editorial review, fair terms, readers across India.</p>
+    <section className="publish-band reveal"><div><p className="eyebrow">For developers</p><h1>Submit your Tally add-on</h1>
+      <p>Review by our team, fair terms, Tally users across India.</p>
       <Link className="btn btn-light" href={start}>{reader ? "Open your workspace" : "Sign in to start"} <span aria-hidden="true">→</span></Link></div></section>
     <section className="section"><div className="section-head"><h2>How it works</h2></div>
       <ol className="steps">{["Create your profile", "Upload files", "Editorial and rights review", "Release and sell"].map((s) => <li key={s} className="surface reveal">{s}</li>)}</ol></section>

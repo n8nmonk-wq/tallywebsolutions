@@ -5,9 +5,9 @@ export const metadata = { title: "Terms of Use" };
 export default function Page() {
   return (
     <Legal title="Terms of Use">
-      <p>These terms govern the purchase of digital books through {STORE.name}.</p>
-      <p><strong>Your licence.</strong> Buying a book grants you a personal,
-      non-transferable licence to read it. You may keep copies for your own use.
+      <p>These terms govern the purchase of digital add-ons through {STORE.name}.</p>
+      <p><strong>Your licence.</strong> Buying an add-on grants you a personal,
+      non-transferable licence to use it in your own TallyPrime. You may keep copies for your own use.
       You may not redistribute, resell, upload or publish the file.</p>
       <p><strong>Your copy is identifiable.</strong> Each file is associated with
       the purchasing email address.</p>

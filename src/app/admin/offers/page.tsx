@@ -45,7 +45,7 @@ export default async function OffersPage({ searchParams }: { searchParams: Promi
     (async () => await sql`select slug, name from categories where status <> 'archived' order by sort, name` as { slug: string; name: string }[])(),
   ]);
   const titles = new Map([...books.map((b) => [b.slug, b.title] as const), ...collections.map((c) => [c.slug, c.name] as const), ...categories.map((c) => [c.slug, c.name] as const)]);
-  const target = (o: Offer) => o.scope === "all" ? "All books" : o.scope === "order" ? "Whole order"
+  const target = (o: Offer) => o.scope === "all" ? "All add-ons" : o.scope === "order" ? "Whole order"
     : `${o.scope === "books" ? "" : o.scope === "collection" ? "Collection: " : "Subject: "}${o.targets.slice(0, 3).map((t) => titles.get(t) ?? t).join(", ")}${o.targets.length > 3 ? ` +${o.targets.length - 3}` : ""}`;
   const action = (o: Offer, name: string, label: string, Icon: typeof Pause) => <form action="/api/admin/offers" method="post">
     <input type="hidden" name="action" value={name} /><input type="hidden" name="id" value={o.id} />

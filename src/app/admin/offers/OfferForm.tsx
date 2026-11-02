@@ -40,7 +40,7 @@ export default function OfferForm({ offer, books, collections, categories }: {
         <label className="text-sm">for ₹<input name="bundle_price" inputMode="decimal" required value={draft.price} onChange={set("price")} className={input} /></label></>}
     </div>
     <fieldset className="grid gap-3"><legend className="mb-1 text-sm font-medium">Applies to</legend>
-      <div className="flex flex-wrap gap-2">{([["all", "All books"], ["books", "Chosen books"], ["collection", "A collection"], ["category", "A subject"], ["order", "Whole order"]] as const).map(([v, label]) =>
+      <div className="flex flex-wrap gap-2">{([["all", "All add-ons"], ["books", "Chosen books"], ["collection", "A collection"], ["category", "A subject"], ["order", "Whole order"]] as const).map(([v, label]) =>
         <label key={v} className={`chip cursor-pointer ${scope === v ? "!bg-forest !text-cream" : ""}`}><input type="radio" name="scope" value={v} checked={scope === v} onChange={() => setScope(v)} className="sr-only" />{label}</label>)}</div>
       {scope === "books" && <BookPicker books={books} selected={offer?.scope === "books" ? offer.targets : []} />}
       {scope === "collection" && <select name="collection" required defaultValue={offer?.scope === "collection" ? offer.targets[0] : ""} className="field-input">

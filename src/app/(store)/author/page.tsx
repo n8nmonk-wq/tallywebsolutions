@@ -7,17 +7,17 @@ import ActionForm from "@/components/ActionForm";
 import UploadForm from "./UploadForm";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Author workspace", robots: { index: false, follow: false } };
+export const metadata = { title: "Developer workspace", robots: { index: false, follow: false } };
 export default async function AuthorPage() {
   const reader = await getReader();
-  if (!reader) return <section className="wrap py-12"><h1 className="text-3xl font-medium">Author workspace</h1><p className="my-5">Sign in with a verified email to register as an author.</p><Link className="btn btn-primary" href="/login?next=/author">Sign in</Link></section>;
+  if (!reader) return <section className="wrap py-12"><h1 className="text-3xl font-medium">Developer workspace</h1><p className="my-5">Sign in with a verified email to register as a developer.</p><Link className="btn btn-primary" href="/login?next=/author">Sign in</Link></section>;
   const profiles = await sql`select id,name,bio from author_profiles where reader_id=${reader.id}`;
   const profile = profiles[0];
   const submissions = await getAuthorSubmissions(reader.id);
   return <section className="wrap py-10">
-    <div className="mb-8 flex flex-wrap items-center justify-between gap-3"><h1 className="text-3xl font-medium">Author workspace</h1><Link href="/publish" className="text-sm underline">Publishing</Link></div>
+    <div className="mb-8 flex flex-wrap items-center justify-between gap-3"><h1 className="text-3xl font-medium">Developer workspace</h1><Link href="/publish" className="text-sm underline">Publishing</Link></div>
     <section className="mb-10 border-y border-line py-6">
-      <h2 className="mb-4 text-xl font-medium">{profile ? "Author profile" : "Register as an author"}</h2>
+      <h2 className="mb-4 text-xl font-medium">{profile ? "Developer profile" : "Register as a developer"}</h2>
       <ActionForm action="/api/submissions" className="max-w-2xl">
         <input type="hidden" name="action" value="profile" />
         <label>Name<input className="field-input mt-1" name="name" defaultValue={profile?.name ?? reader.name} required maxLength={200} /></label>

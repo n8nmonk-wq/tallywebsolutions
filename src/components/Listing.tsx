@@ -31,7 +31,7 @@ export default function Listing({ base, title, intro, banner, books, params, cat
           {(["category", "author", "language", "format", "price", "sort"] as const).filter((k) => params[k]).map((k) => <input key={k} type="hidden" name={k} value={params[k]} />)}
           {params.offer && <input type="hidden" name="offer" value="1" />}
           <label className="field-label" htmlFor="listing-q">Search within results</label>
-          <input id="listing-q" className="field-input" type="search" name="q" defaultValue={params.q} placeholder="Title, author or ISBN" />
+          <input id="listing-q" className="field-input" type="search" name="q" defaultValue={params.q} placeholder="Name or keyword" />
         </form>
         {groups.map((g) => <details key={g.key} open className="filter-group"><summary>{g.title}</summary><ul>{g.options.map((o) =>
           <li key={o.value}><Link href={listingHref(base, params, { [g.key]: o.active ? (g.key === "offer" ? false : "") : (g.key === "offer" ? true : o.value) } as Partial<ListingParams>)}
@@ -39,14 +39,14 @@ export default function Listing({ base, title, intro, banner, books, params, cat
         </div>
       </aside>
       <section className="results" aria-label="Results">
-        <div className="results-bar"><p role="status">{page.total} {page.total === 1 ? "book" : "books"}</p>
+        <div className="results-bar"><p role="status">{page.total} {page.total === 1 ? "add-on" : "add-ons"}</p>
           <nav aria-label="Sort" className="sort-row"><span className="eyebrow">Sort</span>{SORT_LABELS.map(([value, label]) =>
             <Link key={value || "relevance"} className="chip" aria-current={params.sort === value ? "true" : undefined} href={listingHref(base, params, { sort: value })}>{label}</Link>)}</nav></div>
         {chips.length > 0 && <ul className="active-chips" aria-label="Active filters">{chips.map((c) =>
           <li key={c.key}><Link className="chip" href={listingHref(base, params, { [c.key]: c.key === "offer" ? false : "" } as Partial<ListingParams>)} aria-label={`Remove filter ${c.label}`}>{c.label}<X size={14} aria-hidden="true" /></Link></li>)}
           <li><Link className="clear-link" href={base}>Clear all</Link></li></ul>}
         {page.items.length ? <div className="grid-books">{page.items.map((b) => <BookCard key={b.slug} book={b} enabled={enabled} />)}</div>
-          : <div className="empty-results"><h2>No books match these filters</h2><p>Try fewer filters or a different search.</p><Link className="btn btn-dark" href={base}>Clear filters</Link></div>}
+          : <div className="empty-results"><h2>No add-ons match these filters</h2><p>Try fewer filters or a different search.</p><Link className="btn btn-dark" href={base}>Clear filters</Link></div>}
         {page.pages > 1 && <nav className="pager" aria-label="Pages">
           {page.page > 1 && <Link className="btn btn-outline" href={listingHref(base, params, { page: page.page - 1 })}>Previous</Link>}
           <span>Page {page.page} of {page.pages}</span>
