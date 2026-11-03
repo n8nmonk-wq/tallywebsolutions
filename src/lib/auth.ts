@@ -1,5 +1,4 @@
 import { betterAuth } from 'better-auth';
-import { magicLink } from 'better-auth/plugins';
 import { nextCookies } from 'better-auth/next-js';
 import { PostgresDialect, type PostgresPool } from 'kysely';
 import { Pool } from 'pg';
@@ -34,32 +33,44 @@ function createAuthentication() {
     socialProviders: google ? { google } : undefined,
     session: { expiresIn: 60 * 60 * 24 * 7 },
     rateLimit: { enabled: true, storage: 'database', window: 60, max: 10 },
-    plugins: [magicLink({
-      expiresIn: 15 * 60,
-      storeToken: 'hashed',
-      sendMagicLink: ({ email, url }) => deliverMagicLink(email, url),
-    }), nextCookies()],
+    // Sign-in is email and password. The one email we send is the verification link at sign-up,
+    // so an account cannot claim purchases made with an address its owner never confirmed.
+    emailAndPassword: { enabled: true, requireEmailVerification: true, minPasswordLength: 8, maxPasswordLength: 128 },
+    emailVerification: {
+      sendOnSignUp: true,
+      autoSignInAfterVerification: true,
+      sendVerificationEmail: ({ user, url }) => deliverAccountEmail(user.email,
+        `Verify your ${STORE.name} account`,
+        `Confirm your email to finish creating your account: ${url}\nThis link expires in one hour. Ignore this email if you did not sign up.`),
+    },
+    user: {
+      additionalFields: {
+        firstName: { type: 'string', required: false },
+        lastName: { type: 'string', required: false },
+        country: { type: 'string', required: false },
+        phone: { type: 'string', required: false },
+      },
+    },
+    plugins: [nextCookies()],
   });
 }
 
-// Outside production the link is also printed to the server log, so local sign-in
-// works before the sending domain is verified. Production still requires delivery.
-export async function deliverMagicLink(email: string, url: string) {
+// Outside production the email text is also printed to the server log, so sign-up works before
+// the sending domain is verified. Production requires delivery.
+export async function deliverAccountEmail(email: string, subject: string, text: string) {
   const local = process.env.NODE_ENV !== 'production';
-  if (local) console.info(`[auth] Development sign-in link for ${email}: ${url}`);
+  if (local) console.info(`[auth] Development email to ${email}: ${subject}\n${text}`);
   try {
     const key = requireEnv('RESEND_API_KEY', 'Transactional email must be configured.');
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST', headers: { authorization: `Bearer ${key}`, 'content-type': 'application/json' },
-      body: JSON.stringify({ from: requireEnv('MAIL_FROM', 'Configure a verified sender.'), to: email,
-        subject: `Your ${STORE.name} sign-in link`,
-        text: `Sign in to your library and publishing workspace: ${url}\nThis link expires in 15 minutes. Ignore this email if you did not request it.` }),
+      body: JSON.stringify({ from: requireEnv('MAIL_FROM', 'Configure a verified sender.'), to: email, subject, text }),
       signal: AbortSignal.timeout(15000),
     });
-    if (!response.ok) throw new Error('Sign-in email could not be delivered.');
+    if (!response.ok) throw new Error('Account email could not be delivered.');
   } catch (error) {
     if (!local) throw error;
-    console.warn('[auth] Sign-in email was not delivered; use the development link above.');
+    console.warn('[auth] Account email was not delivered; use the development text above.');
   }
 }
 
