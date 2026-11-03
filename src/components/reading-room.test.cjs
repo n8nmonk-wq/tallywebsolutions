@@ -205,10 +205,10 @@ assert.match(render({ enabled: true, initialSlug: book.slug, books: [pendingBook
 
 let loginState = "sent";
 const Login = load("app/(store)/login/LoginForm.tsx", { react: { ...React, useState: () => [loginState, value => { loginState = value; }] } }).default;
-const login = Login({ next: "/library" });
-assert.equal(login.props.children[1].props.disabled, true);
-login.props.children[0].props.children[1].props.onChange();
-assert.equal(Login({ next: "/library" }).props.children[1].props.disabled, false);
+const login = Login({ next: "/library", googleEnabled: false });
+assert.equal(login.props.children[1].props.children[1].props.disabled, true);
+login.props.children[1].props.children[0].props.children[1].props.onChange();
+assert.equal(Login({ next: "/library", googleEnabled: false }).props.children[1].props.children[1].props.disabled, false);
 
 async function checkPausedSelection() {
   const AddToCart = load("components/AddToCart.tsx", {

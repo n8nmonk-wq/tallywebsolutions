@@ -3,7 +3,7 @@ import { magicLink } from 'better-auth/plugins';
 import { nextCookies } from 'better-auth/next-js';
 import { PostgresDialect, type PostgresPool } from 'kysely';
 import { Pool } from 'pg';
-import { requireEnv } from './env';
+import { env, requireEnv } from './env';
 import { localDatabase } from './local-db';
 import { STORE, siteUrl } from './store';
 
@@ -21,6 +21,9 @@ function createAuthentication() {
     },
     async end() {},
   } : new Pool({ connectionString: requireEnv('DATABASE_URL', 'Configure the bookstore database.'), max: 5 });
+  // Google sign-in is switched on only when both credentials are set.
+  const google = env('GOOGLE_CLIENT_ID') && env('GOOGLE_CLIENT_SECRET')
+    ? { clientId: env('GOOGLE_CLIENT_ID')!, clientSecret: env('GOOGLE_CLIENT_SECRET')! } : null;
   return betterAuth({
     appName: STORE.name,
     baseURL: siteUrl(),
@@ -28,6 +31,7 @@ function createAuthentication() {
     // The isolated test pool supports queries only; auth does not use cursors.
     database: { dialect: new PostgresDialect({ pool: pool as PostgresPool }), type: 'postgres' },
     trustedOrigins: [siteUrl()],
+    socialProviders: google ? { google } : undefined,
     session: { expiresIn: 60 * 60 * 24 * 7 },
     rateLimit: { enabled: true, storage: 'database', window: 60, max: 10 },
     plugins: [magicLink({
