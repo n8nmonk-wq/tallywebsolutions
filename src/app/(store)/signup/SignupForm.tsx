@@ -1,15 +1,13 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import PhoneInput, { type PhoneCountry } from '@/components/PhoneInput';
 
-type Country = { code: string; name: string; dial: string };
-
-export default function SignupForm({ next, countries, googleEnabled }: { next: string; countries: Country[]; googleEnabled: boolean }) {
+export default function SignupForm({ next, countries, googleEnabled }: { next: string; countries: PhoneCountry[]; googleEnabled: boolean }) {
   const [country, setCountry] = useState('IN');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [sentTo, setSentTo] = useState('');
-  const dial = countries.find((c) => c.code === country)?.dial ?? '';
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -69,13 +67,10 @@ export default function SignupForm({ next, countries, googleEnabled }: { next: s
         <input className="field-input" id="firstName" name="firstName" required maxLength={60} autoComplete="given-name" disabled={busy} /></div>
       <div><label className="field-label" htmlFor="lastName">Last name</label>
         <input className="field-input" id="lastName" name="lastName" required maxLength={60} autoComplete="family-name" disabled={busy} /></div>
-      <div className="sm:col-span-2"><label className="field-label" htmlFor="country">Country</label>
-        <select className="field-input" id="country" name="country" value={country} onChange={(e) => setCountry(e.target.value)} disabled={busy}>
-          {countries.map((c) => <option key={c.code} value={c.code}>{c.name} ({c.dial})</option>)}
-        </select></div>
-      <div className="sm:col-span-2"><label className="field-label" htmlFor="phone">Mobile number</label>
-        <div className="flex gap-2"><span className="field-input w-auto shrink-0 text-ink-soft">{dial}</span>
-          <input className="field-input" id="phone" name="phone" type="tel" inputMode="tel" required maxLength={20} autoComplete="tel-national" placeholder="Without country code" disabled={busy} /></div></div>
+      <div className="sm:col-span-2"><span className="field-label" id="phone-label">Mobile number and country</span>
+        <div aria-labelledby="phone-label">
+          <PhoneInput countries={countries} country={country} onCountry={setCountry} disabled={busy} />
+        </div></div>
       <div className="sm:col-span-2"><label className="field-label" htmlFor="email">Email address</label>
         <input className="field-input" id="email" name="email" type="email" required maxLength={254} autoComplete="email" disabled={busy} /></div>
       <div><label className="field-label" htmlFor="password">Password</label>
