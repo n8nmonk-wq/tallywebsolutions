@@ -39,7 +39,7 @@ export default function StoreHeader({ name, nav, announcement, previews = {} }: 
       <nav className="utility-links" aria-label="Help"><Link href="/library">Track order</Link><Link href="/delivery-policy">Help</Link><Link href="/publish">Sell with us</Link></nav>
     </div></div>
     <div className="wrap header-row">
-      <Link href="/" className="logo" aria-label={`${name}, home`}><span className="logo-word">{brand}</span>{by && <span className="eyebrow">By {by}</span>}</Link>
+      <Link href="/" className="logo" aria-label={`${name}, home`}><span className="logo-word"><img src="/assets/tally-logo.webp" alt={brand} style={{ height: 40, width: "auto" }} /></span>{by && <span className="eyebrow">By {by}</span>}</Link>
       <SearchBox />
       <nav className="header-icons" aria-label="Your account">
         <Link href="/library" aria-label="Your account and library"><UserRound size={21} strokeWidth={1.8} aria-hidden="true" /><span className="icon-label">Account</span></Link>

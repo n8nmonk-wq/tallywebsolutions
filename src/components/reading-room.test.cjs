@@ -111,7 +111,7 @@ const priceHtml = renderToStaticMarkup(React.createElement(PriceView, { book: sa
 assert.match(priceHtml, /<s[^>]*>₹299<\/s>/);
 assert.match(priceHtml, /₹252/);
 assert.match(priceHtml, /₹47 off/);
-assert.equal(renderToStaticMarkup(React.createElement(PriceView, { book: { ...saleBook, saleable: false, comingSoon: false } })), "");
+assert.match(renderToStaticMarkup(React.createElement(PriceView, { book: { ...saleBook, saleable: false, comingSoon: false } })), /Not yet on sale/);
 assert.match(renderToStaticMarkup(React.createElement(PriceView, { book: { ...saleBook, saleable: false, comingSoon: true } })), /Coming soon/);
 {
   const Failed = load("app/(store)/checkout/CheckoutForm.tsx", { "@/components/usePricing": { useCoupon: () => ["", () => {}], usePricing: () => ({ pricing: null, loading: false, failed: true, setPricing() {} }) } }).default;

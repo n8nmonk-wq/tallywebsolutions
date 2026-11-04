@@ -15,7 +15,7 @@ export default function SiteFooter({ name, categories }: { name: string; categor
   return <footer className="site-footer"><div className="wrap">
     <ul className="trust-row">{TRUST.map(([Icon, title, note]) => <li key={title}><Icon size={26} strokeWidth={1.6} aria-hidden="true" /><p><strong>{title}</strong><span>{note}</span></p></li>)}</ul>
     <div className="footer-top">
-      <div><Link href="/" className="logo"><span className="logo-word">{brand}</span>{by && <span className="eyebrow">By {by}</span>}</Link>
+      <div><Link href="/" className="logo"><span className="logo-word"><img src="/assets/tally-logo.webp" alt={brand} style={{ height: 36, width: "auto" }} /></span>{by && <span className="eyebrow">By {by}</span>}</Link>
         <p className="footer-about">Digital books. Instant download. Yours to keep.</p>
         <ul className="pay-row" aria-label="Payment methods">{PAY.map((p) => <li key={p}>{p}</li>)}</ul></div>
       {cols.map(([title, links]) => <div key={title}><h2>{title}</h2><ul>{links.map(([label, href]) => <li key={href}><Link href={href}>{label}</Link></li>)}</ul></div>)}
