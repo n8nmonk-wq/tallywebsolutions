@@ -6,7 +6,7 @@ import { useState, type CSSProperties, type KeyboardEvent } from "react";
 import Cover from "../Cover";
 import { rupees } from "@/lib/money";
 
-export type ShelfItem = { slug: string; title: string; cover: string | null; price: number; regular: number; onSale: boolean };
+export type ShelfItem = { slug: string; title: string; cover: string | null; price: number; regular: number; onSale: boolean; saleable: boolean };
 
 // A shelf of add-on spines. The chosen add-on turns out from its spine into its cover, the way a
 // box is pulled from a shelf, and its name and price roll up in the caption below.
@@ -31,7 +31,8 @@ export default function AddOnShelf({ items }: { items: ShelfItem[] }) {
     </div>
     <div className="shelf-caption" aria-live="polite">
       <p className="shelf-title">{current.title}</p>
-      <p className="shelf-price">{current.onSale ? <><s>{rupees(current.regular)}</s> {rupees(current.price)}</> : rupees(current.price)}</p>
+      <p className="shelf-price">{current.onSale ? <><s>{rupees(current.regular)}</s> {rupees(current.price)}</> : rupees(current.price)}
+        {!current.saleable && <span className="shelf-soon"> · Not yet on sale</span>}</p>
       <Link className="btn btn-primary" href={`/books/${encodeURIComponent(current.slug)}`}>View add-on <span aria-hidden="true">→</span></Link>
     </div>
     <div className="shelf-controls">

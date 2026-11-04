@@ -30,3 +30,5 @@
 @media (prefers-reduced-motion: reduce) {
   .shelf-item, .shelf-spine, .shelf-cover { transition: none; }
 }
+
+.shelf-soon { color: var(--ink-mute); }
