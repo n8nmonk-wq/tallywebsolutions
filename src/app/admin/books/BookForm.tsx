@@ -1,6 +1,7 @@
 import type { Book } from "@/lib/db";
 import { currentPrice } from "@/lib/money";
 import { releaseChecklist } from "@/lib/admin-catalogue";
+import { FILE_TYPE_KEYS, FILE_TYPES } from "@/lib/file-types";
 
 const input = "field-input mt-1";
 const toLocal = (value: string | null | undefined) => {
@@ -38,7 +39,7 @@ export default function BookForm({ book, categories, authors }: { book: Book; ca
       <label className="text-sm">Author profile<select name="author_slug" className={input} defaultValue={book.author_slug ?? ""}><option value="">None</option>{authors.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}</select></label>
       <label className="text-sm">Category<select name="category_slug" className={input} defaultValue={book.category_slug ?? ""}><option value="">None</option>{categories.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}</select></label>
       {field("language", "Language", { maxLength: 60 })}
-      <label className="text-sm">Format<select name="file_format" className={input} defaultValue={book.file_format ?? "PDF"}><option>PDF</option><option>EPUB</option></select></label>
+      <label className="text-sm">Format<select name="file_format" className={input} defaultValue={book.file_format ?? "PDF"}>{FILE_TYPE_KEYS.map((key) => <option key={key} value={key.toUpperCase()}>{FILE_TYPES[key].label}</option>)}</select></label>
       {field("edition", "Edition", { maxLength: 120 })}
       {field("price_inr", "Regular price (₹)", { required: true, inputMode: "decimal", defaultValue: (book.price_inr / 100).toFixed(2) })}
       <label className="text-sm">Release date<input name="release_date" type="date" className={input} defaultValue={book.release_date ? new Date(book.release_date).toISOString().slice(0, 10) : ""} /></label>

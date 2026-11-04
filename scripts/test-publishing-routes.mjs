@@ -54,6 +54,7 @@ try {
   dependencies['@/lib/submissions'] = await load('../src/lib/submissions.ts');
   dependencies['@/lib/content'] = await load('../src/lib/content.ts');
   dependencies['@/lib/admin-catalogue'] = await load('../src/lib/admin-catalogue.ts');
+  dependencies['@/lib/file-types'] = await load('../src/lib/file-types.ts');
   dependencies['@/lib/admin-sale'] = await load('../src/lib/admin-sale.ts');
   dependencies['@/lib/money'] = await load('../src/lib/money.ts');
   dependencies['./BookForm'] = await load('../src/app/admin/books/BookForm.tsx');

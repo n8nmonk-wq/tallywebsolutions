@@ -1,3 +1,4 @@
+import { FILE_TYPE_LIST, PRODUCT_FILE_CONTENT_TYPES, normaliseFileType } from "@/lib/file-types";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { generateClientTokenFromReadWriteToken } from "@vercel/blob/client";
@@ -33,13 +34,15 @@ export async function POST(req: Request) {
       if (book[0].third_party) return reply("Author books change files through their author submission.", 409);
       const pathname = `admin/books/${slug}/${randomUUID()}-${kind}`;
       const clientToken = await generateClientTokenFromReadWriteToken({ token, pathname,
-        allowedContentTypes: kind === "cover" ? ["image/jpeg", "image/png", "image/webp"] : ["application/pdf"],
+        allowedContentTypes: kind === "cover" ? ["image/jpeg", "image/png", "image/webp"] : PRODUCT_FILE_CONTENT_TYPES,
         maximumSizeInBytes: MAX_UPLOAD_BYTES, validUntil: Date.now() + 10 * 60 * 1000, addRandomSuffix: false, allowOverwrite: false });
       return NextResponse.json({ pathname, token: clientToken }, { headers: { "Cache-Control": "no-store" } });
     }
     if (input.action !== "finalize") return reply("Invalid upload action.", 400);
     const pathname = String(input.pathname ?? "");
     if (!new RegExp(`^admin/books/${slug}/[0-9a-f-]{36}-${kind}$`).test(pathname)) return reply("Invalid upload path.", 400);
+    const fileType = kind === "pdf" ? normaliseFileType(input.fileType) : null;
+    if (kind === "pdf" && !fileType) return reply(`Choose a file type: ${FILE_TYPE_LIST}.`, 400);
     const metadata = await head(pathname);
     if (metadata.size <= 0 || metadata.size > MAX_UPLOAD_BYTES) return reply("Files can be at most 5 MB.", 413);
     const result = await get(pathname, { access: "private", useCache: false });
@@ -57,7 +60,7 @@ export async function POST(req: Request) {
       }
     } finally { stream.releaseLock(); }
     const bytes = Buffer.concat(chunks);
-    if (kind === "pdf") await recordBookFile(sql, { slug, url: metadata.url, bytes, pathname });
+    if (kind === "pdf") await recordBookFile(sql, { slug, url: metadata.url, bytes, pathname, fileType });
     else {
       try {
         const image = await sharp(bytes, { limitInputPixels: 40000000, animated: false }).metadata();

@@ -8,6 +8,7 @@ import { verifyDownloadToken, licenceId } from "@/lib/token";
 import { canAccessOrder } from "@/lib/reader-auth";
 import { stampPdf } from "@/lib/pdf";
 import { env } from "@/lib/env";
+import { FILE_TYPES, normaliseFileType } from "@/lib/file-types";
 
 export const runtime = "nodejs";
 const MAX_DOWNLOADS = 10;
@@ -30,8 +31,8 @@ export async function GET(req: Request) {
     if (!item.file_url) return reply("Purchased file snapshot is unavailable. Please contact support.", 503);
     if (typeof item.file_sha256 !== "string" || item.file_sha256.length !== 64 || !/^[a-f0-9]{64}$/i.test(item.file_sha256))
       return reply("Purchased file integrity snapshot is unavailable. Please contact support.", 503);
-    const format = (item.file_format || "").toLowerCase();
-    if (format !== "pdf" && format !== "epub") return reply("Unsupported purchased file format.", 503);
+    const format = normaliseFileType(item.file_format);
+    if (!format) return reply("Unsupported purchased file format.", 503);
     let bytes: Uint8Array;
     if (item.file_url.startsWith("private:")) {
       const name = item.file_url.slice(8);
@@ -77,7 +78,7 @@ export async function GET(req: Request) {
     if (!bytes.length) return reply("Purchased file is empty.", 503);
     if (crypto.createHash("sha256").update(bytes).digest("hex") !== item.file_sha256.toLowerCase())
       return reply("Purchased file integrity verification failed. Please contact support.", 503);
-    if (format === "pdf") bytes = await stampPdf(bytes, `Personal licence ${licenceId(order.id, claim.slug)}`);
+    if (FILE_TYPES[format].watermark) bytes = await stampPdf(bytes, `Personal licence ${licenceId(order.id, claim.slug)}`);
     // Serialize against refunds on the order row and consume only an existing, active entitlement.
     const reserved = await sql`
       with eligible as (
@@ -91,7 +92,7 @@ export async function GET(req: Request) {
     if (!reserved.length) return reply("Download entitlement is unavailable or its limit was reached.", 429);
     return new NextResponse(Buffer.from(bytes), {
       headers: {
-        "content-type": format === "epub" ? "application/epub+zip" : "application/pdf",
+        "content-type": FILE_TYPES[format].contentType,
         "content-disposition": `attachment; filename="${claim.slug}.${format}"`,
         "cache-control": "private, no-store", "x-content-type-options": "nosniff",
       },

@@ -1,3 +1,4 @@
+import { FILE_TYPE_LIST, FILE_TYPES, normaliseFileType } from "@/lib/file-types";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { sql } from "@/lib/db";
@@ -94,8 +95,9 @@ export async function POST(req: Request) {
       if (releaseDate && !/^\d{4}-\d{2}-\d{2}$/.test(releaseDate)) throw new PublishingError('Invalid release date.');
       const language = textField(form.get('language'), 60) || null;
       const edition = textField(form.get('edition'), 120) || null;
-      const fileFormat = textField(form.get('file_format'), 10) || 'PDF';
-      if (!['PDF', 'EPUB'].includes(fileFormat)) throw new PublishingError('Choose PDF or EPUB.');
+      const fileType = normaliseFileType(textField(form.get('file_format'), 10) || 'pdf');
+      if (!fileType) throw new PublishingError(`Choose a file type: ${FILE_TYPE_LIST}.`);
+      const fileFormat = fileType.toUpperCase();
       const authorSlug = textField(form.get('author_slug'), 120) || null;
       if (authorSlug && !(await sql`select 1 from author_profiles where id=${authorSlug}`).length) throw new PublishingError('Choose an existing author profile.');
       const pages = integer('pages', 100000);

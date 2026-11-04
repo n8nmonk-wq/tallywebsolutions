@@ -1,3 +1,4 @@
+import { normaliseFileType } from "@/lib/file-types";
 import { NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { sql, getBook, type Book, type Order } from "@/lib/db";
@@ -111,7 +112,7 @@ export async function POST(req: Request) {
     // Demo preview titles show prices but can never be bought.
     if (books.some(book => !book || !isSaleable(book) || book.facts?._demo === "true")) return reply("A selected book is not available for sale.", 409);
     for (const book of books) {
-      if (!book?.file_url || !/^(pdf|epub)$/i.test(book.file_format || "")) return reply("Purchased file is not configured for delivery.", 503);
+      if (!book?.file_url || !normaliseFileType(book.file_format)) return reply("Purchased file is not configured for delivery.", 503);
       if (typeof book.file_sha256 !== "string" || book.file_sha256.length !== 64 || !/^[a-f0-9]{64}$/i.test(book.file_sha256))
         return reply("Purchased file integrity is not configured for delivery.", 503);
       if (book.file_url.startsWith("private:")) {

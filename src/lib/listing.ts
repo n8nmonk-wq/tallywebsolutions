@@ -1,3 +1,4 @@
+import { normaliseFileType } from "@/lib/file-types";
 import type { PublicBook } from "@/components/book-data";
 
 export type ListingParams = { q: string; category: string; author: string; language: string; format: string;
@@ -14,7 +15,7 @@ export function parseListing(query: Query): ListingParams {
   const text = (v: string, max = 80) => v.trim().slice(0, max);
   const page = Number(one(query.page));
   return { q: text(one(query.q), 120).toLowerCase(), category: SLUG.test(one(query.category)) ? one(query.category) : "",
-    author: text(one(query.author), 120), language: text(one(query.language), 60), format: ["PDF", "EPUB"].includes(one(query.format)) ? one(query.format) : "",
+    author: text(one(query.author), 120), language: text(one(query.language), 60), format: normaliseFileType(one(query.format)) ? one(query.format).toUpperCase() : "",
     price: one(query.price) in BANDS ? one(query.price) as ListingParams["price"] : "", offer: one(query.offer) === "1",
     sort: (SORTS as readonly string[]).includes(one(query.sort)) ? one(query.sort) as ListingParams["sort"] : "",
     page: Number.isSafeInteger(page) && page > 0 ? page : 1 };

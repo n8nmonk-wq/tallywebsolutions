@@ -1,3 +1,4 @@
+import { FILE_TYPES, type FileType } from "@/lib/file-types";
 import { createHash } from "node:crypto";
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
@@ -78,13 +79,20 @@ export async function setRegularPrice(sql: Sql, { slug, rupees }: { slug: string
     select slug from changed`;
 }
 
+// Product files are checked by their bytes: PDFs by header, EPUB and ZIP by the zip header, text types must be plain text.
+function checkProductFile(bytes: Buffer, type: FileType) {
+  if (type === "pdf" && bytes.subarray(0, 5).toString("ascii") !== "%PDF-") throw new SaleError("That file is not a PDF.");
+  if ((type === "epub" || type === "zip") && bytes.subarray(0, 4).toString("hex") !== "504b0304") throw new SaleError(`That file is not a ${FILE_TYPES[type].label}.`);
+  if ((type === "tdl" || type === "tcp" || type === "txt") && bytes.includes(0)) throw new SaleError(`That file is not a plain-text ${FILE_TYPES[type].label}.`);
+}
+
 // Checks the uploaded bytes themselves, not the browser's claimed type.
-export function validateAdminUpload(bytes: Buffer, kind: "pdf" | "cover") {
+export function validateAdminUpload(bytes: Buffer, kind: "pdf" | "cover", fileType: FileType | null = null) {
   if (!bytes.length) throw new SaleError("The upload was empty.");
   if (bytes.length > MAX_UPLOAD_BYTES) throw new SaleError("Files can be at most 5 MB.", 413);
   if (kind === "pdf") {
-    if (bytes.subarray(0, 5).toString("ascii") !== "%PDF-") throw new SaleError("That file is not a PDF.");
-    return "application/pdf";
+    checkProductFile(bytes, fileType ?? "pdf");
+    return FILE_TYPES[fileType ?? "pdf"].contentType;
   }
   if (bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) return "image/png";
   if (bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255) return "image/jpeg";
@@ -99,13 +107,13 @@ const firstParty = async (sql: Sql, slug: string) => {
 };
 
 // A new book file replaces the old one and takes the book off sale until someone puts it on sale again.
-export async function recordBookFile(sql: Sql, { slug, url, bytes, pathname }: { slug: string; url: string; bytes: Buffer; pathname: string }) {
+export async function recordBookFile(sql: Sql, { slug, url, bytes, pathname, fileType }: { slug: string; url: string; bytes: Buffer; pathname: string; fileType: FileType | null }) {
   await firstParty(sql, slug);
-  validateAdminUpload(bytes, "pdf");
+  validateAdminUpload(bytes, "pdf", fileType);
   if (!isPrivateBlobUrl(url)) throw new SaleError("The upload is not in private storage.", 409);
   const sha = sha256(bytes);
   await sql`with changed as (
-    update books set file_url=${url}, file_sha256=${sha}, file_format='PDF', file_size=${`${(bytes.length / 1048576).toFixed(1)} MB`},
+    update books set file_url=${url}, file_sha256=${sha}, file_format=${(fileType ?? "pdf").toUpperCase()}, file_size=${`${(bytes.length / 1048576).toFixed(1)} MB`},
       scan_status='pending', release_approved=false where slug=${slug} and not coalesce(third_party, false) returning slug
   ), audit as (insert into events(order_id,type,payload)
     select null,'admin.book.file_uploaded',jsonb_build_object('slug',slug,'pathname',${pathname}::text,'file_sha256',${sha}::text,'bytes',${bytes.length}::int) from changed)
