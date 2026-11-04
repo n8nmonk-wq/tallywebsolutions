@@ -90,3 +90,9 @@
     .qv-cover { border-radius: 22px 22px 0 0; }
   }
 }
+
+/* Product covers with no uploaded image: a navy tile with the add-on icon centred on it. */
+.cover-product { display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 2 / 3; height: auto; box-sizing: border-box; padding: 12%; border-radius: 4px; background: linear-gradient(160deg, #2e2e7e, #1f1f5e); color: #fff; }
+.cover-product-icon { width: 42%; height: auto; aspect-ratio: 1; color: #fff; }
+.card-cover .cover-product { width: 150px; height: 196px; aspect-ratio: auto; }
+@media (max-width: 720px) { .card-cover .cover-product { width: 112px; height: 156px; } }

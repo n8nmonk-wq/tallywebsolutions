@@ -37,8 +37,7 @@ const ICONS: Record<string, LucideIcon> = {
 // Covers with no uploaded image: a navy tile with the add-on's icon and the Tally logo.
 export default function ProductCover({ title, className }: { title: string; className?: string }) {
   const Icon = ICONS[title] ?? Tag;
-  return <span className={`cover-fallback ${className ?? ""}`} role="img" aria-label={`Cover of ${title}`}
-    style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", boxSizing: "border-box", padding: "10%", background: "linear-gradient(160deg, #2e2e7e, #1f1f5e)", color: "#fff" }}>
-    <Icon aria-hidden="true" style={{ width: "42%", height: "auto", aspectRatio: "1", color: "#fff" }} />
+  return <span className={`cover-fallback cover-product ${className ?? ""}`} role="img" aria-label={`Cover of ${title}`}>
+    <Icon aria-hidden="true" className="cover-product-icon" />
   </span>;
 }
