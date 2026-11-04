@@ -38,8 +38,7 @@ const ICONS: Record<string, LucideIcon> = {
 export default function ProductCover({ title, className }: { title: string; className?: string }) {
   const Icon = ICONS[title] ?? Tag;
   return <span className={`cover-fallback ${className ?? ""}`} role="img" aria-label={`Cover of ${title}`}
-    style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", width: "100%", height: "100%", boxSizing: "border-box", padding: "14% 10% 10%", background: "linear-gradient(160deg, #2e2e7e, #1f1f5e)", color: "#fff" }}>
+    style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", boxSizing: "border-box", padding: "10%", background: "linear-gradient(160deg, #2e2e7e, #1f1f5e)", color: "#fff" }}>
     <Icon aria-hidden="true" style={{ width: "42%", height: "auto", aspectRatio: "1", color: "#fff" }} />
-    <img src="/assets/tally-logo.webp" alt="" style={{ width: "62%", height: "auto", background: "#fff", borderRadius: 10, padding: "6px 10px", boxSizing: "border-box" }} />
   </span>;
 }
