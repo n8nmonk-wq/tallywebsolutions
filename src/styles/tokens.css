@@ -8,7 +8,7 @@
   --forest: #161641; --forest-2: #1f1f55; --forest-line: #33337a; --cream: #eef0fa;
   --font-sans: "Geist Variable", "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-sans);
-  --radius-1: 4px; --radius-2: 10px; --radius-3: 18px; --container: 1400px;
+  --radius-1: 4px; --radius-2: 10px; --radius-3: 18px; --container: 1760px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --shadow-e1: 0 1px 2px rgb(18 18 60 / 0.05), 0 1px 3px rgb(18 18 60 / 0.04);
   --shadow-e2: 0 2px 4px rgb(18 18 60 / 0.04), 0 8px 16px -6px rgb(18 18 60 / 0.10);
