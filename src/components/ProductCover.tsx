@@ -34,7 +34,7 @@ const ICONS: Record<string, LucideIcon> = {
   "Voucher Type Security": ShieldCheck,
 };
 
-// Covers with no uploaded image: a navy tile with the add-on's icon and the Tally logo.
+// Covers with no uploaded image: a navy tile with the add-on's icon centred. No logo on covers.
 export default function ProductCover({ title, className }: { title: string; className?: string }) {
   const Icon = ICONS[title] ?? Tag;
   return <span className={`cover-fallback cover-product ${className ?? ""}`} role="img" aria-label={`Cover of ${title}`}>

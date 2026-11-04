@@ -68,9 +68,11 @@ export async function deliverAccountEmail(email: string, subject: string, text: 
       signal: AbortSignal.timeout(15000),
     });
     if (!response.ok) throw new Error('Account email could not be delivered.');
-  } catch (error) {
-    if (!local) throw error;
-    console.warn('[auth] Account email was not delivered; use the development text above.');
+  } catch {
+    // The account row is already saved when this runs. Throwing here would turn a delivery
+    // hiccup into a 500 and block a retry with "already exists", so log it and let the
+    // customer use "Resend verification" on the sign-in page.
+    console.error(local ? '[auth] Account email was not delivered; use the development text above.' : '[auth] Account email delivery failed; customer can resend.');
   }
 }
 

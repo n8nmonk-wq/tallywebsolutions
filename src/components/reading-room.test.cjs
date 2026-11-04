@@ -34,7 +34,7 @@ const layoutSource = fs.readFileSync(path.join(root, "app/layout.tsx"), "utf8");
 assert.match(layoutSource, /@fontsource-variable\/geist"/);
 assert.doesNotMatch(layoutSource, /geist-mono/, "labels use the sans font; mono hurt readability");
 assert.doesNotMatch(layoutSource, /bricolage|mukta|manrope/i);
-assert.match(layoutSource, /fontsource-variable\/fraunces"/, "headings use one display serif; body stays Geist");
+assert.doesNotMatch(layoutSource, /fraunces/i, "one typeface: Geist for headings and body");
 const tokens = fs.readFileSync(path.join(root, "styles/tokens.css"), "utf8");
 for (const token of ["--bg-2: #f8f8fb", "--brand: #2e2e7e", "--gold: #299637", "--forest: #161641", "--ink: #15151f", "--cream: #eef0fa"]) assert.ok(tokens.includes(token), token);
 assert.doesNotMatch(fs.readFileSync(path.join(root, "app/globals.css"), "utf8"), /Fraunces|Manrope|Bricolage|Mukta/);

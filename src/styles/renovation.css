@@ -2,7 +2,7 @@
    Layout, components and class names are unchanged; this file only changes the design language. */
 
 :root {
-  --font-display: "Fraunces Variable", "Fraunces", Georgia, serif;
+  --font-display: "Geist Variable", "Geist", ui-sans-serif, system-ui, sans-serif;
   --bg-2: #f7f7fb;
   --bg-3: #eeeef6;
   --ink: #14142b;
@@ -24,8 +24,8 @@
 
 body { font-feature-settings: "ss01", "cv11"; letter-spacing: -0.005em; }
 
-/* Display type: an editorial serif for headings, Geist for everything that is read or clicked. */
-h1, h2 { font-family: var(--font-display); font-weight: 420; letter-spacing: -0.025em; font-variation-settings: "opsz" 72; }
+/* Display type: Geist throughout, the type the store was built on. */
+h1, h2 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.03em; }
 h3, h4 { font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.015em; }
 
 /* Hero */
@@ -36,7 +36,7 @@ h3, h4 { font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.015
   linear-gradient(180deg, #ffffff 0%, #fbfbfe 100%) !important; }
 .hero-grid { min-height: 440px; padding: clamp(32px, 5vw, 68px) clamp(24px, 5vw, 72px); }
 @media (min-width: 1024px) { .hero-grid:not(:has(.hero-stage)) { grid-template-columns: minmax(0, 1fr); } }
-.hero-copy h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(44px, 5.4vw, 80px); line-height: 1.0; letter-spacing: -0.035em; font-variation-settings: "opsz" 144; }
+.hero-copy h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(44px, 5.4vw, 80px); line-height: 1.02; letter-spacing: -0.035em; }
 .hero-copy h1 .grad { background: none; color: var(--brand); font-style: italic; -webkit-text-fill-color: currentColor; animation: none; }
 .hero-copy > p { font-size: 18px; line-height: 1.6; color: var(--ink-soft); max-width: 46ch; }
 .hero-cover { animation: none; }

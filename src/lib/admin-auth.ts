@@ -14,7 +14,7 @@ export const adminSignInConfigured = () => !!env('ADMIN_EMAIL') && !!(env('ADMIN
 
 // Only a session created by signIn() counts. Reader accounts never grant admin.
 // Cached per request: layouts, pages and actions all ask, but the session lookup runs once.
-export const isAdmin = cache(async (_legacyToken?: string): Promise<boolean> => {
+export const isAdmin = cache(async (): Promise<boolean> => {
   const token = (await cookies()).get(COOKIE)?.value;
   if (!token || !/^[a-f0-9]{64}$/.test(token)) return false;
   const sessions = await sql`select 1 from admin_sessions where token_hash = ${hash(token)} and expires_at > now()`;
