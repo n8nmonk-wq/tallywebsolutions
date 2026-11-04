@@ -1,0 +1,84 @@
+/* Visual renovation: editorial display type, calmer surfaces, premium spacing and one indigo accent.
+   Layout, components and class names are unchanged; this file only changes the design language. */
+
+:root {
+  --font-display: "Fraunces Variable", "Fraunces", Georgia, serif;
+  --bg-2: #f7f7fb;
+  --bg-3: #eeeef6;
+  --ink: #14142b;
+  --ink-2: #1f1f38;
+  --ink-soft: #55556b;
+  --ink-mute: #6b6b82;
+  --line: #e6e7f0;
+  --line-2: #d4d6e3;
+  --brand: #2e2e7e;
+  --brand-deep: #1c1c58;
+  --brand-glow: #7d7fe0;
+  --radius-2: 12px;
+  --radius-3: 18px;
+  --shadow-e1: 0 1px 2px rgb(20 20 43 / .04);
+  --shadow-e2: 0 1px 2px rgb(20 20 43 / .04), 0 14px 30px -20px rgb(20 20 43 / .22);
+  --shadow-e3: 0 2px 4px rgb(20 20 43 / .04), 0 24px 44px -24px rgb(20 20 43 / .28);
+  --shadow-e4: 0 2px 4px rgb(20 20 43 / .05), 0 30px 60px -28px rgb(20 20 43 / .32);
+}
+
+body { font-feature-settings: "ss01", "cv11"; letter-spacing: -0.005em; }
+
+/* Display type: an editorial serif for headings, Geist for everything that is read or clicked. */
+h1, h2 { font-family: var(--font-display); font-weight: 420; letter-spacing: -0.025em; font-variation-settings: "opsz" 72; }
+h3, h4 { font-family: var(--font-sans); font-weight: 500; letter-spacing: -0.015em; }
+
+/* Hero */
+.hero-campaign { border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--shadow-e2); background: #fff; }
+.hero-campaign::before { background:
+  radial-gradient(60% 90% at 100% 0%, rgb(125 127 224 / .18), transparent 62%),
+  radial-gradient(50% 80% at 0% 100%, rgb(46 46 126 / .07), transparent 60%),
+  linear-gradient(180deg, #ffffff 0%, #fbfbfe 100%) !important; }
+.hero-grid { min-height: 440px; padding: clamp(32px, 5vw, 68px) clamp(24px, 5vw, 72px); }
+@media (min-width: 1024px) { .hero-grid:not(:has(.hero-stage)) { grid-template-columns: minmax(0, 1fr); } }
+.hero-copy h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(44px, 5.4vw, 80px); line-height: 1.0; letter-spacing: -0.035em; font-variation-settings: "opsz" 144; }
+.hero-copy h1 .grad { background: none; color: var(--brand); font-style: italic; -webkit-text-fill-color: currentColor; animation: none; }
+.hero-copy > p { font-size: 18px; line-height: 1.6; color: var(--ink-soft); max-width: 46ch; }
+.hero-cover { animation: none; }
+.hero-controls { background: rgb(255 255 255 / .9); }
+.ticks li { font-size: 14px; }
+
+/* Section headings and eyebrows */
+.section-head h2 { font-size: clamp(30px, 3.4vw, 46px); line-height: 1.05; }
+.section-head p { color: var(--ink-soft); font-size: 15px; }
+.eyebrow { font-size: 11.5px; font-weight: 600; letter-spacing: .14em; color: var(--brand); }
+.link-line { font-weight: 500; }
+
+/* Buttons: pill shapes, flat indigo, no gradient sheen */
+.btn { border-radius: 999px; min-height: 46px; font-weight: 500; letter-spacing: -0.01em; }
+.btn-primary, .btn-neel { background: var(--brand); box-shadow: 0 1px 2px rgb(20 20 43 / .12), inset 0 1px 0 rgb(255 255 255 / .08); }
+.btn-primary:hover:not(:disabled), .btn-neel:hover:not(:disabled) { background: var(--brand-deep); box-shadow: 0 10px 22px -12px rgb(28 28 88 / .6); }
+.btn-ghost, .btn-outline { border-color: var(--line-2); box-shadow: none; }
+.card-foot .btn, .card-add { border-radius: 12px; min-height: 44px; font-size: 14px; }
+
+/* Product cards: hairline frames, soft lift on hover, no heavy shadows */
+.book-card { border: 1px solid var(--line); border-radius: var(--radius-3); background: #fff; box-shadow: none; transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out), border-color .35s; }
+.book-card:hover { transform: translateY(-3px); border-color: #d9dbea; box-shadow: var(--shadow-e3); }
+.card-plate { border-radius: 14px; background: linear-gradient(180deg, #f6f6fb 0%, #fff 100%); }
+.card-title { font-family: var(--font-sans); font-size: 15px; font-weight: 500; letter-spacing: -0.012em; color: var(--ink); }
+.card-meta { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-mute); }
+.card-author { font-size: 12.5px; color: var(--ink-mute); }
+.card-flag { border-radius: 999px; font-weight: 500; }
+.price-now { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 19px; }
+.soon-chip { border-radius: 999px; font-size: 11px; letter-spacing: .1em; background: #fff; }
+
+/* Product covers: a deep indigo tile with a soft highlight and a single icon */
+.cover-product { border-radius: 6px; background:
+  radial-gradient(120% 80% at 18% 0%, rgb(125 127 224 / .45) 0%, transparent 58%),
+  linear-gradient(170deg, #2e2e7e 0%, #1c1c58 100%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .08), inset -10px 0 14px -12px rgb(0 0 0 / .45), 0 22px 30px -20px rgb(20 20 60 / .55); }
+.cover-product-icon { width: 36%; stroke-width: 1.3; opacity: .96; }
+
+/* Storefront chrome */
+.utility-bar { background: var(--brand-deep); letter-spacing: .01em; }
+.site-header { border-bottom-color: var(--line); }
+.site-footer { background: linear-gradient(180deg, #1c1c58 0%, #15154a 100%); }
+.site-footer h2 { color: #b8bce6; }
+.site-footer ul a { color: #d5d7f0; }
+.site-footer .footer-about { color: #d5d7f0; }
+.footer-legal { border-top-color: rgb(255 255 255 / .12); }

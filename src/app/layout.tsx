@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "@fontsource-variable/geist";
+import "@fontsource-variable/fraunces";
 import { STORE, siteUrl } from "@/lib/store";
 
 const SITE = siteUrl();
