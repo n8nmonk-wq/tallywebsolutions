@@ -1,1 +1,572 @@
-[]
+[
+  {
+    "slug": "advanced-address-book",
+    "title": "Advanced Address Book",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Advanced Address Book. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 1,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "audit-trail-with-stock-items",
+    "title": "Audit Trail with Stock Items",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Audit Trail with Stock Items. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 2,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "auto-e-mail-facility-module",
+    "title": "Auto E-mail Facility Module",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Auto E-mail Facility Module. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 3,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "auto-narration-suggestion-module",
+    "title": "Auto Narration Suggestion Module",
+    "subtitle": "TDL Source Code of Auto Set Narration In Voucher (Create Your Own Narration)",
+    "description": "TDL source code text file, delivered after payment. Sets the narration in a voucher automatically, and lets you create your own narration format.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 10000,
+    "publisher": "Tallywebsolutions",
+    "sort": 4,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Listed on the official site",
+      "Note": "Source: official listing at tallywebsolutions.in."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "auto-save-reference-number-for-transactions",
+    "title": "Auto-save Reference Number for Transactions",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Auto-save Reference Number for Transactions. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 5,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "bulk-backup-in-tally",
+    "title": "Bulk Backup in Tally",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Bulk Backup in Tally. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 6,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "cheque-no-tracking",
+    "title": "Cheque No. Tracking",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Cheque No. Tracking. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 7,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "credit-control-based-on-days",
+    "title": "Credit Control based on Days",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Credit Control based on Days. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 8,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "default-godown-in-vouchers",
+    "title": "Default Godown in Vouchers",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Default Godown in Vouchers. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 9,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "disable-delete-and-cancel-command",
+    "title": "Disable Delete and Cancel Command",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Disable Delete and Cancel Command. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 10,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "disable-on-account",
+    "title": "Disable on Account",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Disable on Account. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 11,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "extract-pan-from-gstin",
+    "title": "Extract PAN from GSTIN",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Extract PAN from GSTIN. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 12,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "find-party-name-from-gstin",
+    "title": "Find Party Name from GSTIN",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Find Party Name from GSTIN. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 13,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "hsn-sac-code-with-gst-rate-in-invoice",
+    "title": "HSN & SAC Code with GST Rate in Invoice",
+    "subtitle": null,
+    "description": "TallyPrime add-on: HSN & SAC Code with GST Rate in Invoice. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 14,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "lines-and-borders-in-reports",
+    "title": "Lines and Borders in Reports",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Lines and Borders in Reports. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 15,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "lock-opening-balances",
+    "title": "Lock Opening Balances",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Lock Opening Balances. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 16,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "month-wise-expense-summary",
+    "title": "Month-wise Expense Summary",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Month-wise Expense Summary. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 17,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "negative-cash-control",
+    "title": "Negative Cash Control",
+    "subtitle": null,
+    "description": "Stops cash payments above a limit you set. Free on the official site, so not sold here at a price. Closest listing to Negative Cash Control.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 18,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Closest official listing; price not set."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "negative-stock-control",
+    "title": "Negative Stock Control",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Negative Stock Control. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 19,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "qr-code-on-invoice-for-payment",
+    "title": "QR Code on Invoice for Payment",
+    "subtitle": null,
+    "description": "Prints a UPI QR code for payment. The official listing covers ledger statements, not invoices, so the invoice version is not confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 20,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Closest official listing; price not set."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "recycle-bin-for-restoring-deleted-vouchers",
+    "title": "Recycle Bin for Restoring Deleted Vouchers",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Recycle Bin for Restoring Deleted Vouchers. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 21,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "stock-items-lock",
+    "title": "Stock Items Lock",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Stock Items Lock. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 22,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "stop-invoice-without-gstin",
+    "title": "Stop Invoice without GSTIN",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Stop Invoice without GSTIN. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 23,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "stop-cash-transaction-above-rs10-000",
+    "title": "Stop Cash Transaction above ₹10,000",
+    "subtitle": null,
+    "description": "Stops cash transactions above a limit you choose, instead of a fixed ₹10,000. Free on the official site.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 24,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Closest official listing; price not set."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "stop-transaction-without-narration",
+    "title": "Stop Transaction without Narration",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Stop Transaction without Narration. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 25,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "tally-font-change",
+    "title": "Tally Font Change",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Tally Font Change. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 26,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "tally-locking-period",
+    "title": "Tally Locking Period",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Tally Locking Period. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 27,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "task-reminder",
+    "title": "Task Reminder",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Task Reminder. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 28,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "user-configured-backup",
+    "title": "User Configured Backup",
+    "subtitle": null,
+    "description": "TallyPrime add-on: User Configured Backup. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 29,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  },
+  {
+    "slug": "voucher-type-security",
+    "title": "Voucher Type Security",
+    "subtitle": null,
+    "description": "TallyPrime add-on: Voucher Type Security. Draft: not found on the official site yet. Description and price to be confirmed.",
+    "long_description": null,
+    "highlights": [],
+    "cover": null,
+    "price_inr": 0,
+    "publisher": "Tallywebsolutions",
+    "sort": 30,
+    "facts": {
+      "Format": "TDL source code",
+      "Compatibility": "TallyPrime",
+      "Status": "Draft, price to be confirmed",
+      "Note": "Draft: not found on the official site yet. Description and price to be confirmed."
+    },
+    "authorship": "Tallywebsolutions"
+  }
+]
