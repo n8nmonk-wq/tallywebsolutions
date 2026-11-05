@@ -1,34 +1,62 @@
-/* Add-on shelf in the hero: spines stand in a row; the active add-on turns out into its cover. */
-.shelf { --shelf-h: 320px; margin: 28px auto 0; max-width: 960px; text-align: center; }
-.shelf-row { display: flex; align-items: flex-end; justify-content: center; gap: 6px; height: var(--shelf-h); perspective: 1600px; }
-.shelf-item { position: relative; flex: 0 0 auto; width: 56px; height: 100%; padding: 0; border: 0; background: none; cursor: pointer;
-  transition: width .7s var(--ease-out); transform-style: preserve-3d; }
-.shelf-item.is-active { width: calc(var(--shelf-h) * .66); }
+/* Add-on shelf in the hero. Spines stand at fixed spacing; the active add-on turns out of its spine
+   into its cover (3D lean), and the caption rolls up through a mask. Positions come from --d, the
+   signed distance from the active item, so every move is one smooth transition. */
+.shelf {
+  --shelf-h: 320px;
+  --sw: calc(var(--shelf-h) * .16);   /* spine width */
+  --cw: calc(var(--shelf-h) * .667);  /* cover width at 2:3 */
+  margin: 28px auto 0; max-width: 960px; text-align: center;
+}
+.shelf-stage { position: relative; height: var(--shelf-h); perspective: 1400px; }
+.shelf-item {
+  --x: calc(var(--d) * (var(--sw) + 6px) + sign(var(--d)) * (var(--cw) - var(--sw)) / 2);
+  position: absolute; bottom: 0; left: calc(50% + var(--x) - var(--sw) / 2);
+  width: var(--sw); height: 100%; padding: 0; border: 0; background: none; cursor: pointer;
+  transform-style: preserve-3d;
+  transition: left .8s var(--ease-out), width .8s var(--ease-out);
+  z-index: calc(20 - abs(var(--d)));
+}
+.shelf-item.is-active { left: calc(50% - var(--cw) / 2); width: var(--cw); filter: drop-shadow(0 28px 26px rgb(20 20 43 / .22)); }
 .shelf-item:focus-visible { outline: 2px solid var(--brand); outline-offset: 4px; border-radius: 4px; }
-.shelf-spine, .shelf-cover { position: absolute; inset: 0; transition: transform .7s var(--ease-out); backface-visibility: hidden; transform-origin: left center; }
-.shelf-spine { display: flex; align-items: center; justify-content: center; border-radius: 3px; background: linear-gradient(90deg, #1c1c58, #2e2e7e 60%, #26266e);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .08), 2px 0 0 rgb(0 0 0 / .15); transform: rotateY(0); }
-.shelf-spine-title { writing-mode: vertical-rl; transform: rotate(180deg); max-height: 84%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  color: #fff; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
-.shelf-cover { transform: scaleX(0); }
+.shelf-spine, .shelf-cover {
+  position: absolute; inset: 0; backface-visibility: hidden; transform-origin: left center;
+  transition: transform .8s var(--ease-out);
+}
+.shelf-spine {
+  display: flex; align-items: center; justify-content: center; border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .1), 3px 0 6px -3px rgb(0 0 0 / .3);
+}
+.shelf-item:not(.is-active):hover .shelf-spine { transform: translateY(-8px); }
+.shelf-spine-title {
+  writing-mode: vertical-rl; transform: rotate(180deg); max-height: 86%; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.shelf-cover { transform: rotateY(90deg); }
 .shelf-cover img, .shelf-cover .cover-product { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 4px; }
-.shelf-item.is-active .shelf-spine { transform: scaleX(0); }
-.shelf-item.is-active .shelf-cover { transform: scaleX(1); box-shadow: 0 30px 50px -28px rgb(20 20 43 / .55); }
-.shelf-item:not(.is-active):hover .shelf-spine { transform: translateY(-6px); }
+.shelf-item.is-active .shelf-spine { transform: rotateY(-90deg); }
+.shelf-item.is-active .shelf-cover { transform: rotateY(-10deg) rotateZ(-2deg); }
+
+/* Painted spine tones */
+.tone-navy .shelf-spine { background: linear-gradient(90deg, #1c1c58, #2e2e7e 60%, #26266e); color: #fff; }
+.tone-oxblood .shelf-spine { background: linear-gradient(90deg, #5a1a26, #7d2636 60%, #6a2030); color: #f6efe3; }
+.tone-forest .shelf-spine { background: linear-gradient(90deg, #163c33, #24584a 60%, #1d4a3e); color: #f1efe6; }
+.tone-cream .shelf-spine { background: linear-gradient(90deg, #d9d2bf, #ece6d6 60%, #e2dbc8); color: #1c1c58; }
+
 .shelf-caption { margin-top: 26px; display: grid; gap: 8px; justify-items: center; }
+.shelf-mask { overflow: hidden; padding: .06em 0; }
+.shelf-roll { animation: shelf-roll .65s var(--ease-out) both; }
+@keyframes shelf-roll { from { transform: translateY(105%); } to { transform: none; } }
 .shelf-title { font-size: clamp(22px, 2.6vw, 30px); font-weight: 600; letter-spacing: -0.02em; color: var(--ink); margin: 0; }
 .shelf-price { margin: 0; font-size: 15px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 .shelf-price s { color: var(--ink-mute); margin-right: 4px; }
+.shelf-soon { color: var(--ink-mute); }
 .shelf-controls { margin-top: 18px; display: flex; align-items: center; justify-content: center; gap: 14px; }
-.shelf-count { font-size: 12px; letter-spacing: .1em; color: var(--ink-mute); font-variant-numeric: tabular-nums; }
+
 @media (max-width: 720px) {
   .shelf { --shelf-h: 230px; }
-  .shelf-row { gap: 4px; }
-  .shelf-item { width: 36px; }
-  .shelf-spine-title { font-size: 10px; }
+  .shelf-spine-title { font-size: 11px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .shelf-item, .shelf-spine, .shelf-cover { transition: none; }
+  .shelf-item, .shelf-spine, .shelf-cover, .shelf-roll { transition: none; animation: none; }
 }
-
-.shelf-soon { color: var(--ink-mute); }
