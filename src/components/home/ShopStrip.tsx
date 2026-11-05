@@ -3,7 +3,7 @@ import { BadgePercent, FileText, Flame, IndianRupee, Sparkles, Library } from "l
 
 const LINKS: [typeof Flame, string, string][] = [
   [Flame, "Bestsellers", "/search?sort=popular"], [Sparkles, "New arrivals", "/search?sort=new"], [BadgePercent, "Offers", "/search?offer=1"],
-  [IndianRupee, "Under ₹199", "/search?price=0-199"], [FileText, "PDF files", "/search?format=PDF"], [Library, "All add-ons", "/search"],
+  [IndianRupee, "Under ₹199", "/search?price=0-199"], [FileText, "TDL files", "/search?format=TDL"], [Library, "All add-ons", "/search"],
 ];
 
 export default function ShopStrip() {

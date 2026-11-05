@@ -8,6 +8,7 @@ import Cover from "./Cover";
 import Price from "./Price";
 import WishlistButton from "./WishlistButton";
 import type { PublicBook } from "./book-data";
+import { isStoreOwned } from "@/lib/store";
 
 export default function QuickView({ book, enabled }: { book: PublicBook; enabled: boolean }) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -20,7 +21,7 @@ export default function QuickView({ book, enabled }: { book: PublicBook; enabled
       onClick={(e) => { if (e.target === dialog.current) dialog.current.close(); }}>
       <button type="button" className="round-btn qv-close" onClick={() => dialog.current?.close()} aria-label="Close quick view"><X size={18} aria-hidden="true" /></button>
       <div className="qv-grid"><div className="qv-cover"><Cover src={book.cover} title={book.title} sizes="260px" /></div>
-        <div className="qv-info"><h2 id={`qv-${book.slug}`}>{book.title}</h2>{book.authorship && <p className="card-author">{book.authorship}</p>}
+        <div className="qv-info"><h2 id={`qv-${book.slug}`}>{book.title}</h2>{book.authorship && !isStoreOwned(book.authorship) && <p className="card-author">{book.authorship}</p>}
           <Price book={book} size="page" />{blurb && <p className="qv-blurb">{blurb}</p>}
           <div className="qv-actions"><AddToCart slug={book.slug} title={book.title} enabled={enabled} saleable={book.saleable} saveable={book.saveable} />
             <WishlistButton slug={book.slug} title={book.title} variant="page" /></div>

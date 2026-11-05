@@ -39,3 +39,6 @@ export function siteUrl() {
   }
   return 'http://localhost:3000';
 }
+
+/** True for the store's own name: add-ons are published by the store, so no separate author line is shown. */
+export const isStoreOwned = (name?: string | null) => !!name && name.trim().toLowerCase() === STORE.name.toLowerCase();

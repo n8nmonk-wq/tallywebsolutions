@@ -23,6 +23,7 @@ import RecentlyViewed from "@/components/RecentlyViewed";
 import { cartLines, loadOffers } from "@/lib/offer-data";
 import { offerBadges } from "@/lib/offers";
 import { TicketPercent } from "lucide-react";
+import { isStoreOwned } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -72,7 +73,7 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
         <div className="product-info enter">
           <div className="title-row"><h1>{book.title}</h1><div className="title-actions"><WishlistButton slug={book.slug} title={book.title} variant="page" /><ShareButton title={book.title} url={url} /></div></div>
           {book.subtitle && <p className="product-subtitle">{book.subtitle}</p>}
-          {book.authorship && <p className="product-author">by {book.author_slug ? <Link href={`/authors/${encodeURIComponent(book.author_slug)}`}>{book.authorship}</Link> : book.authorship}</p>}
+          {book.authorship && !isStoreOwned(book.authorship) && <p className="product-author">by {book.author_slug ? <Link href={`/authors/${encodeURIComponent(book.author_slug)}`}>{book.authorship}</Link> : book.authorship}</p>}
           <ul className="tag-row">{category && <li><Link className="chip" href={`/category/${category.slug}`}>{category.name}</Link></li>}
             {view.language && <li><Link className="chip" href={`/search?language=${encodeURIComponent(view.language)}`}>{view.language}</Link></li>}
             {book.file_format && <li><span className="chip">{book.file_format}</span></li>}
@@ -90,7 +91,7 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
         </div>
       </article>
       <BookTabs tabs={tabs} />
-      {byAuthor.length > 0 && <div className="section"><Carousel title={`More by ${book.authorship}`}>{byAuthor.map((b) => <BookCard key={b.slug} book={b} enabled={enabled} />)}</Carousel></div>}
+      {byAuthor.length > 0 && !isStoreOwned(book.authorship) && <div className="section"><Carousel title={`More by ${book.authorship}`}>{byAuthor.map((b) => <BookCard key={b.slug} book={b} enabled={enabled} />)}</Carousel></div>}
       {similar.length > 0 && <div className="section"><Carousel title="Similar add-ons" href={category ? `/category/${category.slug}` : "/search"}>{similar.map((b) => <BookCard key={b.slug} book={b} enabled={enabled} />)}</Carousel></div>}
       <RecentlyViewed current={book.slug} />
     </div>

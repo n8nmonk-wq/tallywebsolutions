@@ -5,6 +5,7 @@ import BuyNow from "./BuyNow";
 import Price from "./Price";
 import Book3D from "./motion/Book3D";
 import Morph, { morphName } from "./motion/Morph";
+import { isStoreOwned } from "@/lib/store";
 
 // The few-titles layout: the 65f7044 catalogue card, trimmed to what a reader decides on.
 export default function CatalogueEntry({ book, index, enabled, morph = true }: { book: PublicBook; index: number; enabled: boolean; morph?: boolean }) {
@@ -16,7 +17,7 @@ export default function CatalogueEntry({ book, index, enabled, morph = true }: {
     <div className="entry-info">
       <p className="eyebrow">Catalogue no. {String(index).padStart(3, "0")}</p>
       <h3><Link href={href}>{book.title}</Link></h3>
-      {book.authorship && <p className="card-author">{book.authorship}</p>}
+      {book.authorship && !isStoreOwned(book.authorship) && <p className="card-author">{book.authorship}</p>}
       {chips.length > 0 && <ul className="entry-chips">{chips.map((c) => <li key={c} className="chip">{c}</li>)}</ul>}
       <Link className="link-line" href={href}>View details <span aria-hidden="true">→</span></Link>
       <div className="entry-buy"><Price book={book} size="page" />

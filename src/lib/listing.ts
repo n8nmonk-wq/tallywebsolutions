@@ -64,7 +64,7 @@ export function facets(books: PublicBook[], p: ListingParams, categories: { slug
     { key: "category", title: "Category", options: count("category", (b) => b.category_slug, (v) => name.get(v) ?? v, p.category) },
     { key: "author", title: "Author", options: count("author", (b) => b.author_slug, (_v, b) => b.authorship ?? "Unknown", p.author) },
     { key: "language", title: "Language", options: count("language", (b) => b.language, (v) => v, p.language) },
-    { key: "format", title: "Format", options: count("format", (b) => b.file_format, (v) => v, p.format) },
+    { key: "format", title: "File type", options: count("format", (b) => b.file_format, (v) => v, p.format) },
     { key: "price", title: "Price", options: priceOptions },
     { key: "offer", title: "Offers", options: offers ? [{ value: "1", label: "On offer", count: offers, active: p.offer }] : [] },
   ] as Facet[]).filter((f) => f.options.length > 0);

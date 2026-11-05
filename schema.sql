@@ -9,7 +9,7 @@ create table if not exists books (
   cover        text,
   price_inr    integer not null,          -- paise
   file_url     text,                      -- private blob / storage url
-  file_format  text default 'PDF',
+  file_format  text default 'TDL',
   file_size    text,
   isbn         text,
   publisher    text,

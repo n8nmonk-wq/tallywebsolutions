@@ -6,6 +6,7 @@ import QuickView from "./QuickView";
 import WishlistButton from "./WishlistButton";
 import Book3D from "./motion/Book3D";
 import Morph, { morphName } from "./motion/Morph";
+import { isStoreOwned } from "@/lib/store";
 
 const href = (book: PublicBook) => `/books/${encodeURIComponent(book.slug)}`;
 
@@ -22,7 +23,7 @@ export default function BookCard({ book, enabled, morph = true }: { book: Public
     <div className="card-body">
       <p className="eyebrow card-meta">{[book.file_format, book.language].filter(Boolean).join(" · ") || "Digital download"}</p>
       <h3 className="card-title"><Link href={href(book)}>{book.title}</Link></h3>
-      {book.authorship && <p className="card-author">{book.authorship}</p>}
+      {book.authorship && !isStoreOwned(book.authorship) && <p className="card-author">{book.authorship}</p>}
       <div className="card-foot"><Price book={book} /><AddToCart slug={book.slug} title={book.title} enabled={enabled} saleable={book.saleable} saveable={book.saveable} /></div>
     </div>
   </article>;
