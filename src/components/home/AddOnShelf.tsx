@@ -37,9 +37,13 @@ export default function AddOnShelf({ items }: { items: ShelfItem[] }) {
         className={`shelf-item tone-${TONES[i % TONES.length]}${i === active ? " is-active" : ""}${Math.abs(circularOffset(i, active, count)) >= 5 ? " is-far" : ""}`}
         aria-label={`Show ${item.title}`} aria-pressed={i === active} onClick={() => setActive(i)}
         style={{ "--d": circularOffset(i, active, count) } as CSSProperties}>
-        <span className="shelf-spine"><span className="shelf-spine-title">{item.title}</span></span>
+        <span className="shelf-spine">
+          {item.cover && <span className="shelf-spine-art"><Cover src={item.cover} title={item.title} sizes="80px" /></span>}
+          <span className="shelf-spine-label"><span className="shelf-spine-title">{item.title}</span></span>
+        </span>
         <span className="shelf-cover"><Cover src={item.cover} title={item.title} sizes="220px" /></span>
       </button>)}
+      <span className="shelf-board" aria-hidden="true" />
     </div>
     <div className="shelf-caption" aria-live="polite">
       <div className="shelf-mask"><p key={current.slug} className="shelf-title shelf-roll">{current.title}</p></div>
