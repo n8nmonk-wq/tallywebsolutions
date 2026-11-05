@@ -16,6 +16,8 @@
   transition: left .8s var(--ease-out), width .8s var(--ease-out);
   z-index: calc(20 - abs(var(--d)));
 }
+/* Items at the far ends are off the visible row; hiding them lets the wrap-around jump go unseen. */
+.shelf-item.is-far { visibility: hidden; }
 .shelf-item.is-active { left: calc(50% - var(--cw) / 2); width: var(--cw); filter: drop-shadow(0 28px 26px rgb(20 20 43 / .22)); }
 .shelf-item:focus-visible { outline: 2px solid var(--brand); outline-offset: 4px; border-radius: 4px; }
 .shelf-spine, .shelf-cover {

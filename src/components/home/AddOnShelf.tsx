@@ -8,6 +8,14 @@ import { rupees } from "@/lib/money";
 
 export type ShelfItem = { slug: string; title: string; cover: string | null; price: number; regular: number; onSale: boolean; saleable: boolean };
 
+// Signed distance from the active item, going the short way round, so the shelf looks full at both ends.
+export function circularOffset(index: number, active: number, count: number) {
+  const d = index - active;
+  if (d > count / 2) return d - count;
+  if (d < -count / 2) return d + count;
+  return d;
+}
+
 // Spines in four tones, so a row of add-ons reads as a shelf of boxes rather than one colour.
 const TONES = ["navy", "oxblood", "forest", "cream"] as const;
 
@@ -26,9 +34,9 @@ export default function AddOnShelf({ items }: { items: ShelfItem[] }) {
   return <section className="shelf" aria-roledescription="carousel" aria-label="Add-ons shelf" onKeyDown={onKey}>
     <div className="shelf-stage">
       {items.map((item, i) => <button key={item.slug} type="button"
-        className={`shelf-item tone-${TONES[i % TONES.length]}${i === active ? " is-active" : ""}`}
+        className={`shelf-item tone-${TONES[i % TONES.length]}${i === active ? " is-active" : ""}${Math.abs(circularOffset(i, active, count)) >= 5 ? " is-far" : ""}`}
         aria-label={`Show ${item.title}`} aria-pressed={i === active} onClick={() => setActive(i)}
-        style={{ "--d": i - active } as CSSProperties}>
+        style={{ "--d": circularOffset(i, active, count) } as CSSProperties}>
         <span className="shelf-spine"><span className="shelf-spine-title">{item.title}</span></span>
         <span className="shelf-cover"><Cover src={item.cover} title={item.title} sizes="220px" /></span>
       </button>)}
