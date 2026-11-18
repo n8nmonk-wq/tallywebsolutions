@@ -1,6 +1,10 @@
 "use client";
 import { useState } from "react";
 
+// Stored type keys stay as they are; only the names shown to the admin change.
+const MODULE_LABELS: Record<string, string> = { hero: "Hero", banner: "Banner", announcement: "Announcement", promo: "Promo",
+  "genre-switcher": "Category switcher", text: "Text", collection: "Collection", author: "Developer spotlight" };
+
 export default function ModuleFields({ section, type, payload, collections, authors, categories }: {
   section: string; type: string; payload: Record<string, unknown>;
   collections: { slug: string; title: string }[]; authors: { id: string; name: string }[]; categories: { slug: string; name: string }[];
@@ -8,7 +12,7 @@ export default function ModuleFields({ section, type, payload, collections, auth
   const [selected, setSelected] = useState(type);
   return <>
     {section === "modules" && <label className="text-sm">Module type<select name="type" className="field-input mt-1" value={selected} onChange={event => setSelected(event.target.value)}>
-      {["hero", "banner", "announcement", "promo", "genre-switcher", "text", "collection", "author"].map(value => <option key={value} value={value}>{value}</option>)}
+      {Object.entries(MODULE_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
     </select></label>}
     {["hero", "banner"].includes(selected) && <label className="text-sm">Subtitle<input name="subtitle" className="field-input mt-1" maxLength={4000} defaultValue={String(payload.subtitle ?? "")} /></label>}
     {["banner", "promo"].includes(selected) && <label className="text-sm">Colour theme<select name="theme" className="field-input mt-1" defaultValue={String(payload.theme ?? "yellow")}>
@@ -17,7 +21,7 @@ export default function ModuleFields({ section, type, payload, collections, auth
     {selected === "promo" && <label className="text-sm">Category for live products<select name="category_slug" className="field-input mt-1" defaultValue={String(payload.category_slug ?? "")}><option value="">None</option>{categories.map(c => <option key={c.slug} value={c.slug}>{c.name}</option>)}</select></label>}
     {selected === "genre-switcher" && <fieldset className="text-sm"><legend>Categories (up to 8)</legend>{categories.map(c => <label key={c.slug} className="mr-4 inline-flex gap-2"><input type="checkbox" name="category_slugs" value={c.slug} defaultChecked={Array.isArray(payload.category_slugs) && payload.category_slugs.includes(c.slug)} />{c.name}</label>)}</fieldset>}
     {selected === "collection" && <label className="text-sm">Collection<select name="collection_slug" required className="field-input mt-1" defaultValue={String(payload.collection_slug ?? "")}><option value="">Choose collection</option>{collections.map(collection => <option key={collection.slug} value={collection.slug}>{collection.title}</option>)}</select></label>}
-    {selected === "author" && <label className="text-sm">Author<select name="author_id" required className="field-input mt-1" defaultValue={String(payload.author_id ?? "")}><option value="">Choose author</option>{authors.map(author => <option key={author.id} value={author.id}>{author.name}</option>)}</select></label>}
+    {selected === "author" && <label className="text-sm">Developer<select name="author_id" required className="field-input mt-1" defaultValue={String(payload.author_id ?? "")}><option value="">Choose developer</option>{authors.map(author => <option key={author.id} value={author.id}>{author.name}</option>)}</select></label>}
     {selected === "testimonial" && <label className="text-sm">Attribution<input name="attribution" className="field-input mt-1" required maxLength={4000} defaultValue={String(payload.attribution ?? "")} /></label>}
     {selected === "media" && <label className="text-sm">Video URL<input name="video_url" className="field-input mt-1" maxLength={2000} defaultValue={String(payload.video_url ?? "")} /></label>}
   </>;

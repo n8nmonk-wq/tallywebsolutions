@@ -98,10 +98,10 @@ export async function getPublicContent(): Promise<{ modules: ContentModule[]; co
 }
 
 export async function getAdminContent(section: ContentSection): Promise<Record<string, unknown>[]> {
-  if (section === "collections") return await sql`select *, description body, updated_at::text, publish_at::text from content_collections order by sort, slug`;
-  if (section === "authors") return await sql`select *, name title, bio body, photo_url image_url, updated_at::text, publish_at::text from author_profiles order by name`;
-  if (section === "media" || section === "testimonials") return await sql`select *, updated_at::text, publish_at::text from content_modules where type=${section === "media" ? "media" : "testimonial"} order by sort, id`;
-  return await sql`select *, updated_at::text, publish_at::text, ends_at::text from content_modules where type not in ('media','testimonial') order by sort, id`;
+  if (section === "collections") return await sql`select *, description body, updated_at::text, to_json(publish_at)#>>'{}' as publish_at from content_collections order by sort, slug`;
+  if (section === "authors") return await sql`select *, name title, bio body, photo_url image_url, updated_at::text, to_json(publish_at)#>>'{}' as publish_at from author_profiles order by name`;
+  if (section === "media" || section === "testimonials") return await sql`select *, updated_at::text, to_json(publish_at)#>>'{}' as publish_at from content_modules where type=${section === "media" ? "media" : "testimonial"} order by sort, id`;
+  return await sql`select *, updated_at::text, to_json(publish_at)#>>'{}' as publish_at, to_json(ends_at)#>>'{}' as ends_at from content_modules where type not in ('media','testimonial') order by sort, id`;
 }
 export async function saveContent(section: ContentSection, id: string, expected: string | null, input: Record<string, unknown>) {
   const c = validateContent(section, { ...input, ...(section === "media" ? { type: "media" } : section === "testimonials" ? { type: "testimonial" } : {}) });

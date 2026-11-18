@@ -40,13 +40,13 @@ export default function OfferForm({ offer, books, collections, categories }: {
         <label className="text-sm">for ₹<input name="bundle_price" inputMode="decimal" required value={draft.price} onChange={set("price")} className={input} /></label></>}
     </div>
     <fieldset className="grid gap-3"><legend className="mb-1 text-sm font-medium">Applies to</legend>
-      <div className="flex flex-wrap gap-2">{([["all", "All add-ons"], ["books", "Chosen products"], ["collection", "A collection"], ["category", "A subject"], ["order", "Whole order"]] as const).map(([v, label]) =>
+      <div className="flex flex-wrap gap-2">{([["all", "All add-ons"], ["books", "Chosen products"], ["collection", "A collection"], ["category", "A category"], ["order", "Whole order"]] as const).map(([v, label]) =>
         <label key={v} className={`chip cursor-pointer ${scope === v ? "!bg-forest !text-cream" : ""}`}><input type="radio" name="scope" value={v} checked={scope === v} onChange={() => setScope(v)} className="sr-only" />{label}</label>)}</div>
       {scope === "books" && <BookPicker books={books} selected={offer?.scope === "books" ? offer.targets : []} />}
       {scope === "collection" && <select name="collection" required defaultValue={offer?.scope === "collection" ? offer.targets[0] : ""} className="field-input">
         <option value="" disabled>Choose a collection</option>{collections.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}</select>}
       {scope === "category" && <select name="category" required defaultValue={offer?.scope === "category" ? offer.targets[0] : ""} className="field-input">
-        <option value="" disabled>Choose a subject</option>{categories.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}</select>}
+        <option value="" disabled>Choose a category</option>{categories.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}</select>}
     </fieldset>
     <details className="rounded-lg border border-line px-4 py-3" open={!!(offer?.code || offer?.usage_limit || offer?.min_subtotal || offer?.starts_at)}>
       <summary className="cursor-pointer text-sm font-medium">Code, schedule and limits</summary>
@@ -65,7 +65,8 @@ export default function OfferForm({ offer, books, collections, categories }: {
       </div>
     </details>
     <div className="flex flex-wrap gap-3">
-      <button className="btn btn-primary" type="submit" name="status" value="active">{offer?.status === "active" ? "Save" : "Save and go live"}</button>
+      {offer?.status === "paused" && <button className="btn btn-primary" type="submit" name="status" value="paused">Save (stays paused)</button>}
+      <button className={`btn ${offer?.status === "paused" ? "btn-ghost" : "btn-primary"}`} type="submit" name="status" value="active">{offer?.status === "active" ? "Save" : offer?.status === "paused" ? "Save and resume" : "Save and go live"}</button>
       <button className="btn btn-ghost" type="submit" name="status" value="draft">Save as draft</button>
     </div>
   </form>;

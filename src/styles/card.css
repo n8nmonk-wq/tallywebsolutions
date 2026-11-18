@@ -3,8 +3,6 @@
   /* Every cover sits in the same frame, so prices and buttons line up across a row whatever the artwork's proportions. */
   .card-plate { position: relative; display: grid; place-items: center; height: 250px; padding: 22px 18px 26px; }
   .card-cover { display: grid; place-items: center; width: 100%; height: 100%; }
-  .card-cover .book3d { display: grid; place-items: center; height: 100%; }
-  .card-cover .book3d-body img, .card-cover .cover-fallback { width: auto; max-width: 150px; max-height: 196px; }
   .card-flag { max-width: calc(100% - 64px); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; position: absolute; top: 10px; left: 10px; padding: 5px 9px; font-size: 12px; box-shadow: none; }
   .card-flag.offer { color: #1d6b33; border-color: #bfe3c9; background: #f1faf4; }
   .card-body { display: flex; flex: 1; flex-direction: column; gap: 4px; padding: 14px 6px 4px; }
@@ -35,7 +33,6 @@
   .entries { display: grid; gap: 28px; }
   .entry { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: 24px 48px; padding: 28px; }
   .entry-plate { display: grid; place-items: center; padding: 30px; }
-  .entry-plate .book3d { width: min(210px, 100%); }
   .entry-info { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; min-width: 0; }
   .entry-info h3 { font-size: clamp(26px, 3vw, 40px); letter-spacing: -.04em; line-height: 1.04; }
   .entry-info h3 a:hover { color: var(--brand); }
@@ -83,7 +80,6 @@
     .grid-books .book-card, .book-grid .book-card { padding: 6px; }
     .card-body { padding: 10px 4px 2px; }
     .card-title { font-size: 15px; }
-    .card-cover .book3d-body img, .card-cover .cover-fallback { max-width: 112px; max-height: 156px; }
     .entry { grid-template-columns: 1fr; padding: 18px; }
     .carousel-track { grid-auto-columns: 46%; gap: 12px; }
     .qv-grid { grid-template-columns: 1fr; }

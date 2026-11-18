@@ -42,12 +42,6 @@ const styleSources = fs.readdirSync(path.join(root, "styles")).map((f) => fs.rea
   + fs.readFileSync(path.join(root, "app/globals.css"), "utf8");
 assert.doesNotMatch(styleSources, /--neel|--kumkum|--paper|--mist|--font-head|--font-body|akshara|Bricolage|Mukta|Noto/, "no Akshara-era styles remain");
 assert.doesNotMatch(fs.readFileSync(path.join(root, "app/layout.tsx"), "utf8"), /noto-sans/);
-// Motion primitives degrade safely and never draw a book inside a mockup.
-const { isFlatCover } = load("components/motion/Book3D.tsx", { "motion/react": { ...require("motion/react"), useReducedMotion: () => true } });
-assert.equal(isFlatCover("/assets/book1.png"), false, "real covers are finished mockups");
-assert.equal(isFlatCover("https://cdn.example.com/cover.jpg"), false);
-assert.equal(isFlatCover("data:image/svg+xml;utf8,%3Csvg%3E"), true);
-assert.equal(isFlatCover(null), true);
 const MorphModule = load("components/motion/Morph.tsx");
 assert.equal(MorphModule.morphName("real-book"), "cover-real-book");
 const morphed = renderToStaticMarkup(React.createElement(MorphModule.default, { name: "cover-x" }, React.createElement("img", { alt: "x", src: "/x.png" })));
@@ -136,13 +130,15 @@ const dataCover = renderToStaticMarkup(React.createElement(CardView, { book: { .
 assert.match(dataCover, /src="data:image\/svg\+xml/);
 assert.match(cardHtml, /Quick view/);
 const realCoverHtml = renderToStaticMarkup(React.createElement(CardView, { book: { ...saleBook, cover: "/assets/book1.png" }, enabled: true }));
-assert.match(realCoverHtml, /class="book3d"/, "real covers get the tilt without drawn edges");
+assert.match(realCoverHtml, /class="ptile has-art"/, "an uploaded cover fills the software tile");
+assert.doesNotMatch(realCoverHtml + cardHtml, /book3d|spine/, "products are never drawn as books");
+assert.match(cardHtml, /class="ptile"[\s\S]*cover-product-chip/, "without a cover the tile shows the add-on icon");
 assert.match(renderToStaticMarkup(React.createElement(CardView, { book: { ...saleBook, offers: ["Buy 2 get 1"] }, enabled: true })), /card-flag[^>]*>Buy 2 get 1</, "a live offer becomes the card flag");
 {
   const { CouponBox } = load("components/PricingSummary.tsx");
   assert.match(renderToStaticMarkup(React.createElement(CouponBox, { coupon: "NOPE", setCoupon() {}, result: { code: "NOPE", ok: false, message: "This code is not valid." } })), /This code is not valid\./);
 }
-assert.match(dataCover, /class="book3d flat"/, "flat demo covers get the drawn spine");
+
 const EntryView = load("components/CatalogueEntry.tsx", {
   "./CartProvider": { useCart: () => cart }, "motion/react": { ...require("motion/react"), useReducedMotion: () => true },
   "next/navigation": { useRouter: () => ({ push() {} }) },

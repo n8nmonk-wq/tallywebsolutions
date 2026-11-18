@@ -3,12 +3,16 @@ import { ArrowDown, ArrowUp, Plus } from "lucide-react";
 import { isAdmin } from "@/lib/admin-auth";
 import { getAdminContent } from "@/lib/content";
 import AdminShell from "@/components/AdminShell";
+import ConfirmSubmit from "@/components/ConfirmSubmit";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Banners", robots: { index: false, follow: false } };
 
 type Banner = { id: string; title: string; body: string | null; image_url: string | null; mobile_image_url: string | null; link_url: string | null; link_label: string | null;
   payload: Record<string, unknown>; sort: number; status: string; publish_at: string | null; ends_at: string | null; updated_at: string };
+
+// Payload settings this form does not edit (set under Homepage sections); sent back unchanged so saving keeps them.
+const KEPT_PAYLOAD = ["attribution", "collection_slug", "author_id", "video_url", "theme", "size", "category_slug"];
 
 // Stored instants are shown and entered in India time.
 function toIndiaInput(value: string | null) {
@@ -34,7 +38,7 @@ export default async function BannersPage({ searchParams }: { searchParams: Prom
     <ol className="grid gap-3">{banners.map((b, i) => <li key={b.id} className="rounded-xl border border-line bg-white p-4">
       <div className="grid items-start gap-4 md:grid-cols-[220px_minmax(0,1fr)_auto]">
         <div className="relative aspect-[16/7] overflow-hidden rounded-lg bg-bg-3">
-          <img src={b.image_url || "/assets/reading-room-botanical-v2.webp"} alt="" className="h-full w-full object-cover" />
+          {b.image_url ? <img src={b.image_url} alt="" className="h-full w-full object-cover" /> : <span className="grid h-full w-full place-items-center bg-gradient-to-br from-brand to-brand-deep text-xs text-white/70">No image</span>}
           <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-2 text-[13px] font-medium text-white">{b.title}</span>
         </div>
         <div className="min-w-0">
@@ -62,7 +66,9 @@ function BannerForm({ banner }: { banner?: Banner }) {
     <input type="hidden" name="section" value="modules" /><input type="hidden" name="type" value="banner" />
     <input type="hidden" name="id" value={banner?.id ?? ""} /><input type="hidden" name="updated_at" value={banner?.updated_at ?? ""} />
     <input type="hidden" name="sort" value={String(banner?.sort ?? 1000)} /><input type="hidden" name="return_to" value="/admin/banners" />
-    <label className="text-sm">Headline<input name="title" required maxLength={200} className={input} defaultValue={banner?.title ?? ""} placeholder="Festive reading week" /></label>
+    {KEPT_PAYLOAD.filter((k) => typeof banner?.payload?.[k] === "string" && banner.payload[k]).map((k) => <input key={k} type="hidden" name={k} value={String(banner!.payload[k])} />)}
+    {Array.isArray(banner?.payload?.category_slugs) && (banner.payload.category_slugs as unknown[]).map((c) => <input key={`c-${String(c)}`} type="hidden" name="category_slugs" value={String(c)} />)}
+    <label className="text-sm">Headline<input name="title" required maxLength={200} className={input} defaultValue={banner?.title ?? ""} placeholder="GST season offers" /></label>
     <label className="text-sm">Small label above<input name="subtitle" maxLength={200} className={input} defaultValue={typeof banner?.payload?.subtitle === "string" ? banner.payload.subtitle : ""} placeholder="Limited time" /></label>
     <label className="text-sm sm:col-span-2">One line of text<input name="body" maxLength={160} className={input} defaultValue={banner?.body ?? ""} placeholder="Up to 20% off selected add-ons" /></label>
     <label className="text-sm">Image URL (wide)<input name="image_url" maxLength={2000} className={input} defaultValue={banner?.image_url ?? ""} placeholder="/assets/... or https://..." /></label>
@@ -73,6 +79,6 @@ function BannerForm({ banner }: { banner?: Banner }) {
     <label className="text-sm">Ends (India time, optional)<input name="ends_at" type="datetime-local" className={input} defaultValue={toIndiaInput(banner?.ends_at ?? null)} /></label>
     <label className="text-sm">Status<select name="status" className={input} defaultValue={banner?.status ?? "published"}><option value="published">Published</option><option value="draft">Draft</option><option value="archived">Archived</option></select></label>
     <div className="flex items-end gap-3"><button name="action" value="save" type="submit" className="btn btn-primary">{banner ? "Save banner" : "Add banner"}</button>
-      {banner && <button name="action" value="delete" type="submit" formNoValidate className="btn btn-ghost">Delete</button>}</div>
+      {banner && <ConfirmSubmit name="action" value="delete" formNoValidate className="btn btn-ghost" message={`Delete the banner "${banner.title}"? This cannot be undone.`}>Delete</ConfirmSubmit>}</div>
   </form>;
 }

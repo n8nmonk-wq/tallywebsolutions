@@ -47,6 +47,7 @@ export async function POST(req: Request) {
     // Validation errors carry no database or provider details.
     if (error instanceof ContentError) return NextResponse.json({ error: error.message }, { status: 400 });
     console.error("CMS update failed", error);
+    if (back) return NextResponse.redirect(new URL(`${back}?error=${encodeURIComponent("Could not save. Reload and try again.")}`, req.url), 303);
     return NextResponse.json({ error: "Could not save content. Reload and try again." }, { status: 503 });
   }
 }

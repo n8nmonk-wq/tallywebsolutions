@@ -2,10 +2,11 @@ import { sql, type Book } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/admin-auth";
 import AdminShell from "@/components/AdminShell";
-import { Plus, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { PRODUCT_STATUSES, productStatus, type ProductStatus } from "@/lib/admin-catalogue";
 import { currentPrice } from "@/lib/money";
 import ProductTable, { type ProductRow } from "./ProductTable";
+import CreateProduct from "./CreateProduct";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Products", robots: { index: false, follow: false } };
@@ -55,16 +56,7 @@ export default async function AdminProducts({
     return `/admin/products${query ? `?${query}` : ""}`;
   };
 
-  const create = <details className="relative">
-    <summary className="btn btn-primary cursor-pointer list-none"><Plus size={16} aria-hidden="true" />Add product</summary>
-    <form action="/api/admin/products" method="post" className="absolute right-0 z-10 mt-2 grid w-[min(90vw,340px)] gap-3 rounded-xl border border-line bg-white p-4 shadow-lg">
-      <input type="hidden" name="action" value="create" />
-      <label className="text-sm">Name<input name="title" required maxLength={200} className="field-input mt-1 w-full" /></label>
-      <label className="text-sm">Slug<input name="slug" required maxLength={101} pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="gst-party-name-finder" className="field-input mt-1 w-full" /></label>
-      <p className="text-xs text-ink-soft">Lowercase letters, numbers and dashes. It becomes the product&apos;s web address.</p>
-      <button className="btn btn-primary" type="submit">Create draft</button>
-    </form>
-  </details>;
+  const create = <CreateProduct />;
 
   return (
     <AdminShell active="books" title="Products" subtitle={`${all.length} products · ${counts["on-sale"]} on sale`} actions={create}>

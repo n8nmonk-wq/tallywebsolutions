@@ -38,7 +38,7 @@ try {
 
   await assert.rejects(putOnSale(sql, { slug: 'placeholder-book', root }), (e) => e instanceof SaleError && /real file/.test(e.message));
   assert.equal((await book('placeholder-book')).release_approved, false, 'a placeholder never goes on sale');
-  await assert.rejects(putOnSale(sql, { slug: 'no-file', root }), /attach the product file/i);
+  await assert.rejects(putOnSale(sql, { slug: 'no-file', root }), /Upload the product file before/i);
   await assert.rejects(putOnSale(sql, { slug: 'free-book', root }), /price/i);
   await assert.rejects(putOnSale(sql, { slug: 'remote-book', root }), /Upload the product file/i);
   await assert.rejects(putOnSale(sql, { slug: 'author-book', root }), /author submission/i, 'author books keep their review process');
@@ -70,14 +70,24 @@ try {
   assert.equal(validateAdminUpload(Buffer.from('[Part: Test]'), 'pdf', 'tdl'), 'text/plain');
   assert.throws(() => validateAdminUpload(Buffer.from([0x50, 0, 0x41, 0]), 'pdf', 'tdl'), /plain-text/);
   const blobUrl = 'https://abc123.private.blob.vercel-storage.com/admin/books/placeholder-book/u1-pdf';
-  const uploaded = await recordBookFile(sql, { slug: 'placeholder-book', url: blobUrl, bytes: pdf, pathname: 'admin/books/placeholder-book/u1-pdf' });
-  const afterUpload = (await sql`select file_url, file_sha256, release_approved, file_format from books where slug='placeholder-book'`)[0];
-  assert.deepEqual(afterUpload, { file_url: blobUrl, file_sha256: uploaded.sha, release_approved: false, file_format: 'PDF' });
+  // A product that already has a file only takes a new one when the admin chose Replace.
+  await assert.rejects(recordBookFile(sql, { slug: 'placeholder-book', url: blobUrl, bytes: pdf, pathname: 'admin/books/placeholder-book/u0-pdf' }), /already has a file/);
+  const uploaded = await recordBookFile(sql, { slug: 'placeholder-book', url: blobUrl, bytes: pdf, pathname: 'admin/books/placeholder-book/u1-pdf', name: 'C:/fakepath/Guide<1>.pdf', replace: true });
+  const afterUpload = (await sql`select file_url, file_sha256, release_approved, file_format, file_size, facts->>'_file_name' as name, facts->>'_file_type' as type from books where slug='placeholder-book'`)[0];
+  assert.deepEqual(afterUpload, { file_url: blobUrl, file_sha256: uploaded.sha, release_approved: false, file_format: 'PDF', file_size: '3 KB', name: 'Guide1.pdf', type: 'PDF' });
   assert.deepEqual(await fileCheck(root, blobUrl, uploaded.sha), { ok: true, reason: null });
   assert.match((await fileCheck(root, blobUrl, null)).reason, /upload/i);
   await putOnSale(sql, { slug: 'placeholder-book', root });
   assert.equal((await book('placeholder-book')).release_approved, true, 'an uploaded file can go on sale');
-  await recordBookFile(sql, { slug: 'placeholder-book', url: blobUrl, bytes: pdf, pathname: 'admin/books/placeholder-book/u2-pdf' });
+  await assert.rejects(recordBookFile(sql, { slug: 'placeholder-book', url: blobUrl, bytes: pdf, pathname: 'admin/books/placeholder-book/u2-pdf' }), /Replace file/);
+  assert.equal((await book('placeholder-book')).release_approved, true, 'a refused upload leaves the product on sale');
+  // The product is sold as one type; a file of another type cannot be put on sale.
+  await sql`update books set file_format='EPUB' where slug='placeholder-book'`;
+  await sql`update books set release_approved=false where slug='placeholder-book'`;
+  await assert.rejects(putOnSale(sql, { slug: 'placeholder-book', root }), /attached file is PDF, but the product is sold as EPUB/);
+  await sql`update books set file_format='PDF' where slug='placeholder-book'`;
+  await putOnSale(sql, { slug: 'placeholder-book', root });
+  await recordBookFile(sql, { slug: 'placeholder-book', url: blobUrl, bytes: pdf, pathname: 'admin/books/placeholder-book/u2-pdf', replace: true });
   assert.equal((await book('placeholder-book')).release_approved, false, 'a new file takes the book off sale until released again');
   await assert.rejects(recordBookFile(sql, { slug: 'author-book', url: blobUrl, bytes: pdf, pathname: 'x' }), /submission/i);
   const cover = await recordBookCover(sql, { slug: 'real-book', bytes: png, pathname: 'admin/books/real-book/c1-cover' });
@@ -85,6 +95,8 @@ try {
   assert.equal(afterCover.cover, cover.path);
   assert.match(cover.path, /^\/api\/product-cover\/real-book\/[a-f0-9]{12}$/);
   assert.equal(afterCover.blob, 'admin/books/real-book/c1-cover');
-  assert.equal((await sql`select count(*)::int n from events where type in ('admin.book.file_uploaded','admin.book.cover_uploaded')`)[0].n, 3);
+  await assert.rejects(recordBookCover(sql, { slug: 'real-book', bytes: png, pathname: 'admin/books/real-book/c2-cover' }), /Replace cover/);
+  await recordBookCover(sql, { slug: 'real-book', bytes: png, pathname: 'admin/books/real-book/c2-cover', replace: true });
+  assert.equal((await sql`select count(*)::int n from events where type in ('admin.book.file_uploaded','admin.book.cover_uploaded')`)[0].n, 4);
 } finally { await db.close(); }
-console.log('Admin sale: put on sale with checksum and audit, placeholder/missing/free/remote/author refusals, price edits keep release.');
+console.log('Admin sale: put on sale with checksum and audit, placeholder/missing/free/remote/author/wrong-type refusals, explicit replace for files and covers, price edits keep release.');

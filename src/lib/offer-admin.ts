@@ -45,7 +45,8 @@ export function parseOffer(f: FormData): OfferInput {
   if (code !== null && !/^[A-Z0-9-]{3,32}$/.test(code)) throw new OfferError("Codes are 3 to 32 letters, numbers or dashes.");
   const starts_at = india(text(f, "starts_at")), ends_at = india(text(f, "ends_at"));
   if (starts_at && ends_at && Date.parse(ends_at) <= Date.parse(starts_at)) throw new OfferError("The offer ends after it starts: check the dates.");
-  const status = text(f, "status") === "active" ? "active" : "draft";
+  // "paused" is kept when a paused offer is edited; anything unknown saves as a draft.
+  const status = (["active", "paused"] as const).find((s) => s === text(f, "status")) ?? "draft";
   return { id: text(f, "id") || undefined, name, kind, scope, targets: targets.filter(Boolean), value,
     cap: kind === "percent" ? paise(f, "cap", "Cap") : null, buy_qty, get_qty, get_percent: kind === "bxgy" ? int(f, "get_percent", 1, 100, "Get discount") ?? 100 : null,
     bundle_qty, bundle_price, min_items: int(f, "min_items", 0, 20, "Minimum products") ?? 0, min_subtotal: paise(f, "min_subtotal", "Minimum order") ?? 0,
@@ -91,7 +92,8 @@ export async function duplicateOffer(id: string): Promise<string> {
 }
 
 export async function listOffers(): Promise<Row[]> {
-  return await sql`select *, 0 as uses, to_json(starts_at)#>>'{}' as starts_at, to_json(ends_at)#>>'{}' as ends_at,
+  // Real redemption count, so an offer that reached its usage limit shows "Used up", not "Live".
+  return await sql`select *, (select count(*)::int from offer_redemptions r where r.offer_id = o.id) as uses, to_json(starts_at)#>>'{}' as starts_at, to_json(ends_at)#>>'{}' as ends_at,
       to_json(created_at)#>>'{}' as created_at, to_json(updated_at)#>>'{}' as updated_at
     from offers o order by (o.status = 'archived'), o.created_at desc` as Row[];
 }

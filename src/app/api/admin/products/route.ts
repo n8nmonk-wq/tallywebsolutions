@@ -8,6 +8,7 @@ import { PublishingError, readLimitedForm, releaseExistingBook } from '@/lib/sub
 import { ContentError, safeUrl, textField } from '@/lib/content';
 import { parseSale } from '@/lib/admin-catalogue';
 import { putOnSale, setRegularPrice, SaleError } from '@/lib/admin-sale';
+import { slugify } from '@/lib/slug';
 
 export const runtime = "nodejs";
 
@@ -76,9 +77,11 @@ export async function POST(req: Request) {
       list.set('notice', message);
       return NextResponse.redirect(new URL(`/admin/products?${list.toString().replace(/\+/g, "%20")}`, req.url), 303);
     }
-    const slug = textField(form.get('slug'), 101, true);
-    if (!SLUG.test(slug)) throw new PublishingError('Invalid product slug.');
     const action = form.get('action') ?? 'save';
+    // A new product's web address comes from its name unless the admin typed one.
+    let slug = textField(form.get('slug'), 101, action !== 'create');
+    if (action === 'create' && !slug) slug = slugify(textField(form.get('title'), 200, true));
+    if (!SLUG.test(slug)) throw new PublishingError(action === 'create' ? 'Use letters or numbers in the name, or type a web address like gst-party-finder.' : 'Invalid product slug.');
     if (action !== 'create' && action !== 'delete') back = `/admin/products/${encodeURIComponent(slug)}`;
     const allowed = action === 'release' ? ['action', 'slug', 'submission_id', 'reason', 'confirmed']
       : action === 'archive' || action === 'restore' ? ['action', 'slug', 'reason', 'confirmed']
@@ -128,12 +131,19 @@ export async function POST(req: Request) {
       if (!rows.length) throw new PublishingError('Visibility actions require an existing third-party publication.', 409);
     } else if (action === 'create') {
       const title = textField(form.get('title'), 200, true);
-      const rows = await sql`with created as (
-        insert into books(slug,title,price_inr,active,release_approved) values(${slug},${title},0,false,false)
-        on conflict (slug) do nothing returning slug
-      ), audit as (insert into events(order_id,type,payload) select null,'admin.book.created',jsonb_build_object('slug',slug) from created)
-      select slug from created`;
-      if (!rows.length) throw new PublishingError('A product with that slug already exists.', 409);
+      // Two products can share a name; the second gets -2, the third -3, and so on.
+      const base = slug;
+      let rows: Record<string, unknown>[] = [];
+      for (let n = 1; n <= 20 && !rows.length; n++) {
+        const candidate = n === 1 ? base : `${base.slice(0, 101 - String(n).length - 1)}-${n}`;
+        rows = await sql`with created as (
+          insert into books(slug,title,price_inr,active,release_approved) values(${candidate},${title},0,false,false)
+          on conflict (slug) do nothing returning slug
+        ), audit as (insert into events(order_id,type,payload) select null,'admin.book.created',jsonb_build_object('slug',slug) from created)
+        select slug from created`;
+        if (rows.length) slug = candidate;
+      }
+      if (!rows.length) throw new PublishingError('Too many products already use that web address. Type a different one.', 409);
     } else if (action === 'pricing') {
       const current = await sql`select price_inr from books where slug=${slug}` as { price_inr: number }[];
       if (!current.length) throw new PublishingError('Product not found.', 404);

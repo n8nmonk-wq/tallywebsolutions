@@ -28,5 +28,9 @@ const wildcard = await orders.listOrders(orders.parseOrderFilter({ q: '%' }), 50
 assert.equal(wildcard.total, 0, 'a percent sign is a literal, not a wildcard');
 const ranged = await orders.listOrders(orders.parseOrderFilter({ from: '2026-10-05', to: '2026-10-06' }), 50);
 assert.ok(ranged.rows.every(r => r.created_at >= '2026-10-05' && r.created_at < '2026-10-07'));
+// Filter dates are India dates: an order at 01:00 IST on 10 Nov (19:30 UTC on 9 Nov) belongs to 10 Nov.
+await db.query(`insert into orders(id,email,items,subtotal,total,status,created_at) values('ist-early','x@example.com','[]',100,100,'paid','2026-11-09T19:30:00Z')`);
+assert.deepEqual((await orders.listOrders(orders.parseOrderFilter({ from: '2026-11-10', to: '2026-11-10' }), 50)).rows.map(r => r.id), ['ist-early']);
+assert.equal((await orders.listOrders(orders.parseOrderFilter({ from: '2026-11-09', to: '2026-11-09' }), 50)).total, 0);
 await db.close();
 console.log('Admin order checks passed: filters, literal search, date range, pagination.');

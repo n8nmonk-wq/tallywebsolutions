@@ -184,6 +184,8 @@ try {
   assert.deepEqual(publicContent.collections[0].book_slugs, ['released-title', 'existing-title']);
   assert.equal(publicContent.authors.length, 0);
   let record = (await c.getAdminContent('modules')).find(r => r.id === 'm1');
+  // Admin screens get timestamps a browser can parse (the banner editor shows them in India time).
+  for (const r of await c.getAdminContent('modules')) for (const k of ['publish_at', 'ends_at']) if (r[k]) assert.ok(Number.isFinite(Date.parse(r[k])), `${k} ${r[k]} parses`);
   await c.saveContent('modules', 'm1', record.updated_at, { title: 'Updated copy', type: 'text', status: 'published' });
   await assert.rejects(c.saveContent('modules', 'm1', record.updated_at, { title: 'Stale copy', type: 'text' }));
   record = (await c.getAdminContent('modules')).find(r => r.id === 'm1');

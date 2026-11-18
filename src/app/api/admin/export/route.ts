@@ -9,7 +9,7 @@ export const runtime = "nodejs";
  * dependency for no gain.
  */
 const COLUMNS = [
-  "order_id", "name", "email", "phone", "book", "amount_inr", "status",
+  "order_id", "name", "email", "phone", "product", "amount_inr", "status",
   "invoice_no", "razorpay_payment_id", "created_at", "paid_at",
 ];
 

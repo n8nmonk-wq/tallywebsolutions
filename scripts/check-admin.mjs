@@ -23,12 +23,15 @@ try {
   // Create a draft product: it opens straight in its editor.
   await page.goto(`${base}/admin/products`);
   await page.getByText('Add product').click();
-  await page.getByLabel('Name').first().fill('Admin check title');
-  const draft = `admin-check-${Date.now()}`;
-  await page.getByLabel('Slug').first().fill(draft);
+  // The web address fills itself in from the name.
+  const stamp = Date.now();
+  const draftName = `Admin Check & Title ${stamp}`;
+  const draft = `admin-check-and-title-${stamp}`;
+  await page.getByLabel('Name').first().fill(draftName);
+  await expect(page.getByLabel('Web address')).toHaveValue(draft);
   await page.getByRole('button', { name: 'Create draft' }).click();
-  await expect(page).toHaveURL(new RegExp(`/admin/products/${draft}`));
-  await expect(page.getByRole('heading', { level: 1, name: 'Admin check title' })).toBeVisible();
+  await expect(page).toHaveURL(new RegExp(`/admin/products/${draft}\\?saved=1`));
+  await expect(page.getByRole('heading', { level: 1, name: draftName })).toBeVisible();
 
   // Every detail saved in admin must show on the storefront product page.
   const slug = 'demo-auto-narration-in-vouchers';
@@ -97,6 +100,34 @@ try {
   await page.getByRole('button', { name: 'Save' }).first().click();
   await page.goto(base);
   await expect(page.getByText('Expired banner check')).toHaveCount(0);
+  // A scheduled banner keeps its start and end when reopened and saved again.
+  await page.goto(`${base}/admin/banners`, { waitUntil: 'networkidle' });
+  await page.locator('summary', { hasText: 'New banner' }).click();
+  const fresh = page.locator('form', { has: page.getByRole('button', { name: 'Add banner' }) });
+  await fresh.getByLabel('Headline').fill('Schedule check');
+  await fresh.getByLabel('Starts (India time, optional)').fill('2030-01-05T09:30');
+  await fresh.getByLabel('Ends (India time, optional)').fill('2030-01-20T18:00');
+  await fresh.getByRole('button', { name: 'Add banner' }).click();
+  await expect(page.getByText('Saved. The homepage is updated.')).toBeVisible();
+  const row = page.locator('li', { hasText: 'Schedule check' });
+  await row.getByText('Edit').click();
+  await expect(row.getByLabel('Starts (India time, optional)')).toHaveValue('2030-01-05T09:30');
+  await expect(row.getByLabel('Ends (India time, optional)')).toHaveValue('2030-01-20T18:00');
+  await row.getByRole('button', { name: 'Save banner' }).click();
+  await page.locator('li', { hasText: 'Schedule check' }).getByText('Edit').click();
+  await expect(page.locator('li', { hasText: 'Schedule check' }).getByLabel('Starts (India time, optional)')).toHaveValue('2030-01-05T09:30');
+
+  // New category: the web address follows the name; adding one with a taken address is refused, not overwritten.
+  await page.goto(`${base}/admin/categories`, { waitUntil: 'networkidle' });
+  const add = page.locator('form', { has: page.getByRole('button', { name: 'Add category' }) });
+  await add.getByLabel('Name').fill('Payroll & HR');
+  await expect(add.getByLabel('Web address')).toHaveValue('payroll-and-hr');
+  await add.getByRole('button', { name: 'Add category' }).click();
+  await expect(page.getByText('Saved. The store is updated.')).toBeVisible();
+  await page.locator('form', { has: page.getByRole('button', { name: 'Add category' }) }).getByLabel('Name').fill('Payroll & HR');
+  await page.getByRole('button', { name: 'Add category' }).click();
+  await expect(page.getByText(/already exists/)).toBeVisible();
+
   assert.deepEqual(errors, []);
 } finally { await browser.close(); }
-console.log('Admin browser check passed: sign-in, every section, draft product, details reflected in store, save errors shown, visibility and bulk actions reflected in store, expired banner hidden.');
+console.log('Admin browser check passed: sign-in, every section, draft product, details reflected in store, save errors shown, visibility and bulk actions reflected in store, expired banner hidden, banner schedule kept, category address made from the name.');

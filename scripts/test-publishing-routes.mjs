@@ -55,6 +55,7 @@ try {
   dependencies['@/lib/submissions'] = await load('../src/lib/submissions.ts');
   dependencies['@/lib/content'] = await load('../src/lib/content.ts');
   dependencies['@/lib/product-status'] = await load('../src/lib/product-status.ts');
+  dependencies['@/lib/slug'] = await load('../src/lib/slug.ts');
   dependencies['@/lib/admin-catalogue'] = await load('../src/lib/admin-catalogue.ts');
   dependencies['@/lib/file-types'] = await load('../src/lib/file-types.ts');
   dependencies['@/lib/admin-sale'] = await load('../src/lib/admin-sale.ts');
@@ -64,6 +65,7 @@ try {
   dependencies['../ProductUpload'] = { default: () => null };
   dependencies['../StatusBadge'] = dependencies['./StatusBadge'] = await load('../src/app/admin/products/StatusBadge.tsx');
   dependencies['./ProductTable'] = await load('../src/app/admin/products/ProductTable.tsx');
+  dependencies['./CreateProduct'] = { default: () => null };
   const authorRoute = await load('../src/app/api/submissions/route.ts');
   const uploads = await load('../src/app/api/submissions/uploads/route.ts');
   const scanner = await load('../src/app/api/submissions/scan/route.ts');
@@ -258,6 +260,38 @@ try {
   assert.equal((await adminBooks.POST(form('/api/admin/products', { ...bookMetadata, file_format: 'EPUB' }))).status, 303);
   assert.equal((await db.query("select release_approved from books where slug='existing-firstparty'")).rows[0].release_approved, false, 'changing the file format needs a new release');
   assert.equal((await adminBooks.POST(form('/api/admin/products', releaseForm))).status, 303);
+  // New products get their web address from the name; a repeated name gets -2, -3.
+  const { slugify } = dependencies['@/lib/slug'];
+  assert.equal(slugify('HSN & SAC Code with GST Rate in Invoice'), 'hsn-and-sac-code-with-gst-rate-in-invoice');
+  assert.equal(slugify('Stop Cash Transaction above ₹10,000'), 'stop-cash-transaction-above-rs-10-000');
+  assert.equal(slugify('  Café — Résumé!! '), 'cafe-resume');
+  const created = await adminBooks.POST(form('/api/admin/products', { action: 'create', title: 'Auto Slug Check', slug: '' }));
+  assert.equal(created.status, 303);
+  assert.match(created.headers.get('location'), /\/admin\/products\/auto-slug-check\?saved=1$/);
+  const again = await adminBooks.POST(form('/api/admin/products', { action: 'create', title: 'Auto Slug Check' }));
+  assert.match(again.headers.get('location'), /\/admin\/products\/auto-slug-check-2\?saved=1$/, 'same name gets a numbered address');
+  assert.equal((await adminBooks.POST(form('/api/admin/products', { action: 'create', title: '!!!' }))).status, 400, 'a name with no letters needs a typed address');
+  await db.query("delete from books where slug in ('auto-slug-check','auto-slug-check-2')");
+  // Admin product files: an attached file or cover is only replaced on purpose.
+  const productFiles = await load('../src/app/api/admin/product-files/route.ts');
+  await db.query("insert into books(slug,title,price_inr) values('no-file-yet','No file yet',100)");
+  const attachedUrl = (await db.query("select file_url from books where slug='existing-firstparty'")).rows[0].file_url;
+  assert.ok(attachedUrl, 'fixture product has a file');
+  const stray = await productFiles.POST(json('/api/admin/product-files', { action: 'ticket', slug: 'existing-firstparty', kind: 'pdf' }));
+  assert.equal(stray.status, 409);
+  assert.match((await stray.json()).error, /already has a file\. Use Replace file/);
+  assert.equal((await productFiles.POST(json('/api/admin/product-files', { action: 'ticket', slug: 'existing-firstparty', kind: 'pdf', replace: true }))).status, 200);
+  assert.equal((await productFiles.POST(json('/api/admin/product-files', { action: 'ticket', slug: 'no-file-yet', kind: 'pdf' }))).status, 200, 'first upload needs no confirmation');
+  assert.equal((await productFiles.POST(json('/api/admin/product-files', { action: 'ticket', slug: 'no-file-yet', kind: 'cover' }))).status, 200);
+  // Put on sale is refused without a file, and the edit page says why.
+  assert.equal((await adminBooks.POST(form('/api/admin/products', { action: 'price', slug: 'no-file-yet', price: '5' }))).status, 303);
+  assert.equal((await adminBooks.POST(form('/api/admin/products', { action: 'put-on-sale', slug: 'no-file-yet' }))).status, 409);
+  assert.equal((await db.query("select release_approved from books where slug='no-file-yet'")).rows[0].release_approved, false);
+  const noFileMarkup = await edit('no-file-yet');
+  assert.match(noFileMarkup, /Before it can go on sale/);
+  assert.match(noFileMarkup, /Upload the product file\./);
+  assert.match(noFileMarkup, /<button[^>]*disabled=""[^>]*>.*Put on sale/s);
+  await db.query("delete from books where slug='no-file-yet'");
   admin = false;
   assert.equal((await assets.GET(new Request(origin), { params: Promise.resolve({ id: registered[0].id }) })).status, 404);
   assert.equal((await assets.GET(new Request(origin), { params: Promise.resolve({ id: registered[1].id }) })).status, 200);

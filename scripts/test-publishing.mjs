@@ -12,7 +12,7 @@ async function load(path, database = '() => { throw new Error("Unexpected databa
 }
 const s = await load('../src/lib/submissions.ts');
 for (const slug of ['a'.repeat(102), 'a'.repeat(120), 'a'.repeat(121)]) {
-  await assert.rejects(s.releaseSubmission('test-submission', 1, slug), error => error instanceof s.PublishingError && error.status === 400 && error.message === 'Invalid book slug.');
+  await assert.rejects(s.releaseSubmission('test-submission', 1, slug), error => error instanceof s.PublishingError && error.status === 400 && error.message === 'Invalid product slug.');
 }
 const approved = { status: 'approved', ownership_declared: true, rights_approved: true, commercial_approved: true, assets: [{ kind: 'manuscript', scan_status: 'clean', reviewed: true }, { kind: 'cover', scan_status: 'clean', reviewed: true }] };
 assert.equal(s.canRelease(approved), true);

@@ -152,7 +152,7 @@ export async function releaseExistingBook(id: string, slug: string, reason: stri
   return releaseReviewedSubmission(id, null, slug, reason.trim());
 }
 async function releaseReviewedSubmission(id: string, version: number | null, slug: string, reason: string | null) {
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 101) throw new PublishingError("Invalid book slug.");
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 101) throw new PublishingError("Invalid product slug.");
   const existing = reason !== null;
   const rows = await sql`with target as (
     select slug,submission_id from books where ${existing} and slug=${slug} and not third_party for update

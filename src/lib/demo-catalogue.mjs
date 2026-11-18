@@ -59,7 +59,7 @@ export function demoCatalogue(now = new Date()) {
       books.push({
         slug: `demo-${slugify(title)}`, title, category_slug: slug, authorship: author.name, author_slug: author.id,
         description: `${title} is a preview listing used to show the store at full scale. It is not a real add-on.`,
-        cover: demoCover(title, author.name, n), price_inr: price,
+        cover: null, price_inr: price, // like live products: no uploaded cover, so the store shows the software tile
         sale_price_inr: n % 3 === 0 ? Math.round(price * 0.8 / 100) * 100 : null,
         release_date: n % 11 === 0 ? day(10 + n) : day(-30 - n), language: LANGUAGES[n % LANGUAGES.length],
         file_format: 'PDF', pages: null, year: 2020 + (n % 6),

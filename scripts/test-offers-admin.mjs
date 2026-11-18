@@ -23,6 +23,8 @@ assert.throws(() => admin.parseOffer(form({ ...base, kind: 'bundle', value: '0' 
 assert.throws(() => admin.parseOffer(form({ ...base, starts_at: '2026-10-20T10:00', ends_at: '2026-10-19T10:00' })), /ends after it starts/);
 assert.throws(() => admin.parseOffer(form({ ...base, code: 'x' })), /3 to 32/);
 assert.throws(() => admin.parseOffer(form({ ...base, scope: 'books' })), /Choose at least one/);
+assert.equal(admin.parseOffer(form({ ...base, status: 'paused' })).status, 'paused', 'editing a paused offer keeps it paused');
+assert.equal(admin.parseOffer(form({ ...base, status: 'weird' })).status, 'draft');
 const parsed = admin.parseOffer(form({ ...base, kind: 'flat', value: '50', min_subtotal: '199', code: ' fest-50 ', starts_at: '2026-10-20T10:00', scope: 'books', book_slugs: ['a', 'b'] }));
 assert.equal(parsed.value, 5000, 'flat rupees become paise'); assert.equal(parsed.min_subtotal, 19900);
 assert.equal(parsed.code, 'FEST-50'); assert.deepEqual(parsed.targets, ['a', 'b']);

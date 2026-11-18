@@ -10,15 +10,15 @@ export default async function ReviewPage() {
   const submissions = await getReviewSubmissions();
   const events = await sql`select submission_id,action,actor_id,created_at from publishing_audit where submission_id is not null order by id desc limit 100`;
   return <section>
-    {!submissions.length && <p className="text-sm text-ink-soft">No author submissions yet.</p>}
+    {!submissions.length && <p className="text-sm text-ink-soft">No developer submissions yet.</p>}
     {submissions.map(s => <article key={s.id} className="mb-8 border-b border-line pb-8">
       <div className="mb-3 flex flex-wrap items-baseline justify-between gap-3"><h2 className="break-words text-xl font-medium">{s.title}</h2><p className="text-sm capitalize">{s.status.replaceAll("_", " ")}</p></div>
-      <p className="mb-3 text-sm">{s.author_name} · Proposed price: {(s.price_inr / 100).toFixed(2)} INR{s.isbn ? ` · ISBN ${s.isbn}` : ""}</p>
+      <p className="mb-3 text-sm">{s.author_name} · Proposed price: {(s.price_inr / 100).toFixed(2)} INR</p>
       <p className="mb-3 text-sm">{s.ownership_declared && s.ownership_declared_at ? `Ownership declared ${new Date(s.ownership_declared_at).toISOString()}` : "Ownership declaration pending"}</p>
       <p className="mb-5 whitespace-pre-wrap break-words text-sm text-ink-soft">{s.description}</p>
       <div className="mb-5 grid gap-3">{s.assets.map(a => <div key={a.id} className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-3 text-sm">
-        <span className="capitalize">{a.kind} · {(a.size_bytes / 1024 / 1024).toFixed(1)} MB · {a.scan_status}{a.reviewed ? " · reviewed" : ""}</span>
-        {a.scan_status === "clean" && <a className="underline" href={`/api/submissions/assets/${a.id}`} target="_blank" rel="noopener noreferrer">Open {a.kind}</a>}
+        <span className="capitalize">{a.kind === "manuscript" ? "Product file" : a.kind} · {(a.size_bytes / 1024 / 1024).toFixed(1)} MB · {a.scan_status}{a.reviewed ? " · reviewed" : ""}</span>
+        {a.scan_status === "clean" && <a className="underline" href={`/api/submissions/assets/${a.id}`} target="_blank" rel="noopener noreferrer">Open {a.kind === "manuscript" ? "product file" : a.kind}</a>}
         {a.scan_status === "clean" && ["in_review", "approved"].includes(s.status) && <ActionForm action="/api/admin/platform/review"><Identity s={s} /><input type="hidden" name="asset_id" value={a.id} /><input type="hidden" name="action" value="review_asset" /><div className="flex flex-wrap items-center gap-3"><label className="flex items-center gap-2"><input type="checkbox" name="reviewed" defaultChecked={a.reviewed} />Accept asset</label><button type="submit" className="btn btn-ghost"><Check size={16} aria-hidden />Save</button></div></ActionForm>}
       </div>)}</div>
       {s.status === "submitted" && <ActionForm action="/api/admin/platform/review"><Identity s={s} /><button name="action" value="review" className="btn btn-primary justify-self-start"><Search size={16} aria-hidden />Start review</button></ActionForm>}

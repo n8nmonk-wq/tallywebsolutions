@@ -24,9 +24,12 @@ assert.deepEqual(L.filterBooks(books, all, { categoryFamily: ['fiction', 'crime'
 assert.deepEqual(L.filterBooks(books, { ...all, sort: 'popular' }, { popularity: ['delta', 'beta'] }).map(x => x.slug).slice(0, 2), ['delta', 'beta']);
 
 const f = L.facets(books, { ...all, language: 'Hindi' }, [{ slug: 'fiction', name: 'Fiction' }, { slug: 'crime', name: 'Crime' }, { slug: 'science', name: 'Science' }]);
-const lang = f.find(x => x.key === 'language');
-assert.deepEqual(lang.options.map(o => [o.value, o.count, o.active]), [['English', 3, false], ['Hindi', 1, true]], 'own facet ignores its own filter');
-assert.deepEqual(f.find(x => x.key === 'category').options.map(o => [o.value, o.count]), [['fiction', 1]], 'other facets respect active language');
+assert.equal(f.find(x => x.key === 'language'), undefined, 'software has no language filter in the sidebar');
+assert.equal(f.find(x => x.key === 'author').title, 'Developer');
+assert.deepEqual(f.find(x => x.key === 'category').options.map(o => [o.value, o.count]), [['fiction', 1]], 'facets still respect a language in old links');
+const byFormat = L.facets(books, { ...all, format: 'EPUB' }, [{ slug: 'fiction', name: 'Fiction' }, { slug: 'crime', name: 'Crime' }]);
+const fmt = byFormat.find(x => x.key === 'format').options;
+assert.ok(fmt.find(o => o.value === 'EPUB').active && fmt.length > 1, 'own facet ignores its own filter');
 
 const pages = L.paginate(Array.from({ length: 50 }, (_, i) => i), 9, 24);
 assert.deepEqual([pages.page, pages.pages, pages.total, pages.items.length], [3, 3, 50, 2], 'page clamps to the last page');

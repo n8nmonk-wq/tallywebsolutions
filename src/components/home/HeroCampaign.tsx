@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, CircleCheck, Pause, Play } from "lucide-reac
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
 import type { Banner } from "@/lib/home";
-import Book3D from "../motion/Book3D";
+import ProductTile from "../ProductTile";
 
 type HeroCover = { slug: string; title: string; cover: string | null };
 
@@ -66,7 +66,7 @@ export default function HeroCampaign({ banners, covers }: { banners: Banner[]; c
           </div>
           {i === index && shown.length > 0 && <div className="hero-stage" aria-hidden="true">{shown.map((c, k) =>
             <Link key={c.slug} href={`/products/${encodeURIComponent(c.slug)}`} tabIndex={-1} className={`hero-cover c${k}`}>
-              <Book3D src={c.cover} title={c.title} sizes="(max-width: 900px) 34vw, 200px" priority={k === 0} /></Link>)}</div>}
+              <ProductTile src={c.cover} title={c.title} sizes="(max-width: 900px) 44vw, 300px" priority={k === 0} /></Link>)}</div>}
         </div>
       </div>;
     })}

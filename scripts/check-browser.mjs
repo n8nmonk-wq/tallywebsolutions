@@ -146,7 +146,7 @@ for (const [name, engine] of Object.entries({ chromium, firefox, webkit })) {
       await live.keyboard.press('Escape');
       await live.locator('[data-book-card] .card-title a').first().click();
       await live.waitForURL(/\/books\//);
-      await expect(live.locator('.product-page .book3d').first()).toBeVisible();
+      await expect(live.locator('.product-page .ptile').first()).toBeVisible();
       await moving.close();
     }
     await context.close();

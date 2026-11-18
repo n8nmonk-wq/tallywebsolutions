@@ -46,7 +46,7 @@ export default async function OffersPage({ searchParams }: { searchParams: Promi
   ]);
   const titles = new Map([...books.map((b) => [b.slug, b.title] as const), ...collections.map((c) => [c.slug, c.name] as const), ...categories.map((c) => [c.slug, c.name] as const)]);
   const target = (o: Offer) => o.scope === "all" ? "All add-ons" : o.scope === "order" ? "Whole order"
-    : `${o.scope === "books" ? "" : o.scope === "collection" ? "Collection: " : "Subject: "}${o.targets.slice(0, 3).map((t) => titles.get(t) ?? t).join(", ")}${o.targets.length > 3 ? ` +${o.targets.length - 3}` : ""}`;
+    : `${o.scope === "books" ? "" : o.scope === "collection" ? "Collection: " : "Category: "}${o.targets.slice(0, 3).map((t) => titles.get(t) ?? t).join(", ")}${o.targets.length > 3 ? ` +${o.targets.length - 3}` : ""}`;
   const action = (o: Offer, name: string, label: string, Icon: typeof Pause) => <form action="/api/admin/offers" method="post">
     <input type="hidden" name="action" value={name} /><input type="hidden" name="id" value={o.id} />
     <button className="btn btn-ghost !min-h-9 !px-3 !py-1.5 text-sm" type="submit"><Icon size={14} aria-hidden="true" />{label}</button></form>;

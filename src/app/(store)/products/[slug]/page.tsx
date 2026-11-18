@@ -11,7 +11,7 @@ import { publicBook, visibleBook } from "@/components/book-data";
 import AddToCart from "@/components/AddToCart";
 import BookCard from "@/components/BookCard";
 import Carousel from "@/components/Carousel";
-import Book3D from "@/components/motion/Book3D";
+import ProductTile from "@/components/ProductTile";
 import Morph, { morphName } from "@/components/motion/Morph";
 import SampleViewer from "@/components/product/SampleViewer";
 import Price from "@/components/Price";
@@ -66,7 +66,7 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
       <nav className="crumbs" aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">/</span>{category && <><Link href={`/category/${category.slug}`}>{category.name}</Link><span aria-hidden="true">/</span></>}<span aria-current="page">{book.title}</span></nav>
       <article className="product-main">
         <div className="product-gallery">
-          <div className="gallery-stage plate surface-lit"><Morph name={morphName(book.slug)}><Book3D src={book.cover} title={book.title} sizes="(max-width: 900px) 70vw, 320px" priority /></Morph></div>
+          <div className="gallery-stage plate surface-lit"><Morph name={morphName(book.slug)}><ProductTile src={book.cover} title={book.title} sizes="(max-width: 900px) 90vw, 440px" priority /></Morph></div>
           {sample && <SampleViewer href={sample} title={book.title} />}
         </div>
         <div className="product-info enter">

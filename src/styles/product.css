@@ -5,7 +5,6 @@
   .product-main { display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: 32px 56px; align-items: start; }
   .product-gallery { position: sticky; top: 130px; display: grid; gap: 14px; }
   .gallery-stage { display: grid; place-items: center; padding: 48px 40px 56px; border: 1px solid var(--line); border-radius: 22px; }
-  .gallery-stage .book3d { width: min(300px, 80%); }
   .sample-btn { justify-self: center; }
   .product-info { display: flex; flex-direction: column; gap: 16px; min-width: 0; padding-top: 6px; }
   .title-row { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
@@ -39,7 +38,6 @@
     .product-main { grid-template-columns: 1fr; }
     .product-gallery { position: static; }
     .gallery-stage { padding: 24px; }
-    .gallery-stage .book3d { width: min(190px, 60%); }
   }
   .offer-chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .offer-chips li { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px dashed #7fcb93; border-radius: 999px; background: #f1faf4; color: #1a5a2b; font-size: 14px; font-weight: 500; }

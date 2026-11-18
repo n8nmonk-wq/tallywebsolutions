@@ -9,7 +9,7 @@ assert.ok(data.categories.length >= 7);
 assert.ok(data.books.length >= 60);
 assert.equal(new Set(data.books.map(b => b.slug)).size, data.books.length);
 for (const book of data.books) {
-  assert.match(book.cover, /^data:image\/svg\+xml;utf8,/);
+  assert.equal(book.cover, null, 'demo products use the software tile, like live products without a cover');
   assert.equal(book.facts._demo, 'true');
   assert.ok(book.sale_price_inr == null || book.sale_price_inr < book.price_inr);
 }

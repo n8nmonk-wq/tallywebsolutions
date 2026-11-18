@@ -4,14 +4,14 @@ import AddToCart from "./AddToCart";
 import Price from "./Price";
 import QuickView from "./QuickView";
 import WishlistButton from "./WishlistButton";
-import Book3D from "./motion/Book3D";
+import ProductTile from "./ProductTile";
 import Morph, { morphName } from "./motion/Morph";
 import { isStoreOwned } from "@/lib/store";
 
 const href = (book: PublicBook) => `/products/${encodeURIComponent(book.slug)}`;
 
 export default function BookCard({ book, enabled, morph = true }: { book: PublicBook; index?: number; enabled: boolean; morph?: boolean }) {
-  const cover = <Book3D src={book.cover} title={book.title} sizes="(max-width: 640px) 42vw, 180px" />;
+  const cover = <ProductTile src={book.cover} title={book.title} sizes="(max-width: 640px) 46vw, 260px" />;
   const off = book.onSale && book.regular > 0 ? Math.round((book.saving / book.regular) * 100) : 0;
   return <article className="book-card surface surface-hover surface-lit" data-book-card>
     <div className="card-plate plate">

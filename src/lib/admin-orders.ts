@@ -20,12 +20,12 @@ export async function listOrders(f: OrderFilter, pageSize = 25) {
   // The neon tagged template cannot nest fragments, so the same predicate appears in both queries.
   const rows = await sql`select id,name,email,total,status,created_at::text,items from orders
     where (${like}::text is null or lower(id) like ${like} or lower(email) like ${like} or lower(coalesce(name,'')) like ${like})
-      and (${status}::text is null or status = ${status}) and (${from}::date is null or created_at >= ${from}::date)
-      and (${to}::date is null or created_at < ${to}::date + 1)
+      and (${status}::text is null or status = ${status}) and (${from}::date is null or created_at >= (${from}::date::timestamp at time zone 'Asia/Kolkata'))
+      and (${to}::date is null or created_at < ((${to}::date + 1)::timestamp at time zone 'Asia/Kolkata'))
     order by created_at desc limit ${pageSize} offset ${(f.page - 1) * pageSize}` as AdminOrderRow[];
   const counted = await sql`select count(*)::int as n from orders
     where (${like}::text is null or lower(id) like ${like} or lower(email) like ${like} or lower(coalesce(name,'')) like ${like})
-      and (${status}::text is null or status = ${status}) and (${from}::date is null or created_at >= ${from}::date)
-      and (${to}::date is null or created_at < ${to}::date + 1)` as { n: number }[];
+      and (${status}::text is null or status = ${status}) and (${from}::date is null or created_at >= (${from}::date::timestamp at time zone 'Asia/Kolkata'))
+      and (${to}::date is null or created_at < ((${to}::date + 1)::timestamp at time zone 'Asia/Kolkata'))` as { n: number }[];
   return { rows, total: counted[0].n };
 }
