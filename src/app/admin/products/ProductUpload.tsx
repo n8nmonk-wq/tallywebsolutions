@@ -39,9 +39,11 @@ export default function ProductUpload({ slug, kind, attached, onSale = false }: 
     const replace = !!attached;
     setBusy(true);
     try {
+      let sending = true;
       const ticket = await post({ action: "ticket", slug, kind, replace });
       await put(ticket.pathname, file, { access: "private", token: ticket.token, contentType: isFile ? FILE_TYPES[fileType!].contentType : file.type,
-        onUploadProgress: ({ percentage }) => setStatus(`Uploading ${Math.round(percentage)}%`) });
+        onUploadProgress: ({ percentage }) => { if (sending) setStatus(`Uploading ${Math.round(percentage)}%`); } });
+      sending = false; // a late, throttled progress event must not overwrite the messages below
       setStatus("Checking the file...");
       await post({ action: "finalize", slug, kind, fileType, pathname: ticket.pathname, name: file.name, replace });
       setStatus(isFile ? `${file.name} saved. Put the product on sale when ready.` : "Cover saved.");

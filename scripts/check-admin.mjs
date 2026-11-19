@@ -124,6 +124,7 @@ try {
   await expect(add.getByLabel('Web address')).toHaveValue('payroll-and-hr');
   await add.getByRole('button', { name: 'Add category' }).click();
   await expect(page.getByText('Saved. The store is updated.')).toBeVisible();
+  await page.waitForLoadState('networkidle');
   await page.locator('form', { has: page.getByRole('button', { name: 'Add category' }) }).getByLabel('Name').fill('Payroll & HR');
   await page.getByRole('button', { name: 'Add category' }).click();
   await expect(page.getByText(/already exists/)).toBeVisible();

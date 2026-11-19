@@ -29,9 +29,11 @@ export default function ImageField({ name, label, value = "", hint, ratio = "16 
     if (!TYPES.includes(file.type)) { setError("Choose a JPEG, PNG or WebP image."); return; }
     setBusy(true);
     try {
+      let sending = true;
       const ticket = await post({ action: "ticket" });
       await put(ticket.pathname, file, { access: "private", token: ticket.token, contentType: file.type,
-        onUploadProgress: ({ percentage }) => setStatus(`Uploading ${Math.round(percentage)}%`) });
+        onUploadProgress: ({ percentage }) => { if (sending) setStatus(`Uploading ${Math.round(percentage)}%`); } });
+      sending = false; // a late, throttled progress event must not overwrite the messages below
       setStatus("Checking the image...");
       const { url: saved } = await post({ action: "finalize", pathname: ticket.pathname });
       setUrl(saved);
