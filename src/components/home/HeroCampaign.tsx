@@ -10,7 +10,7 @@ import ProductTile from "../ProductTile";
 type HeroCover = { slug: string; title: string; cover: string | null };
 
 export const DEFAULT_SLIDE: Banner = { id: "default", title: "Tally add-ons, delivered instantly", subtitle: "Digital downloads",
-  body: "TDL source code and GST add-ons for TallyPrime. Pay once, use with lifetime validity.", image: null, mobileImage: null, href: "/search", label: "Browse add-ons", theme: "forest" };
+  body: "TDL source code and GST add-ons for TallyPrime. Pay once, use with lifetime validity.", image: null, mobileImage: null, href: "/search", label: "Browse add-ons", theme: "forest", placement: "hero" };
 
 // The last two words of a headline carry the brand gradient, so admin banners get it without markup.
 export function splitAccent(title: string): [string, string] {
@@ -51,7 +51,7 @@ export default function HeroCampaign({ banners, covers }: { banners: Banner[]; c
     onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onFocus={() => setHover(true)} onBlur={() => setHover(false)}>
     {slides.map((s, i) => {
       const [lead, accent] = splitAccent(s.title);
-      return <div key={s.id} className="hero-slide" hidden={i !== index} role={many ? "group" : undefined}
+      return <div key={s.id} className={`hero-slide${s.image ? " has-art" : ""}`} hidden={i !== index} role={many ? "group" : undefined}
         aria-roledescription={many ? "slide" : undefined} aria-label={many ? `${i + 1} of ${slides.length}` : undefined}>
         {s.image && <picture className="hero-art" aria-hidden="true">{s.mobileImage && <source media="(max-width: 640px)" srcSet={s.mobileImage} />}
           <img src={s.image} alt="" fetchPriority={i === 0 ? "high" : undefined} /></picture>}
@@ -64,7 +64,7 @@ export default function HeroCampaign({ banners, covers }: { banners: Banner[]; c
               <Link className="btn btn-ghost" href="/publish">Sell with us</Link></div>
             <ul className="ticks">{TICKS.map(([strong, rest]) => <li key={strong}><CircleCheck size={16} aria-hidden="true" /><span><strong>{strong}</strong> {rest}</span></li>)}</ul>
           </div>
-          {i === index && shown.length > 0 && <div className="hero-stage" aria-hidden="true">{shown.map((c, k) =>
+          {i === index && !s.image && shown.length > 0 && <div className="hero-stage" aria-hidden="true">{shown.map((c, k) =>
             <Link key={c.slug} href={`/products/${encodeURIComponent(c.slug)}`} tabIndex={-1} className={`hero-cover c${k}`}>
               <ProductTile src={c.cover} title={c.title} sizes="(max-width: 900px) 44vw, 300px" priority={k === 0} /></Link>)}</div>}
         </div>

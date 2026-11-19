@@ -5,7 +5,7 @@ import { contentUrl, publicModules } from "@/components/content-data";
 
 export type HomeInput = { books: PublicBook[]; categories: Category[]; modules: ContentModule[]; bestsellers: string[];
   authors: { id: string; name: string; photo_url: string | null }[]; now: Date };
-export type Banner = { id: string; title: string; body: string | null; subtitle: string | null; image: string | null; mobileImage: string | null; href: string | null; label: string | null; theme: string };
+export type Banner = { id: string; title: string; body: string | null; subtitle: string | null; image: string | null; mobileImage: string | null; href: string | null; label: string | null; theme: string; placement: "hero" | "side-1" | "side-2" };
 export type Promo = { id: string; title: string; href: string | null; image: string | null; theme: string; size: "large" | "small"; books: PublicBook[] };
 type RailKey = "bestsellers" | "new" | "offers" | "soon";
 export type Home = ReturnType<typeof buildHome>;
@@ -13,9 +13,13 @@ const str = (v: unknown) => (typeof v === "string" && v ? v : null);
 
 export function buildHome({ books, categories, modules, bestsellers, authors, now }: HomeInput) {
   const live = publicModules(modules, now);
-  const banners: Banner[] = live.filter((m) => m.type === "banner" || m.type === "hero").map((m) => ({
+  const placed: Banner[] = live.filter((m) => m.type === "banner" || m.type === "hero").map((m) => ({
     id: m.id, title: m.title, body: m.body, subtitle: str(m.payload.subtitle), image: contentUrl(m.image_url), mobileImage: contentUrl(m.mobile_image_url),
-    href: contentUrl(m.link_url), label: m.link_label, theme: str(m.payload.theme) ?? "yellow" }));
+    href: contentUrl(m.link_url), label: m.link_label, theme: str(m.payload.theme) ?? "yellow",
+    placement: m.payload.placement === "side-1" || m.payload.placement === "side-2" ? m.payload.placement : "hero" }));
+  // Hero slides rotate; each side card shows its first live banner (or a product when there is none).
+  const banners = placed.filter((b) => b.placement === "hero");
+  const sideBanners = { first: placed.find((b) => b.placement === "side-1") ?? null, second: placed.find((b) => b.placement === "side-2") ?? null };
   const promos: Promo[] = live.filter((m) => m.type === "promo").map((m) => {
     const size = m.payload.size === "large" ? "large" : "small";
     const category = str(m.payload.category_slug);
@@ -50,5 +54,5 @@ export function buildHome({ books, categories, modules, bestsellers, authors, no
   const categoryTiles = categories.filter((c) => inCategory(c.slug).length).slice(0, 12).map((c) => ({ slug: c.slug, name: c.name, colour: c.colour, count: inCategory(c.slug).length,
     image: contentUrl(c.image_url), covers: inCategory(c.slug).flatMap((b) => b.cover ? [b.cover] : []).slice(0, 3) }));
   const withBooks = new Set(books.map((b) => b.author_slug).filter(Boolean));
-  return { banners, promos, rails, genres, languages, categoryTiles, authors: authors.filter((a) => withBooks.has(a.id)).slice(0, 10) };
+  return { banners, sideBanners, promos, rails, genres, languages, categoryTiles, authors: authors.filter((a) => withBooks.has(a.id)).slice(0, 10) };
 }

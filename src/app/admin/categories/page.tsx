@@ -3,6 +3,7 @@ import { isAdmin } from "@/lib/admin-auth";
 import { sql } from "@/lib/db";
 import AdminShell from "@/components/AdminShell";
 import NameAndSlug from "./NameAndSlug";
+import ImageField from "@/components/ImageField";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Categories", robots: { index: false, follow: false } };
@@ -22,7 +23,7 @@ export default async function Categories({ searchParams }: { searchParams: Promi
     <label className="text-sm">Parent<select name="parent_slug" className="field-input mt-1" defaultValue={c?.parent_slug ?? ""}><option value="">None</option>
       {rows.filter((r) => r.slug !== c?.slug).map((r) => <option key={r.slug} value={r.slug}>{r.name}</option>)}</select></label>
     <label className="text-sm">Colour<input name="colour" type="color" className="field-input mt-1 h-[46px]" defaultValue={c?.colour ?? "#FFD93D"} /></label>
-    <label className="text-sm sm:col-span-2">Image URL<input name="image_url" maxLength={2000} className="field-input mt-1" defaultValue={c?.image_url ?? ""} /></label>
+    <div className="sm:col-span-2"><ImageField name="image_url" label="Category image (optional)" value={c?.image_url ?? ""} ratio="16 / 9" hint="Shown on the homepage category tile, about 800 × 450. JPEG, PNG or WebP, up to 5 MB." /></div>
     <label className="text-sm">Order<input name="sort" type="number" className="field-input mt-1" defaultValue={c?.sort ?? 0} /></label>
     <label className="text-sm">Status<select name="status" className="field-input mt-1" defaultValue={c?.status ?? "published"}><option value="published">Published</option><option value="draft">Draft</option><option value="archived">Archived</option></select></label>
     <button className="btn btn-primary sm:col-span-4 justify-self-start" type="submit">{c ? "Save category" : "Add category"}</button>

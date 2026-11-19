@@ -28,10 +28,10 @@ export default async function Home() {
   return <>
     <div className="wrap home-top">
       <HeroCampaign banners={home.banners} covers={covers} />
-      <HomeSide books={books} />
+      <HomeSide books={books} banners={home.sideBanners} />
     </div>
     <ShopStrip />
-    <CategoryTiles tiles={home.categoryTiles.map(({ slug, name, count, covers: c }) => ({ slug, name, count, covers: c }))} />
+    <CategoryTiles tiles={home.categoryTiles.map(({ slug, name, count, image, covers: c }) => ({ slug, name, count, image, covers: c }))} />
     <Featured books={books} rails={home.rails} enabled={enabled} />
     <LookInside books={books} />
     <LanguageStrip languages={home.languages} />

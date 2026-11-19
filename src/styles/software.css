@@ -1,52 +1,94 @@
-/* Products are software, not books: every cover is a landscape tile with rounded corners, like an app or a screen.
-   Loaded last so it settles the shape everywhere a cover appears (cards, product page, hero, side cards, cart). */
+/* Products are software, not books. Product images are landscape (4:3) with rounded corners; without an uploaded
+   image a quiet placeholder shows the add-on's icon. Banner areas show the admin's uploaded artwork, never generated art.
+   Loaded last so it settles these shapes everywhere. */
 
-/* The tile frame. An uploaded cover image fills it edge to edge. */
-.ptile { position: relative; display: block; width: 100%; border-radius: 16px;
-  box-shadow: 0 18px 34px -24px rgb(20 20 60 / .55); transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out); }
-a:hover > .ptile, a:hover .ptile, .ptile:hover { transform: translateY(-3px); box-shadow: 0 26px 40px -26px rgb(20 20 60 / .6); }
-.ptile > img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 16px; border: 1px solid var(--line); background: var(--bg-2); }
-.ptile.has-art 
-/* No uploaded cover: a brand tile with a window bar, a faint grid and the add-on's icon in an app-style chip. */
-.cover-product { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: auto; aspect-ratio: 4 / 3; padding: 0; overflow: hidden;
-  border-radius: 16px; color: #fff;
-  background: radial-gradient(90% 75% at 15% 0%, rgb(125 127 224 / .5) 0%, transparent 60%), linear-gradient(155deg, var(--brand) 0%, var(--brand-deep) 100%);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .08); }
-.cover-product::before { content: ""; position: absolute; inset: 0; pointer-events: none;
-  background-image: linear-gradient(rgb(255 255 255 / .07) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / .07) 1px, transparent 1px);
-  background-size: 22px 22px; mask-image: radial-gradient(75% 75% at 50% 45%, #000 30%, transparent 100%); }
-.cover-product-bar { position: absolute; top: 9%; left: 6%; display: flex; gap: 5px; }
-.cover-product-bar i { width: 7px; height: 7px; border-radius: 50%; background: rgb(255 255 255 / .3); }
-.cover-product-chip { position: relative; display: flex; align-items: center; justify-content: center; flex: 0 0 30%; width: 30%; max-width: 120px; aspect-ratio: 1; border-radius: 24%;
-  background: linear-gradient(160deg, rgb(255 255 255 / .2), rgb(255 255 255 / .06)); border: 1px solid rgb(255 255 255 / .22);
-  box-shadow: 0 12px 26px -14px rgb(0 0 0 / .6), inset 0 1px 0 rgb(255 255 255 / .2); }
-.cover-product-icon { width: 50%; height: auto; aspect-ratio: 1; color: #fff; stroke-width: 1.6; opacity: 1; }
+/* Product image frame. An uploaded image fills it. */
+.ptile { position: relative; display: block; width: 100%; border-radius: 14px; transition: transform .3s var(--ease-out); }
+a:hover > .ptile, a:hover .ptile { transform: translateY(-2px); }
+.ptile > img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; border: 1px solid var(--line); background: var(--bg-2); }
 
-/* Cards: the tile spans the card, so every row lines up. */
+/* No uploaded image yet: a light, neutral placeholder with the add-on's icon on a small white chip. */
+.cover-product { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: auto; aspect-ratio: 4 / 3;
+  padding: 0; overflow: hidden; border-radius: 14px; border: 1px solid var(--line); background: var(--bg-2); color: var(--brand); box-shadow: none; }
+.cover-product::before, .cover-product::after { content: none; }
+.cover-product-chip { display: flex; align-items: center; justify-content: center; flex: 0 0 26%; width: 26%; max-width: 96px; aspect-ratio: 1;
+  border-radius: 22%; border: 1px solid var(--line); background: #fff; box-shadow: 0 8px 18px -12px rgb(20 20 60 / .3); }
+.cover-product-icon { width: 46%; height: auto; aspect-ratio: 1; color: var(--brand); stroke-width: 1.5; opacity: 1; }
+
+/* Cards: the image spans the card, so every row lines up. */
 .card-plate { height: auto; padding: 12px; }
 .card-cover { display: block; }
 .card-cover .cover-product, .card-cover .cover-fallback { width: 100%; height: auto; max-width: none; max-height: none; aspect-ratio: 4 / 3; }
 
-/* Product page: a large tile. */
+/* Product page. */
 .gallery-stage { padding: 28px; }
 .gallery-stage .ptile { width: 100%; }
 
-/* Home hero: three overlapping tiles. */
+/* Hero: product images beside the copy, or the admin's banner image filling the panel. */
 .hero-cover { width: 50%; }
 .hero-cover.c0 { left: 22%; top: 18%; }
 .hero-cover.c1 { left: 0; top: 4%; }
 .hero-cover.c2 { right: 0; left: auto; top: 46%; }
 @media (max-width: 900px) { .hero-cover { width: 40%; } }
+.hero-campaign:has(.hero-slide.has-art:not([hidden]))::before {
+  background: linear-gradient(90deg, rgb(255 255 255 / .96) 0%, rgb(255 255 255 / .88) 34%, rgb(255 255 255 / .2) 64%, transparent 80%) !important; }
+.hero-campaign:has(.hero-slide.has-art:not([hidden])) .hero-art img { object-position: center; }
+@media (max-width: 900px) {
+  .hero-campaign:has(.hero-slide.has-art:not([hidden]))::before {
+    background: linear-gradient(180deg, rgb(255 255 255 / .94) 0%, rgb(255 255 255 / .86) 55%, rgb(255 255 255 / .3) 100%) !important; }
+}
 
-/* Side deals, quick view, entry and small thumbnails. */
-.side-card { grid-template-columns: minmax(0, 1fr) 132px; }
-.side-cover { width: 132px; transform: none; }
-.side-card:hover .side-cover { transform: translateY(-3px); }
-.side-cover img, .qv-cover img { aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; }
+/* Side cards: an admin banner (its image fills the card, text on a soft scrim) or a plain product card. */
+.side-card { grid-template-columns: minmax(0, 1fr) 132px; background: var(--bg); color: var(--ink); border-color: var(--line); box-shadow: var(--shadow-e1); }
+.side-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-e2); }
+.side-card .eyebrow { color: var(--brand); }
+.side-card .link-line { color: var(--brand); }
+.side-cover { width: 132px; transform: none; filter: none; }
+.side-card:hover .side-cover { transform: none; }
+.side-cover img { aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; border: 1px solid var(--line); }
+.side-icon { color: var(--brand); }
+.side-banner { grid-template-columns: minmax(0, 1fr); min-height: 190px; background: var(--bg-2); }
+.side-body { color: var(--ink-soft); font-size: 14px; }
+.side-banner.has-art { align-items: end; color: #fff; border-color: transparent; background: var(--ink); }
+.side-art { position: absolute; inset: 0; z-index: 0; }
+.side-art img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease-out); }
+.side-banner.has-art:hover .side-art img { transform: scale(1.03); }
+.side-banner.has-art::after { content: ""; position: absolute; inset: 0; z-index: 0; background: linear-gradient(180deg, transparent 30%, rgb(10 10 30 / .72) 100%); }
+.side-banner.has-art .side-text { position: relative; z-index: 1; }
+.side-banner.has-art .eyebrow, .side-banner.has-art .link-line, .side-banner.has-art .side-body { color: #fff; }
+
+/* "Look inside": a plain light band; product images, not a dark gradient. */
+.look-band { color: var(--ink); background: var(--bg-2); border: 1px solid var(--line); box-shadow: none; }
+.look-band .section-head h2 { color: var(--ink); }
+.look-band .section-head p { color: var(--ink-soft); }
+.look-band .round-btn { border-color: var(--line-2); background: var(--bg); color: var(--ink); }
+.look-band .link-line { color: var(--brand); }
+.look-card { border-color: var(--line); background: var(--bg); }
+.look-card:hover { background: var(--bg); border-color: var(--line-2); }
+.look-card li::before { background: var(--brand); }
+.look-card ul { color: var(--ink-soft); }
+
+/* "Sell with us": a plain band; it shows real product images only when there are some. */
+.publish-band { border-color: var(--line); background: var(--bg-2); box-shadow: none; }
+.publish-band .eyebrow { color: var(--brand); }
+.publish-stack span { filter: none; }
+
+/* Small thumbnails. */
 .qv-cover .cover-product, .qv-cover img { width: 100%; max-width: 300px; }
+.qv-cover img { aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; }
 .entry-plate .ptile { width: min(320px, 100%); }
-.drawer-cover .cover-product, .summary-cover .cover-product, .mega-covers .cover-product { border-radius: 8px; }
-.drawer-cover .cover-product-bar, .summary-cover .cover-product-bar, .mega-covers .cover-product-bar,
-.cat-fan .cover-product-bar, .publish-stack .cover-product-bar { display: none; }
+.drawer-cover .cover-product, .summary-cover .cover-product, .mega-covers .cover-product, .cat-fan .cover-product { border-radius: 8px; }
+.drawer-cover .cover-product-chip, .summary-cover .cover-product-chip, .mega-covers .cover-product-chip { width: 44%; flex-basis: 44%; box-shadow: none; }
 
-@media (prefers-reduced-motion: reduce) { .ptile, a:hover .ptile { transition: none; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .ptile, a:hover .ptile, .side-art img { transition: none; transform: none; } }
+
+/* Category tiles: an uploaded category image, or compact text tiles when no category has artwork. */
+.cat-art { display: block; height: 156px; margin-bottom: 10px; overflow: hidden; border-radius: 12px; border: 1px solid var(--line); background: var(--bg-2); }
+.cat-art img { width: 100%; height: 100%; object-fit: cover; }
+.cat-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--ink-soft); }
+.tile-grid-compact .cat-tile-compact { gap: 10px; padding: 18px 18px 16px; }
+.cat-tile-compact:hover .cat-meta { color: var(--brand); }
+
+/* Cards and hero: no second frame around product images; the hero is plain until the admin adds artwork. */
+.book-card .card-plate { padding: 0; background: none; box-shadow: none; }
+.hero-campaign:not(:has(.hero-slide.has-art:not([hidden])))::before { background: linear-gradient(180deg, #ffffff 0%, var(--bg-2) 100%) !important; }

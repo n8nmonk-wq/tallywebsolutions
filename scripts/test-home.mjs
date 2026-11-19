@@ -18,9 +18,13 @@ const mod = (id, type, extra = {}) => ({ id, type, title: id, body: null, image_
 const home = buildHome({ books, categories, now, bestsellers: ['ghost', 'd', 'a'],
   authors: [{ id: 'au1', name: 'Author One', photo_url: null }, { id: 'au2', name: 'No Books', photo_url: null }],
   modules: [mod('b1', 'banner', { sort: 2 }), mod('b0', 'banner', { sort: 1 }), mod('old', 'banner', { ends_at: '2026-10-01T00:00:00Z' }),
+    mod('s1', 'banner', { sort: 3, image_url: '/api/media/x', payload: { placement: 'side-1' } }), mod('s2', 'banner', { sort: 4, payload: { placement: 'side-2' } }), mod('s1b', 'banner', { sort: 5, payload: { placement: 'side-1' } }),
     mod('p1', 'promo', { payload: { size: 'large', category_slug: 'fiction', theme: 'coral' } }), mod('g', 'genre-switcher', { payload: { category_slugs: ['science', 'empty', 'fiction'] } })] });
 
-assert.deepEqual(home.banners.map(b => b.id), ['b0', 'b1'], 'ordered, expired banner dropped');
+assert.deepEqual(home.banners.map(b => b.id), ['b0', 'b1'], 'ordered, expired banner dropped, side banners not in the hero');
+assert.equal(home.sideBanners.first.id, 's1', 'the first live side-1 banner fills side card 1');
+assert.equal(home.sideBanners.first.image, '/api/media/x');
+assert.equal(home.sideBanners.second.id, 's2');
 assert.equal(home.promos[0].books.length, 2);
 assert.ok(home.promos[0].books.every(b => b.category_slug === 'fiction' && b.saleable));
 const rail = key => home.rails.find(r => r.key === key);

@@ -14,6 +14,7 @@ let reader = null;
 let admin = false;
 let uploadedBytes = Buffer.from('%PDF-1.7\nTest PDF quarantine fixture');
 let uploadedPath = '';
+const deletedPaths = [];
 const origin = 'https://publishing.test';
 const dependencies = {
   'next/server': { NextResponse }, 'next/cache': { revalidatePath() {} },
@@ -27,6 +28,7 @@ const dependencies = {
   '@vercel/blob/client': { generateClientTokenFromReadWriteToken: async () => 'test-upload-token' },
   '@vercel/blob': {
     head: async path => ({ pathname: path, url: `https://private.blob.vercel-storage.com/${path}`, size: uploadedBytes.length }),
+    del: async path => { deletedPaths.push(path); },
     get: async path => {
       uploadedPath = path;
       return { statusCode: 200, stream: new ReadableStream({ start(controller) { controller.enqueue(uploadedBytes); controller.close(); } }) };
@@ -56,6 +58,7 @@ try {
   dependencies['@/lib/content'] = await load('../src/lib/content.ts');
   dependencies['@/lib/product-status'] = await load('../src/lib/product-status.ts');
   dependencies['@/lib/slug'] = await load('../src/lib/slug.ts');
+  dependencies['@/lib/media'] = await load('../src/lib/media.ts');
   dependencies['@/lib/admin-catalogue'] = await load('../src/lib/admin-catalogue.ts');
   dependencies['@/lib/file-types'] = await load('../src/lib/file-types.ts');
   dependencies['@/lib/admin-sale'] = await load('../src/lib/admin-sale.ts');
@@ -272,6 +275,21 @@ try {
   assert.match(again.headers.get('location'), /\/admin\/products\/auto-slug-check-2\?saved=1$/, 'same name gets a numbered address');
   assert.equal((await adminBooks.POST(form('/api/admin/products', { action: 'create', title: '!!!' }))).status, 400, 'a name with no letters needs a typed address');
   await db.query("delete from books where slug in ('auto-slug-check','auto-slug-check-2')");
+  // Admin images (banners, categories): only real JPEG/PNG/WebP files are kept and served.
+  const media = await load('../src/app/api/admin/media/route.ts');
+  const mediaTicket = await (await media.POST(json('/api/admin/media', { action: 'ticket' }))).json();
+  assert.match(mediaTicket.pathname, /^admin\/media\/[0-9a-f-]{36}$/);
+  const keepBytes = uploadedBytes;
+  uploadedBytes = await sharp({ create: { width: 8, height: 4, channels: 3, background: '#2e2e7e' } }).png().toBuffer();
+  const okImage = await media.POST(json('/api/admin/media', { action: 'finalize', pathname: mediaTicket.pathname }));
+  assert.equal(okImage.status, 200);
+  assert.equal((await okImage.json()).url, `/api/media/${mediaTicket.pathname.slice('admin/media/'.length)}`);
+  uploadedBytes = Buffer.from('<html>not an image</html>');
+  const notImage = await media.POST(json('/api/admin/media', { action: 'finalize', pathname: mediaTicket.pathname }));
+  assert.equal(notImage.status, 400);
+  assert.ok(deletedPaths.includes(mediaTicket.pathname), 'a file that is not an image is deleted');
+  assert.equal((await media.POST(json('/api/admin/media', { action: 'finalize', pathname: 'admin/books/x/../secret' }))).status, 400);
+  uploadedBytes = keepBytes;
   // Admin product files: an attached file or cover is only replaced on purpose.
   const productFiles = await load('../src/app/api/admin/product-files/route.ts');
   await db.query("insert into books(slug,title,price_inr) values('no-file-yet','No file yet',100)");

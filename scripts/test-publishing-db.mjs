@@ -183,6 +183,10 @@ try {
   assert.deepEqual(publicContent.modules.map(m => m.id), ['m3', 'm4']);
   assert.deepEqual(publicContent.collections[0].book_slugs, ['released-title', 'existing-title']);
   assert.equal(publicContent.authors.length, 0);
+  // Banner placement: hero or one of the two side cards; anything else is refused.
+  await c.saveContent('modules', '', null, { title: 'Side art', type: 'banner', status: 'draft', payload: { placement: 'side-2' } });
+  await assert.rejects(c.saveContent('modules', '', null, { title: 'Bad place', type: 'banner', payload: { placement: 'footer' } }), /where the banner shows/);
+  await q("delete from content_modules where title='Side art'");
   let record = (await c.getAdminContent('modules')).find(r => r.id === 'm1');
   // Admin screens get timestamps a browser can parse (the banner editor shows them in India time).
   for (const r of await c.getAdminContent('modules')) for (const k of ['publish_at', 'ends_at']) if (r[k]) assert.ok(Number.isFinite(Date.parse(r[k])), `${k} ${r[k]} parses`);

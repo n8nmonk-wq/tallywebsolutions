@@ -34,11 +34,10 @@ const ICONS: Record<string, LucideIcon> = {
   "Voucher Type Security": ShieldCheck,
 };
 
-// Covers with no uploaded image: a software tile (window bar, grid, app-style icon chip) in the brand colours. No logo.
+// No uploaded image yet: a quiet placeholder with the add-on's icon. Admin uploads a cover to replace it.
 export default function ProductCover({ title, className }: { title: string; className?: string }) {
   const Icon = ICONS[title] ?? Tag;
-  return <span className={`cover-fallback cover-product ${className ?? ""}`} role="img" aria-label={`Cover of ${title}`}>
-    <span className="cover-product-bar" aria-hidden="true"><i /><i /><i /></span>
+  return <span className={`cover-fallback cover-product ${className ?? ""}`} role="img" aria-label={`${title}: image coming soon`}>
     <span className="cover-product-chip" aria-hidden="true"><Icon className="cover-product-icon" /></span>
   </span>;
 }

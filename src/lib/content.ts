@@ -55,8 +55,9 @@ export function validateContent(section: ContentSection, input: Record<string, u
   const bookSlugs = input.book_slugs ?? [];
   if (!Array.isArray(bookSlugs) || bookSlugs.length > 100 || bookSlugs.some(s => typeof s !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(s)) || new Set(bookSlugs).size !== bookSlugs.length) throw new ContentError("Invalid product selection.");
   const payload = input.payload ?? {};
-  const allowedKeys = ["subtitle", "quote", "attribution", "collection_slug", "author_id", "book_slugs", "video_url", "theme", "size", "category_slug", "category_slugs"];
+  const allowedKeys = ["subtitle", "quote", "attribution", "collection_slug", "author_id", "book_slugs", "video_url", "theme", "size", "category_slug", "category_slugs", "placement"];
   if (!payload || typeof payload !== "object" || Array.isArray(payload) || JSON.stringify(payload).length > 10000 || Object.keys(payload).some(k => !allowedKeys.includes(k))) throw new ContentError("Invalid module data.");
+  if ("placement" in payload && !["hero", "side-1", "side-2"].includes(String((payload as Record<string, unknown>).placement))) throw new ContentError("Choose where the banner shows.");
   for (const [key, value] of Object.entries(payload)) {
     if (key === "video_url") safeUrl(value);
     else if (key === "theme") { if (!themes.includes(String(value))) throw new ContentError("Invalid theme."); }
